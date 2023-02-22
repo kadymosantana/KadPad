@@ -58,12 +58,12 @@ export default class UsersController {
       throw new AppError("Este e-mail já está em uso.");
     }
 
-    user.name = name;
-    user.email = email;
+    user.name = name ?? user.name;
+    user.email = email ?? user.email;
 
     // Lidando com a atualização de senha
     if (password && old_password) {
-      const checkOldPassword = compare(user.password, old_password);
+      const checkOldPassword = await compare(old_password, user.password);
 
       if (!checkOldPassword) {
         throw new AppError("A senha antiga informada está incorreta.");
