@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "npx nodemon --exec npx ts-node ./server/src/server.ts",
+    "start": "npx nodemon --exec npx ts-node ./src/server.ts",
     "migration": "knex migrate:latest"
   },
   "dependencies": {
