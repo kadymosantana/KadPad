@@ -44,4 +44,11 @@ export default class NotesController {
       links, // ["link1", "link2", ...]
     });
   }
+
+  // Deletando nota (DELETE)
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    await knex("notes").where({ id }).delete();
+    res.json();
+  }
 }
