@@ -29,5 +29,19 @@ export default class NotesController {
     res.json();
   }
 
+  // Exibindo nota (GET)
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
+    const note = await knex("notes").where({ id }).first();
+    const tags = await knex("tags").where("note_id", id).orderBy("name");
+    const links = await knex("links")
+      .where("note_id", id)
+      .orderBy("created_at");
 
+    res.json({
+      ...note, // { title, description, ...}
+      tags, // ["tag1", "tag2", ...]
+      links, // ["link1", "link2", ...]
+    });
+  }
 }
