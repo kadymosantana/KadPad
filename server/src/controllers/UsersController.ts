@@ -1,22 +1,17 @@
 import { Request, Response } from "express";
 const { hash, compare } = require("bcrypt");
 import sqliteConnection from "../database/sqlite";
-import AppError from "../../utils/AppError";
+const AppError = require("../../utils/AppError");
+import { User } from "../types";
 
 export default class UsersController {
-  // Listar vários usuários (GET)
-  index() {}
-
-  // Listar um usuário específico (GET)
-  show() {}
-
   // Criar um registo (POST)
   async create(req: Request, res: Response) {
     const { name, email, password } = req.body;
 
     const database = await sqliteConnection();
 
-    const checkUserExists = await database.get(
+    const checkUserExists = await database.get<User>(
       "SELECT * FROM users WHERE email = (?)",
       [email]
     );
@@ -40,7 +35,7 @@ export default class UsersController {
     const { id } = req.params;
 
     const database = await sqliteConnection();
-    const user = await database.get("SELECT * FROM users WHERE id = (?)", [id]);
+    const user = await database.get<User>("SELECT * FROM users WHERE id = (?)", [id]);
 
     // Verificando se o usuário a ser atualizado existe e se o e-mail passado já está em uso
 
@@ -49,7 +44,7 @@ export default class UsersController {
     }
 
     // Lidando com a atualização de nome e e-mail
-    const userWithUpdatedEmail = await database.get(
+    const userWithUpdatedEmail = await database.get<User>(
       "SELECT * FROM users WHERE email = (?)",
       [email]
     );
