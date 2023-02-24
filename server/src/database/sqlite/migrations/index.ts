@@ -5,6 +5,6 @@ export default async function migrationsRun() {
   const schemas = [createUsers].join("");
 
   sqliteConnection()
-    .then((db: any) => db.exec(schemas))
+    .then((db) => db?.exec(schemas))
     .catch((err: Error) => console.error(err));
 }

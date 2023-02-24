@@ -1,4 +1,4 @@
-import express from "express";
+const express = require("express");
 import { Request, Response, NextFunction } from "express";
 import migrationsRun from "./database/sqlite/migrations";
 
