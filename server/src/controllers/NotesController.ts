@@ -52,4 +52,40 @@ export default class NotesController {
     await knex<Note>("notes").where("id", id).delete();
     res.json();
   }
+
+  // Listando notas
+  async index(req: Request, res: Response) {
+    const { user_id, title, tags } = req.query;
+
+    let notes: Note[];
+
+    if (tags && typeof tags === "string") {
+      // query tags -> "node express"
+      const filterTags = tags.split(",").map((tag) => tag); // ["node", "express"]
+
+      notes = await knex<Tag>("tags")
+        .select(["notes.id", "notes.user_id", "notes.title"])
+        .where("notes.user_id", user_id)
+        .whereLike("notes.title", `%${title}%`)
+        .whereIn("name", filterTags)
+        .innerJoin("notes", "notes.id", "tags.note_id");
+    } else {
+      notes = await knex<Note>("notes")
+        .where("user_id", user_id)
+        .whereLike("title", `%${title}%`)
+        .orderBy("updated_at");
+    }
+
+    const userTags = await knex<Tag>("tags").where("user_id", user_id);
+
+    const notesWithTags = notes.map((note) => {
+      const noteTags = userTags.filter((tag) => tag.note_id === note.id);
+      return {
+        ...note,
+        tags: noteTags,
+      };
+    });
+
+    res.json(notesWithTags);
+  }
 }
