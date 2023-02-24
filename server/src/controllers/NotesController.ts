@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import knex from "../database/knex";
+import { Link, Note, Tag } from "../types";
 
 export default class NotesController {
   // Cadastrando nota (POST)
@@ -15,13 +16,13 @@ export default class NotesController {
     });
 
     // Criando um novo objeto para cada tag e o inserindo na tabela "tags"
-    const tagsInsert = tags.map((name: string) => {
+    const tagsInsert: Tag[] = tags.map((name: string) => {
       return { note_id, user_id, name };
     });
     await knex("tags").insert(tagsInsert);
 
     // Criando um novo objeto para cada link e o inserindo na tabela "links"
-    const linksInsert = links.map((link: string) => {
+    const linksInsert: Link[] = links.map((link: string) => {
       return { note_id, url: link };
     });
     await knex("links").insert(linksInsert);
@@ -32,9 +33,9 @@ export default class NotesController {
   // Exibindo nota (GET)
   async show(req: Request, res: Response) {
     const { id } = req.params;
-    const note = await knex("notes").where({ id }).first();
-    const tags = await knex("tags").where("note_id", id).orderBy("name");
-    const links = await knex("links")
+    const note = await knex<Note>("notes").where("id", id).first();
+    const tags = await knex<Tag>("tags").where("note_id", id).orderBy("name");
+    const links = await knex<Link>("links")
       .where("note_id", id)
       .orderBy("created_at");
 
@@ -48,7 +49,7 @@ export default class NotesController {
   // Deletando nota (DELETE)
   async delete(req: Request, res: Response) {
     const { id } = req.params;
-    await knex("notes").where({ id }).delete();
+    await knex<Note>("notes").where("id", id).delete();
     res.json();
   }
 }
