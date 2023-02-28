@@ -3,10 +3,10 @@ import ProfileCard from './ProfileCard.vue'
 </script>
 
 <template>
-  <div
-    class="bg-dark-700 w-80 h-screen grid grid-rows-[auto_1fr_auto] tracking-tight text-gray-300 p-4"
+  <aside
+    class="bg-dark-700 fixed w-80 h-screen grid grid-rows-[auto_1fr_auto] text-gray-300 p-4 rounded-tr-3xl rounded-br-3xl shadow-lg"
   >
-    <div class="flex gap-4 items-center justify-center mt-2">
+    <div class="flex gap-4 items-center justify-center mt-3">
       <img
         width="34"
         src="https://user-images.githubusercontent.com/98963793/221386784-f28b7347-a757-47bc-951a-8622354c3e07.png"
@@ -34,5 +34,5 @@ import ProfileCard from './ProfileCard.vue'
     </div>
 
     <ProfileCard />
-  </div>
+  </aside>
 </template>
