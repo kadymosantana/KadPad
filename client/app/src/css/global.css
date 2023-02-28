@@ -5,17 +5,26 @@
 }
 
 body {
-  font-family: "Inter";
+  font-family: 'Inter';
 }
 
-input, button {
+input,
+textarea,
+button {
+  font-size: 1rem;
   outline: none;
 }
 
-input, button {
+input,
+button {
   outline: none;
 }
 
 a {
   text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
 }
