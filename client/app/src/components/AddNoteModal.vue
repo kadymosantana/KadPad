@@ -9,7 +9,7 @@ import store from '../store'
       class="fixed w-screen h-screen flex top-0 left-0 justify-center items-center z-10 backdrop-blur-sm bg-[#00000090] duration-300"
     >
       <div
-        class="modal-container flex flex-col gap-6 text-gray-300 tracking-tight bg-dark-800 w-[480px] max-h-max p-6 rounded-3xl shadow-lg duration-300 ease-in-out"
+        class="modal-container flex flex-col gap-6 tracking-tight bg-dark-800 w-[480px] max-h-max p-6 rounded-3xl shadow-lg duration-300 ease-in-out"
       >
         <header
           class="flex items-center justify-between border-b border-solid border-dark-600 pb-4"
@@ -22,11 +22,11 @@ import store from '../store'
         <div>
           <input
             type="text"
-            class="w-full border-2 border-transparent focus:border-solid focus:border-cyan-500 rounded-2xl mb-3 p-3 bg-dark-700 placeholder:text-[#454851]"
+            class="w-full border-2 border-transparent focus:border-solid focus:border-cyan-500 rounded-2xl mb-3 p-3 bg-dark-700 placeholder:text-dark-500"
             placeholder="Título da nota"
           />
           <textarea
-            class="w-full border-2 border-transparent focus:border-solid focus:border-cyan-500 rounded-2xl p-3 bg-dark-700 resize-none placeholder:text-[#454851]"
+            class="w-full border-2 border-transparent focus:border-solid focus:border-cyan-500 rounded-2xl p-3 bg-dark-700 resize-none placeholder:text-dark-500"
             rows="3"
             placeholder="Descrição"
           ></textarea>
@@ -41,7 +41,7 @@ import store from '../store'
               class="flex justify-between items-center bg-dark-900 p-3 rounded-xl border border-transparent"
             >
               <span>https://github.com/kadymosantana</span>
-              <img src="../assets/icons/close.svg" alt="Remover link" />
+              <img class="cursor-pointer" src="../assets/icons/close.svg" alt="Remover link" />
             </li>
           </ul>
           <button
