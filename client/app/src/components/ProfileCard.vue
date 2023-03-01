@@ -13,10 +13,14 @@
         <br />
         <span class="text-lg font-semibold text-ellipsis">Kádymo Santana</span>
       </span>
-      <button class="flex gap-2 p-2 rounded-xl bg-dark-700 hover:bg-dark-700">
+      <RouterLink
+        to="/profile"
+        tag="button"
+        class="flex gap-2 p-2 rounded-xl bg-dark-700 hover:bg-dark-700"
+      >
         <img src="../assets/icons/edit.svg" />
         <span>Editar conta</span>
-      </button>
+      </RouterLink>
     </div>
   </div>
 </template>
