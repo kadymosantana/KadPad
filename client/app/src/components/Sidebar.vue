@@ -4,7 +4,7 @@ import ProfileCard from './ProfileCard.vue'
 
 <template>
   <aside
-    class="bg-dark-700 fixed w-80 h-screen grid grid-rows-[auto_1fr_auto] text-gray-300 p-4 rounded-tr-3xl rounded-br-3xl shadow-lg"
+    class="bg-dark-700 fixed w-80 h-screen grid grid-rows-[auto_1fr_auto] p-4 rounded-tr-3xl rounded-br-3xl shadow-lg"
   >
     <div class="flex gap-4 items-center justify-center mt-3">
       <img

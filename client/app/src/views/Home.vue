@@ -6,7 +6,7 @@ import store from '../store'
 </script>
 
 <template>
-  <div class="text-gray-300 tracking-tight grid grid-cols-[auto_1fr] w-screen min-h-screen">
+  <div class="tracking-tight grid grid-cols-[auto_1fr] w-screen min-h-screen">
     <Sidebar />
     <NotesContainer />
   </div>
