@@ -19,15 +19,19 @@ import InputContainer from '@/components/InputContainer.vue'
     </div>
     <form class="flex flex-col gap-3">
       <InputContainer icon="user" placeholder="Nome" />
-      <InputContainer icon="email" placeholder="E-mail" />
-      <InputContainer icon="password" placeholder="Senha atual" />
-      <InputContainer icon="password" placeholder="Nova senha" />
+      <InputContainer type="email" icon="email" placeholder="E-mail" />
+      <InputContainer type="password" icon="password" placeholder="Senha atual" />
+      <InputContainer type="password" icon="password" placeholder="Nova senha" />
       <button
         class="w-full mt-3 bg-cyan-500 p-3 text-dark-800 rounded-xl hover:bg-cyan-600 duration-500"
       >
         Salvar
       </button>
     </form>
+    <button class="flex items-center gap-2 bg-[#ff00001a] p-3 rounded-xl">
+      <img src="../assets/icons/logout.svg" />
+      <span class="text-red-700">Sair</span>
+    </button>
   </div>
 </template>
 
