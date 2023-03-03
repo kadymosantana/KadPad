@@ -50,11 +50,7 @@ import AddButton from './AddButton.vue'
           </ul>
           <AddButton icon="add-tag" placeholder="Nova tag" />
         </div>
-        <button
-          class="w-full bg-cyan-500 hover:bg-cyan-600 rounded-xl text-dark-800 p-3 duration-500"
-        >
-          Criar nota
-        </button>
+        <button class="primary-button">Criar nota</button>
       </div>
     </div>
   </Transition>

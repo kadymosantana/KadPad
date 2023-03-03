@@ -44,9 +44,7 @@ const activeLoginType = ref('signin')
         <InputContainer v-if="activeLoginType === 'signup'" icon="user" placeholder="Nome" />
         <InputContainer type="email" icon="email" placeholder="E-mail" />
         <InputContainer type="password" icon="password" placeholder="Senha" />
-        <button
-          class="bg-cyan-500 hover:bg-cyan-600 duration-500 text-dark-800 rounded-2xl p-3 mt-3"
-        >
+        <button class="primary-button mt-3">
           {{ activeLoginType === 'signin' ? 'Entrar' : 'Cadastrar' }}
         </button>
       </TransitionGroup>
