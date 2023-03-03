@@ -4,13 +4,8 @@ import store from '../store'
 
 <template>
   <Transition name="modal">
-    <div
-      v-if="store.addNoteModalState"
-      class="fixed w-screen h-screen flex top-0 left-0 justify-center items-center z-10 backdrop-blur-sm bg-[#00000090] duration-300"
-    >
-      <div
-        class="modal-container flex flex-col gap-6 tracking-tight bg-dark-800 w-[480px] max-h-max p-6 rounded-3xl shadow-lg duration-300 ease-in-out"
-      >
+    <div v-if="store.addNoteModalState" class="modal-wrapper">
+      <div class="modal-container">
         <header
           class="flex items-center justify-between border-b border-solid border-dark-600 pb-4"
         >
@@ -22,19 +17,20 @@ import store from '../store'
         <div>
           <input
             type="text"
-            class="w-full border-2 border-transparent focus:border-solid focus:border-cyan-500 rounded-2xl mb-3 p-3 bg-dark-700 placeholder:text-dark-500"
+            class="w-full border-2 border-transparent focus:border-solid focus:border-cyan-500 rounded-2xl mb-3 p-3 bg-dark-700 placeholder:text-dark-500 duration-500"
             placeholder="Título da nota"
           />
           <textarea
-            class="w-full border-2 border-transparent focus:border-solid focus:border-cyan-500 rounded-2xl p-3 bg-dark-700 resize-none placeholder:text-dark-500"
+            class="w-full border-2 border-transparent focus:border-solid focus:border-cyan-500 rounded-2xl p-3 bg-dark-700 resize-none placeholder:text-dark-500 duration-500"
             rows="3"
             placeholder="Descrição"
           ></textarea>
         </div>
 
         <div>
-          <h3 class="text-xl font-light pb-3 border-b border-dark-600 border-solid mb-4">
-            Links úteis
+          <h3 class="subtitle">
+            <img src="../assets/icons/link.svg" alt="" />
+            Links
           </h3>
           <ul class="flex flex-col gap-2 max-h-24 overflow-auto mb-3">
             <li
@@ -53,7 +49,10 @@ import store from '../store'
         </div>
 
         <div>
-          <h3 class="text-xl font-light pb-3 border-b border-dark-600 border-solid mb-4">Tags</h3>
+          <h3 class="subtitle">
+            <img src="../assets/icons/tag.svg" />
+            Tags
+          </h3>
           <ul class="flex flex-wrap gap-2 overflow-auto">
             <li
               class="flex gap-2 items-center min-w-max bg-dark-900 px-3 py-2 rounded-xl border border-transparent"
@@ -78,19 +77,3 @@ import store from '../store'
     </div>
   </Transition>
 </template>
-
-<style scoped>
-.modal-enter-from {
-  opacity: 0;
-}
-
-.modal-leave-to {
-  opacity: 0;
-}
-
-.modal-enter-from .modal-container,
-.modal-leave-to .modal-container {
-  -webkit-transform: scale(0);
-  transform: scale(0);
-}
-</style>
