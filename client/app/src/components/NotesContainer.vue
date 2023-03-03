@@ -5,7 +5,7 @@ import InputContainer from './InputContainer.vue'
 
 <template>
   <main class="bg-dark-800 p-12 flex flex-col gap-12 ml-[320px]">
-    <InputContainer type="large" icon="search" placeholder="Pesquisar nota" />
+    <InputContainer size="large" icon="search" placeholder="Pesquisar nota" />
     <NotesList />
   </main>
 </template>
