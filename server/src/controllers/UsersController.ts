@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 const { hash, compare } = require("bcrypt");
 import sqliteConnection from "../database/sqlite";
-const AppError = require("../../utils/AppError");
+import AppError from "../../utils/AppError";
 import { User } from "../types";
 
 export default class UsersController {
@@ -32,16 +32,17 @@ export default class UsersController {
   // Atualizar um usuário (PUT)
   async update(req: Request, res: Response) {
     const { name, email, password, old_password } = req.body;
-    const { id } = req.params;
+    const user_id = req.user!.id;
 
     const database = await sqliteConnection();
-    const user = await database.get<User>("SELECT * FROM users WHERE id = (?)", [id]);
+    const user = await database.get<User>(
+      "SELECT * FROM users WHERE id = (?)",
+      [user_id]
+    );
 
     // Verificando se o usuário a ser atualizado existe e se o e-mail passado já está em uso
 
-    if (!user) {
-      throw new AppError("Usuário não encontrado.");
-    }
+    if (!user) throw new AppError("Usuário não encontrado.");
 
     // Lidando com a atualização de nome e e-mail
     const userWithUpdatedEmail = await database.get<User>(
@@ -49,9 +50,8 @@ export default class UsersController {
       [email]
     );
 
-    if (userWithUpdatedEmail && userWithUpdatedEmail.id !== user.id) {
+    if (userWithUpdatedEmail && userWithUpdatedEmail.id !== user.id)
       throw new AppError("Este e-mail já está em uso.");
-    }
 
     user.name = name ?? user.name;
     user.email = email ?? user.email;
@@ -71,11 +71,10 @@ export default class UsersController {
         UPDATE users 
         SET password = (?) 
         WHERE id = (?)`,
-        [hashedNewPassword, id]
+        [hashedNewPassword, user_id]
       );
-    } else if (password && !old_password) {
+    } else if (password && !old_password)
       throw new AppError("Você precisa informar a sua senha antiga.");
-    }
 
     // Atualizando usuário no banco de dados
     await database.run(
@@ -85,7 +84,7 @@ export default class UsersController {
       email = ?,
       updated_at = DATETIME('now') 
       WHERE id = ?`,
-      [user.name, user.email, id]
+      [user.name, user.email, user_id]
     );
 
     return res.json();

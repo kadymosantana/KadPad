@@ -6,7 +6,7 @@ export default class NotesController {
   // Cadastrando nota (POST)
   async create(req: Request, res: Response) {
     const { title, description, tags, links } = req.body;
-    const { user_id } = req.params;
+    const user_id = req.user!.id;
 
     // Recuperando id da nota
     const note_id = await knex("notes").insert({
