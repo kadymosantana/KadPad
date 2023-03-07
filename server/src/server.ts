@@ -1,10 +1,11 @@
 const express = require("express");
+
+import "express-async-errors";
 import { Request, Response, NextFunction } from "express";
 import migrationsRun from "./database/sqlite/migrations";
 
 const Routes = require("./routes");
 
-require("express-async-errors");
 import AppError from "../utils/AppError";
 
 const app = express();
