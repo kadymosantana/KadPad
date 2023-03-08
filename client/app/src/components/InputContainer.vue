@@ -1,10 +1,12 @@
 <script setup lang="ts">
 const props = defineProps({
+  modelValue: { type: String },
   type: { type: String, default: 'text', required: false },
   size: { type: String, required: false },
   icon: { type: String, required: true },
   placeholder: { type: String, required: true }
 })
+const emits = defineEmits(['update:modelValue'])
 </script>
 
 <template>
@@ -14,6 +16,8 @@ const props = defineProps({
   >
     <img :src="'src/assets/icons/' + icon + '.svg'" />
     <input
+      :value="modelValue"
+      @change="$emit('update:modelValue', $event.target.value)"
       class="bg-transparent placeholder:text-dark-500 w-full"
       :type="type"
       :placeholder="placeholder"
