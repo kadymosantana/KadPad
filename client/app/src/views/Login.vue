@@ -1,9 +1,40 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useToast } from 'vue-toastification'
+
+import { api } from '../services/api'
+
 import InputContainer from '@/components/InputContainer.vue'
 import LoginTypeButton from '@/components/LoginTypeButton.vue'
 
 const activeLoginType = ref('signin')
+
+const toast = useToast()
+
+const name = ref('')
+const email = ref('')
+const password = ref('')
+
+const handleSubmit = () => {
+  if (activeLoginType.value === 'signin') console.log('Entrar')
+  else if (activeLoginType.value === 'signup') handleSignUp()
+}
+
+const handleSignUp = () => {
+  if (!name.value || !email.value || !password.value)
+    return toast.error('Preencha todos os campos.')
+
+  api
+    .post('/users', { name: name.value, email: email.value, password: password.value })
+    .then((res) => {
+      toast.success('Cadastro feito com sucesso.')
+      activeLoginType.value = 'signin'
+    })
+    .catch((error) => {
+      if (error.response) return toast.error(error.response.data.message)
+      else return toast.error('Não foi possível fazer o cadastro.')
+    })
+}
 </script>
 
 <template>
@@ -40,11 +71,24 @@ const activeLoginType = ref('signin')
         >
       </div>
 
-      <TransitionGroup name="list" tag="form" class="flex flex-col gap-3">
-        <InputContainer v-if="activeLoginType === 'signup'" icon="user" placeholder="Nome" />
-        <InputContainer type="email" icon="email" placeholder="E-mail" />
-        <InputContainer type="password" icon="password" placeholder="Senha" />
-        <button class="primary-button mt-3">
+      <TransitionGroup
+        @submit.prevent="handleSubmit"
+        name="list"
+        tag="form"
+        class="flex flex-col gap-3"
+      >
+        <InputContainer
+          v-model="name"
+          v-if="activeLoginType === 'signup'"
+          icon="user"
+          placeholder="Nome"
+        />
+
+        <InputContainer v-model="email" type="email" icon="email" placeholder="E-mail" />
+
+        <InputContainer v-model="password" type="password" icon="password" placeholder="Senha" />
+
+        <button type="submit" class="primary-button mt-3">
           {{ activeLoginType === 'signin' ? 'Entrar' : 'Cadastrar' }}
         </button>
       </TransitionGroup>
