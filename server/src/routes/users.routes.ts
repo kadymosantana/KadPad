@@ -3,12 +3,14 @@ import { Router } from "express";
 import multer from "multer";
 
 import UsersController from "../controllers/UsersController";
+import UserAvatarController from "../controllers/UserAvatarController";
 import ensureAuthenticated from "../middlewares/ensureAuthenticated";
 
 import uploadConfig from "../config/upload";
 
 const usersRoutes = Router();
 const usersController = new UsersController();
+const userAvatarController = new UserAvatarController();
 
 const upload = multer(uploadConfig.MULTER);
 
@@ -18,10 +20,7 @@ usersRoutes.patch(
   "/avatar",
   ensureAuthenticated,
   upload.single("avatar"),
-  (req: Request, res: Response) => {
-    console.log(req.file?.filename);
-    res.status(201);
-  }
+  userAvatarController.update
 );
 
 module.exports = usersRoutes;
