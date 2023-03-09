@@ -1,4 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
+
+import store from '../store'
+
 import Login from '@/views/Login.vue'
 import Home from '@/views/Home.vue'
 import Profile from '@/views/Profile.vue'
@@ -12,6 +15,10 @@ const router = createRouter({
     { name: 'Profile', path: '/profile', component: Profile },
     { name: 'Note', path: '/note', component: NoteModal, meta: { transition: 'modal' } }
   ]
+})
+
+router.beforeEach(async (to, from) => {
+  if (!store.userAuthData && to.name !== 'Login') return { name: 'Login' }
 })
 
 export default router
