@@ -3,8 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 
-import { api } from '../services/api'
-
+import { api } from '@/services/api'
 import store from '@/store'
 
 import InputContainer from '@/components/InputContainer.vue'
@@ -25,7 +24,7 @@ onMounted(() => {
   const token = localStorage['@KadPad:token']
 
   if (user && token) {
-    api.defaults.headers.authorization = `Bearer ${token}`
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`
     store.userAuthData = { user: JSON.parse(user), token }
     router.push('/home')
   }
@@ -43,7 +42,7 @@ const handleSignIn = async () => {
     const authData = await api.post('/sessions', { email: email.value, password: password.value })
     const { user, token } = authData.data
 
-    api.defaults.headers.authorization = `Bearer ${token}`
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`
     store.userAuthData = { user, token }
 
     localStorage.setItem('@KadPad:user', JSON.stringify(user))
