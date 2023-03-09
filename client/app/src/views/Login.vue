@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 
 import { api } from '../services/api'
 
-import store from '../store'
+import store from '@/store'
 
 import InputContainer from '@/components/InputContainer.vue'
 import LoginTypeButton from '@/components/LoginTypeButton.vue'
-import router from '@/router'
+
+const router = useRouter()
 
 const activeLoginType = ref('signIn')
 
@@ -17,6 +19,17 @@ const toast = useToast()
 const name = ref('')
 const email = ref('')
 const password = ref('')
+
+onMounted(() => {
+  const user = localStorage['@KadPad:user']
+  const token = localStorage['@KadPad:token']
+
+  if (user && token) {
+    api.defaults.headers.authorization = `Bearer ${token}`
+    store.userAuthData = { user: JSON.parse(user), token }
+    router.push('/home')
+  }
+})
 
 const handleSubmit = () => {
   if (activeLoginType.value === 'signIn') handleSignIn()
@@ -32,6 +45,10 @@ const handleSignIn = async () => {
 
     api.defaults.headers.authorization = `Bearer ${token}`
     store.userAuthData = { user, token }
+
+    localStorage.setItem('@KadPad:user', JSON.stringify(user))
+    localStorage.setItem('@KadPad:token', token)
+
     router.push('/home')
   } catch (error: any) {
     if (error.response) return toast.error(error.response.data.message)
