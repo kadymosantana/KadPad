@@ -4,10 +4,13 @@ import { useToast } from 'vue-toastification'
 
 import { api } from '../services/api'
 
+import store from '../store'
+
 import InputContainer from '@/components/InputContainer.vue'
 import LoginTypeButton from '@/components/LoginTypeButton.vue'
+import router from '@/router'
 
-const activeLoginType = ref('signin')
+const activeLoginType = ref('signIn')
 
 const toast = useToast()
 
@@ -16,24 +19,38 @@ const email = ref('')
 const password = ref('')
 
 const handleSubmit = () => {
-  if (activeLoginType.value === 'signin') console.log('Entrar')
-  else if (activeLoginType.value === 'signup') handleSignUp()
+  if (activeLoginType.value === 'signIn') handleSignIn()
+  else if (activeLoginType.value === 'signUp') handleSignUp()
 }
 
-const handleSignUp = () => {
+const handleSignIn = async () => {
+  if (!email.value || !password.value) return toast.error('Preencha todos os campos.')
+
+  try {
+    const authData = await api.post('/sessions', { email: email.value, password: password.value })
+    const { user, token } = authData.data
+
+    api.defaults.headers.authorization = `Bearer ${token}`
+    store.userAuthData = { user, token }
+    router.push('/home')
+  } catch (error: any) {
+    if (error.response) return toast.error(error.response.data.message)
+    else return toast.error('Não foi possível fazer o login.')
+  }
+}
+
+const handleSignUp = async () => {
   if (!name.value || !email.value || !password.value)
     return toast.error('Preencha todos os campos.')
 
-  api
-    .post('/users', { name: name.value, email: email.value, password: password.value })
-    .then((res) => {
-      toast.success('Cadastro feito com sucesso.')
-      activeLoginType.value = 'signin'
-    })
-    .catch((error) => {
-      if (error.response) return toast.error(error.response.data.message)
-      else return toast.error('Não foi possível fazer o cadastro.')
-    })
+  try {
+    await api.post('/users', { name: name.value, email: email.value, password: password.value })
+    toast.success('Cadastro feito com sucesso.')
+    activeLoginType.value = 'signIn'
+  } catch (error: any) {
+    if (error.response) return toast.error(error.response.data.message)
+    else return toast.error('Não foi possível fazer o cadastro.')
+  }
 }
 </script>
 
@@ -58,15 +75,15 @@ const handleSignUp = () => {
       <div class="w-full grid grid-cols-2 border-dark-600 mb-[-1rem] border-b">
         <LoginTypeButton
           :activeLoginType="activeLoginType"
-          type="signin"
-          @change-login-type="activeLoginType = 'signin'"
+          type="signIn"
+          @change-login-type="activeLoginType = 'signIn'"
           >Entrar</LoginTypeButton
         >
 
         <LoginTypeButton
           :activeLoginType="activeLoginType"
-          type="signup"
-          @change-login-type="activeLoginType = 'signup'"
+          type="signUp"
+          @change-login-type="activeLoginType = 'signUp'"
           >Cadastrar</LoginTypeButton
         >
       </div>
@@ -79,7 +96,7 @@ const handleSignUp = () => {
       >
         <InputContainer
           v-model="name"
-          v-if="activeLoginType === 'signup'"
+          v-if="activeLoginType === 'signUp'"
           icon="user"
           placeholder="Nome"
         />
@@ -89,7 +106,7 @@ const handleSignUp = () => {
         <InputContainer v-model="password" type="password" icon="password" placeholder="Senha" />
 
         <button type="submit" class="primary-button mt-3">
-          {{ activeLoginType === 'signin' ? 'Entrar' : 'Cadastrar' }}
+          {{ activeLoginType === 'signIn' ? 'Entrar' : 'Cadastrar' }}
         </button>
       </TransitionGroup>
     </div>
@@ -97,7 +114,7 @@ const handleSignUp = () => {
 </template>
 
 <style scoped>
-.list-move, /* apply transition to moving elements */
+.list-move,
 .list-enter-active,
 .list-leave-active {
   transition: all 0.3s ease;
@@ -109,8 +126,6 @@ const handleSignUp = () => {
   transform: translateY(30px);
 }
 
-/* ensure leaving items are taken out of layout flow so that moving
-   animations can be calculated correctly. */
 .list-leave-active {
   position: absolute;
 }
