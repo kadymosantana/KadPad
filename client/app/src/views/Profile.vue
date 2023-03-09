@@ -1,5 +1,15 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
+import store from '@/store'
 import InputContainer from '@/components/InputContainer.vue'
+
+const router = useRouter()
+const signOut = () => {
+  localStorage.removeItem('@KadPad:user')
+  localStorage.removeItem('@KadPad:token')
+  store.userAuthData = null
+  router.push('/')
+}
 </script>
 
 <template>
@@ -24,7 +34,7 @@ import InputContainer from '@/components/InputContainer.vue'
       <InputContainer type="password" icon="password" placeholder="Nova senha" />
       <button class="primary-button mt-3">Salvar</button>
     </form>
-    <button class="flex items-center gap-2 bg-[#ff00001a] p-3 rounded-xl">
+    <button @click="signOut" class="flex items-center gap-2 bg-[#ff00001a] p-3 rounded-xl">
       <img src="../assets/icons/logout.svg" />
       <span class="text-red-700">Sair</span>
     </button>
