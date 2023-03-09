@@ -45,7 +45,13 @@ const handleSignIn = async () => {
     api.defaults.headers.common['Authorization'] = `Bearer ${token}`
     store.userAuthData = { user, token }
 
-    localStorage.setItem('@KadPad:user', JSON.stringify(user))
+    localStorage.setItem(
+      '@KadPad:user',
+      JSON.stringify({
+        name: user.name,
+        email: user.email
+      })
+    )
     localStorage.setItem('@KadPad:token', token)
 
     router.push('/home')
