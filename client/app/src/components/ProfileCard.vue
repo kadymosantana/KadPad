@@ -1,10 +1,24 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import store from '@/store'
+import { api } from '@/services/api'
+
+const userData = store.authData!.user
+
+const avatarURL = computed(() => {
+  if (userData.avatar) return `${api.defaults.baseURL}/files/${userData.avatar}`
+  else return 'src/assets/icons/user.svg'
+})
+</script>
+
 <template>
   <div class="flex items-center gap-4 bg-dark-800 p-4 rounded-2xl shadow">
     <img
-      class="rounded-full self-start"
-      width="70"
-      height="70"
-      src="https://avatars.githubusercontent.com/u/98963793?v=4"
+      :class="{ 'bg-dark-900 p-4': !userData.avatar }"
+      class="rounded-full self-start w-16 h-16 object-cover shadow-md"
+      width="64"
+      height="64"
+      :src="avatarURL"
       alt="Avatar"
     />
     <div class="flex flex-col gap-2 truncate">
