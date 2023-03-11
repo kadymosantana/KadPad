@@ -25,33 +25,30 @@ onMounted(() => {
 
   if (user && token) {
     api.defaults.headers.common['Authorization'] = `Bearer ${token}`
-    store.userAuthData = { user: JSON.parse(user), token }
+    store.authData = { user: JSON.parse(user), token }
     router.push('/home')
   }
 })
 
 const handleSubmit = () => {
-  if (activeLoginType.value === 'signIn') handleSignIn()
-  else if (activeLoginType.value === 'signUp') handleSignUp()
+  if (activeLoginType.value === 'signIn') signIn()
+  else if (activeLoginType.value === 'signUp') signUp()
 }
 
-const handleSignIn = async () => {
+const signIn = async () => {
   if (!email.value || !password.value) return toast.error('Preencha todos os campos.')
 
   try {
-    const authData = await api.post('/sessions', { email: email.value, password: password.value })
-    const { user, token } = authData.data
+    const data = await api.post('/sessions', {
+      email: email.value,
+      password: password.value
+    })
+    const { user, token } = data.data
 
     api.defaults.headers.common['Authorization'] = `Bearer ${token}`
-    store.userAuthData = { user, token }
+    store.authData = { user, token }
 
-    localStorage.setItem(
-      '@KadPad:user',
-      JSON.stringify({
-        name: user.name,
-        email: user.email
-      })
-    )
+    localStorage.setItem('@KadPad:user', JSON.stringify(user))
     localStorage.setItem('@KadPad:token', token)
 
     router.push('/home')
@@ -61,7 +58,7 @@ const handleSignIn = async () => {
   }
 }
 
-const handleSignUp = async () => {
+const signUp = async () => {
   if (!name.value || !email.value || !password.value)
     return toast.error('Preencha todos os campos.')
 
