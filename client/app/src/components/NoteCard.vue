@@ -24,3 +24,12 @@ import Tag from './Tag.vue'
     </Teleport>
   </li>
 </template>
+
+<style scoped>
+p {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style>
