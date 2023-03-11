@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
-import store from '@/store'
 
+import store from '@/store'
 import { api } from '@/services/api'
 
 import InputContainer from '@/components/InputContainer.vue'
@@ -12,25 +11,59 @@ import InputContainer from '@/components/InputContainer.vue'
 const router = useRouter()
 const toast = useToast()
 
-const name = ref(store.userAuthData!.user.name)
-const email = ref(store.userAuthData!.user.email)
+const userData = computed(() => store.authData!.user)
+const avatarURL = computed(() => {
+  if (userData.value.avatar) {
+    return `${api.defaults.baseURL}/files/${userData.value.avatar}`
+  } else {
+    return 'src/assets/icons/user.svg'
+  }
+})
+
+const avatar = computed(() => userData!.value.avatar)
+const avatarFile = ref<Blob | null>(null)
+
+const name = ref(userData.value.name)
+const email = ref(userData.value.email)
 const oldPassword = ref('')
 const newPassword = ref('')
 
-const handleUpdate = async () => {
-  const updatedUser = {
-    name: name.value,
-    email: email.value,
-    password: newPassword.value,
-    old_password: oldPassword.value
-  }
+const updateUserAvatar = async (e) => {
+  if (!e.target.files) return
   try {
-    await api.put('/users', updatedUser)
+    const file = e.target.files[0]
+    avatarFile.value = file
 
-    store.userAuthData!.user = { name: name.value, email: email.value }
-    localStorage.setItem('@KadPad:user', JSON.stringify(updatedUser))
+    const avatarPreview = URL.createObjectURL(file)
+    avatar.value = avatarPreview
+
+    const fileUploadForm = new FormData()
+    fileUploadForm.append('avatar', avatarFile.value!)
+
+    const updatedUser = await api.patch('/users/avatar', fileUploadForm)
+    store.authData!.user = updatedUser.data
+
+    localStorage.setItem('@KadPad:user', JSON.stringify(updatedUser.data))
+  } catch (error: any) {
+    if (error.response) return toast.error(error.response.data.message)
+    else return toast.error('Não foi possível atualizar o avatar.')
+  }
+}
+
+const updateUserData = async () => {
+  try {
+    const updatedUser = await api.put('/users', {
+      name: name.value,
+      email: email.value,
+      password: newPassword.value,
+      old_password: oldPassword.value
+    })
+
+    store.authData!.user = updatedUser.data
+    localStorage.setItem('@KadPad:user', JSON.stringify(updatedUser.data))
 
     toast.success('Perfil atualizado com sucesso!')
+
     oldPassword.value = ''
     newPassword.value = ''
   } catch (error: any) {
@@ -39,10 +72,12 @@ const handleUpdate = async () => {
   }
 }
 
-const handleSignOut = () => {
+const signOut = () => {
   localStorage.removeItem('@KadPad:user')
   localStorage.removeItem('@KadPad:token')
-  store.userAuthData = null
+
+  store.authData = null
+
   router.push('/')
 }
 </script>
@@ -51,18 +86,24 @@ const handleSignOut = () => {
   <div class="content w-screen h-screen flex flex-col gap-10 items-center justify-center">
     <div class="relative">
       <img
-        class="rounded-full drop-shadow-xl"
-        width="180"
-        height="180"
-        src="https://avatars.githubusercontent.com/u/98963793?v=4"
+        :class="{ 'bg-dark-900 p-8': !avatar }"
+        class="rounded-full drop-shadow-xl w-44 h-44 object-cover"
+        width="176"
+        height="176"
+        :src="avatarURL"
         alt="Foto de perfil"
       />
       <span
-        class="absolute bg-cyan-500 hover:bg-cyan-600 p-3 rounded-full bottom-0 right-0 cursor-pointer duration-500"
-        ><img src="../assets/icons/add-photo.svg" alt="Adicionar foto"
+        class="grid grid-cols-[1fr] grid-rows-[1fr] absolute bg-cyan-500 hover:bg-cyan-600 p-3 rounded-full bottom-0 right-0 cursor-pointer duration-500"
+        ><img class="col-[1] row-[1]" src="../assets/icons/add-photo.svg" alt="Adicionar foto" />
+
+        <input
+          @input="updateUserAvatar"
+          type="file"
+          class="col-[1] row-[1] w-[30px] opacity-0 cursor-pointer"
       /></span>
     </div>
-    <form @submit.prevent="handleUpdate" class="flex flex-col gap-3">
+    <form @submit.prevent="updateUserData" class="flex flex-col gap-3">
       <InputContainer v-model="name" icon="user" placeholder="Nome" />
       <InputContainer v-model="email" type="email" icon="email" placeholder="E-mail" />
       <InputContainer
@@ -79,7 +120,7 @@ const handleSignOut = () => {
       />
       <button class="primary-button mt-3">Salvar</button>
     </form>
-    <button @click="handleSignOut" class="flex items-center gap-2 bg-[#ff00001a] p-3 rounded-xl">
+    <button @click="signOut" class="flex items-center gap-2 bg-[#ff00001a] p-3 rounded-xl">
       <img src="../assets/icons/logout.svg" />
       <span class="text-red-700">Sair</span>
     </button>
