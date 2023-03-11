@@ -87,7 +87,7 @@ export default class UsersController {
       [user.name, user.email, user_id]
     );
 
-    return res.json();
+    return res.json(user);
   }
 
   // Excluir um usuário (DELETE)
