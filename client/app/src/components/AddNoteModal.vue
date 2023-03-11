@@ -67,7 +67,7 @@ const removeTag = (tag: string) => {
             Links
           </h3>
 
-          <ul class="flex flex-col gap-2 max-h-20 overflow-auto mb-3">
+          <ul v-if="links.length" class="flex flex-col gap-2 max-h-20 overflow-auto mb-3">
             <NoteItem v-for="link in links" :value="link" type="link" @remove="removeLink" />
           </ul>
 
@@ -80,11 +80,11 @@ const removeTag = (tag: string) => {
             Tags
           </h3>
 
-          <ul class="flex gap-2 overflow-auto mb-2">
+          <ul v-if="tags.length" class="flex gap-2 overflow-auto mb-2">
             <NoteItem v-for="tag in tags" :value="tag" type="tag" @remove="removeTag" />
           </ul>
 
-          <AddButton @add="addTag" v-model="newTag" icon="add-tag" placeholder="Novo tag" />
+          <AddButton @add="addTag" v-model="newTag" icon="add-tag" placeholder="Nova tag" />
         </div>
 
         <button class="primary-button">Criar nota</button>
