@@ -1,9 +1,9 @@
 <script setup lang="ts">
 const props = defineProps({
   type: { type: String, required: true },
-  value: { type: String, required: true },
-  icon: { type: String, required: true }
+  value: { type: String, required: true }
 })
+const emits = defineEmits(['remove'])
 </script>
 
 <template>
@@ -14,6 +14,8 @@ const props = defineProps({
     <a v-if="type === 'link'" class="bg-transparent">{{ value }}</a>
     <span v-else class="bg-transparent">{{ value }}</span>
 
-    <img class="cursor-pointer" :src="'src/assets/icons/' + icon + '.svg'" alt="" />
+    <button @click="$emit('remove', value)" class="cursor-pointer">
+      <img src="@/assets/icons/close.svg" alt="" />
+    </button>
   </li>
 </template>
