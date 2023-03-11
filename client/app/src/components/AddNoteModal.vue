@@ -1,7 +1,37 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
 import store from '../store'
+import type { Tag } from '@/types'
+
 import NoteItem from './NoteItem.vue'
 import AddButton from './AddButton.vue'
+
+const newLink = ref('')
+const links = ref<string[]>([])
+
+const newTag = ref('')
+const tags = ref<string[]>([])
+
+const addLink = () => {
+  links.value.push(newLink.value)
+  newLink.value = ''
+}
+
+const removeLink = (link: string) => {
+  const index = links.value.indexOf(link)
+  links.value.splice(index, 1)
+}
+
+const addTag = () => {
+  tags.value.push(newTag.value)
+  newTag.value = ''
+}
+
+const removeTag = (tag: string) => {
+  const index = tags.value.indexOf(tag)
+  tags.value.splice(index, 1)
+}
 </script>
 
 <template>
@@ -16,12 +46,14 @@ import AddButton from './AddButton.vue'
             <img src="../assets/icons/close.svg" alt="Fechar" />
           </button>
         </header>
+
         <div>
           <input
             type="text"
             class="w-full border-2 border-transparent focus:border-solid focus:border-cyan-500 rounded-2xl mb-3 p-3 bg-dark-700 placeholder:text-dark-500 duration-500"
             placeholder="Título da nota"
           />
+
           <textarea
             class="w-full border-2 border-transparent focus:border-solid focus:border-cyan-500 rounded-2xl p-3 bg-dark-700 resize-none placeholder:text-dark-500 duration-500"
             rows="3"
@@ -34,10 +66,12 @@ import AddButton from './AddButton.vue'
             <img src="../assets/icons/link.svg" alt="" />
             Links
           </h3>
+
           <ul class="flex flex-col gap-2 max-h-20 overflow-auto mb-3">
-            <NoteItem type="link" value="https://google.com" icon="close" />
+            <NoteItem v-for="link in links" :value="link" type="link" @remove="removeLink" />
           </ul>
-          <AddButton icon="add-link" placeholder="Novo link" />
+
+          <AddButton @add="addLink" v-model="newLink" icon="add-link" placeholder="Novo link" />
         </div>
 
         <div>
@@ -45,11 +79,14 @@ import AddButton from './AddButton.vue'
             <img src="../assets/icons/tag.svg" />
             Tags
           </h3>
+
           <ul class="flex gap-2 overflow-auto mb-2">
-            <NoteItem type="tag" value="vuejs" icon="close" />
+            <NoteItem v-for="tag in tags" :value="tag" type="tag" @remove="removeTag" />
           </ul>
-          <AddButton icon="add-tag" placeholder="Nova tag" />
+
+          <AddButton @add="addTag" v-model="newTag" icon="add-tag" placeholder="Novo tag" />
         </div>
+
         <button class="primary-button">Criar nota</button>
       </div>
     </div>
