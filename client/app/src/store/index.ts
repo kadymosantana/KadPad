@@ -2,7 +2,7 @@ import { reactive } from 'vue'
 import type { Store } from '../types'
 
 const store = reactive<Store>({
-  userAuthData: null,
+  authData: null,
   noteModalState: false,
   addNoteModalState: false
 })
