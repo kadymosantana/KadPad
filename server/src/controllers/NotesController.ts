@@ -5,7 +5,7 @@ import { Link, Note, Tag } from "../types";
 export default class NotesController {
   // Cadastrando nota (POST)
   async create(req: Request, res: Response) {
-    const { title, description, tags, links } = req.body;
+    const { title, description, links, tags } = req.body;
     const user_id = req.user!.id;
 
     // Recuperando id da nota
@@ -15,17 +15,20 @@ export default class NotesController {
       description,
     });
 
-    // Criando um novo objeto para cada tag e o inserindo na tabela "tags"
-    const tagsInsert: Tag[] = tags.map((name: string) => {
-      return { note_id, user_id, name };
-    });
-    await knex("tags").insert(tagsInsert);
-
     // Criando um novo objeto para cada link e o inserindo na tabela "links"
-    const linksInsert: Link[] = links.map((link: string) => {
-      return { note_id, url: link };
-    });
-    await knex("links").insert(linksInsert);
+    if (links.length) {
+      const linksInsert: Link[] = links.map((link: string) => {
+        return { note_id, url: link };
+      });
+      await knex("links").insert(linksInsert);
+    }
+    // Criando um novo objeto para cada tag e o inserindo na tabela "tags"
+    if (tags.length) {
+      const tagsInsert: Tag[] = tags.map((name: string) => {
+        return { note_id, user_id, name };
+      });
+      await knex("tags").insert(tagsInsert);
+    }
 
     res.json();
   }
