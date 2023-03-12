@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 
 import store from '../store'
@@ -8,6 +9,7 @@ import { api } from '@/services/api'
 import NoteItem from './NoteItem.vue'
 import AddButton from './AddButton.vue'
 
+const router = useRouter()
 const toast = useToast()
 
 const title = ref('')
@@ -41,25 +43,39 @@ const removeTag = (tag: string) => {
 
 const createNote = async () => {
   if (!title.value) return toast.error('O campo de título é obrigatório.')
+  if (newLink.value)
+    return toast.warning(
+      'Você deixou uma tag para adicionar. Clique no botão de adicionar ou deixe o campo vazio.'
+    )
+  if (newTag.value)
+    return toast.warning(
+      'Você deixou uma tag para adicionar. Clique no botão de adicionar ou deixe o campo vazio.'
+    )
   await api.post('/notes', {
     title: title.value,
     description: description.value,
     links: links.value,
     tags: tags.value
   })
+
+  title.value = ''
+  description.value = ''
+  links.value = []
+  tags.value = []
+
   toast.success('Nota criada com sucesso!')
 }
 </script>
 
 <template>
   <Transition name="modal">
-    <div v-if="store.addNoteModalState" class="modal-wrapper">
+    <div class="modal-wrapper">
       <div class="modal-container overflow-auto max-w-screen">
         <header
           class="flex items-center justify-between border-b border-solid border-dark-600 pb-4"
         >
           <h1 class="text-3xl font-light">Nova nota</h1>
-          <button @click="store.addNoteModalState = false" class="bg-[#ff00001a] p-2 rounded-xl">
+          <button @click="router.back()" class="bg-[#ff00001a] p-2 rounded-xl">
             <img src="../assets/icons/close.svg" alt="Fechar" />
           </button>
         </header>
