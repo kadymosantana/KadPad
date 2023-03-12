@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useToast } from 'vue-toastification'
 
 import store from '../store'
-import type { Tag } from '@/types'
+import { api } from '@/services/api'
 
 import NoteItem from './NoteItem.vue'
 import AddButton from './AddButton.vue'
+
+const toast = useToast()
+
+const title = ref('')
+const description = ref('')
 
 const newLink = ref('')
 const links = ref<string[]>([])
@@ -32,6 +38,17 @@ const removeTag = (tag: string) => {
   const index = tags.value.indexOf(tag)
   tags.value.splice(index, 1)
 }
+
+const createNote = async () => {
+  if (!title.value) return toast.error('O campo de título é obrigatório.')
+  await api.post('/notes', {
+    title: title.value,
+    description: description.value,
+    links: links.value,
+    tags: tags.value
+  })
+  toast.success('Nota criada com sucesso!')
+}
 </script>
 
 <template>
@@ -49,12 +66,14 @@ const removeTag = (tag: string) => {
 
         <div>
           <input
+            v-model="title"
             type="text"
             class="w-full border-2 border-transparent focus:border-solid focus:border-cyan-500 rounded-2xl mb-3 p-3 bg-dark-700 placeholder:text-dark-500 duration-500"
             placeholder="Título da nota"
           />
 
           <textarea
+            v-model="description"
             class="w-full border-2 border-transparent focus:border-solid focus:border-cyan-500 rounded-2xl p-3 bg-dark-700 resize-none placeholder:text-dark-500 duration-500"
             rows="3"
             placeholder="Descrição"
@@ -87,7 +106,7 @@ const removeTag = (tag: string) => {
           <AddButton @add="addTag" v-model="newTag" icon="add-tag" placeholder="Nova tag" />
         </div>
 
-        <button class="primary-button">Criar nota</button>
+        <button @click="createNote" class="primary-button">Criar nota</button>
       </div>
     </div>
   </Transition>
