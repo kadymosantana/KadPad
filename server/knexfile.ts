@@ -1,4 +1,6 @@
 import path from "path";
+import { Knex } from "knex";
+
 export default {
   development: {
     client: "sqlite3",
@@ -18,5 +20,5 @@ export default {
         "migrations"
       ),
     },
-  },
+  } as Knex.Config,
 };
