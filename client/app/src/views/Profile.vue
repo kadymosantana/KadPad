@@ -21,7 +21,6 @@ const avatarURL = computed(() => {
 })
 
 const avatar = computed(() => userData!.value.avatar)
-const avatarFile = ref<Blob | null>(null)
 
 const name = ref(userData.value.name)
 const email = ref(userData.value.email)
@@ -32,17 +31,16 @@ const updateUserAvatar = async (e) => {
   if (!e.target.files) return
   try {
     const file = e.target.files[0]
-    avatarFile.value = file
 
     const avatarPreview = URL.createObjectURL(file)
     avatar.value = avatarPreview
 
     const fileUploadForm = new FormData()
-    fileUploadForm.append('avatar', avatarFile.value!)
+    fileUploadForm.append('avatar', file)
 
     const updatedUser = await api.patch('/users/avatar', fileUploadForm)
-    store.authData!.user = updatedUser.data
 
+    store.authData!.user = updatedUser.data
     localStorage.setItem('@KadPad:user', JSON.stringify(updatedUser.data))
   } catch (error: any) {
     if (error.response) return toast.error(error.response.data.message)
