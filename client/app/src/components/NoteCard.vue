@@ -1,12 +1,18 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
+
 import store from '../store'
+
 import NoteModal from './NoteModal.vue'
 import Tag from './Tag.vue'
+
+const router = useRouter()
 </script>
 
 <template>
-  <li
-    @click="store.noteModalState = true"
+  <RouterLink
+    :to="{ name: 'Note' }"
+    tag="li"
     class="flex flex-col gap-3 bg-dark-700 rounded-3xl p-5 my-4 w-72 max-h-content shadow-md break-inside-avoid-column cursor-pointer duration-300 hover:-translate-y-3"
   >
     <h1 class="text-2xl font-semibold">Fundamentos do Vue.js</h1>
@@ -20,9 +26,13 @@ import Tag from './Tag.vue'
     </ul>
 
     <Teleport to="body">
-      <NoteModal />
+      <RouterView v-slot="{ Component }">
+        <transition name="modal">
+          <component :is="Component" />
+        </transition>
+      </RouterView>
     </Teleport>
-  </li>
+  </RouterLink>
 </template>
 
 <style scoped>
