@@ -1,18 +1,18 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
 import store from '../store'
 import Tag from './Tag.vue'
+
+const router = useRouter()
 </script>
 
 <template>
   <Transition name="modal">
-    <div v-if="store.noteModalState" class="modal-wrapper">
+    <div class="modal-wrapper">
       <div class="modal-container">
         <header class="flex justify-between pb-4">
           <h1 class="text-4xl font-bold">Fundamentos do Vue.js</h1>
-          <button
-            @click="store.noteModalState = false"
-            class="bg-[#ff00001a] p-2 rounded-xl self-start"
-          >
+          <button @click="router.back()" class="bg-[#ff00001a] p-2 rounded-xl self-start">
             <img src="../assets/icons/close.svg" alt="Fechar" />
           </button>
         </header>
