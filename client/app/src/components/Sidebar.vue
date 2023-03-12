@@ -17,7 +17,17 @@ const fetchTags = async () => {
   tags.value = tagsData.data
 }
 
-const selectedTag = ref<Tag | null>(null)
+const selectedTags = ref<string[]>([])
+const tagAlreadySelected = (tagName: string) => selectedTags.value.includes(tagName)
+
+const selectTag = (tagName: string) => {
+  if (tagAlreadySelected(tagName)) {
+    const index = selectedTags.value.indexOf(tagName)
+    selectedTags.value.splice(index, 1)
+  } else {
+    selectedTags.value.push(tagName)
+  }
+}
 </script>
 
 <template>
@@ -35,10 +45,12 @@ const selectedTag = ref<Tag | null>(null)
 
     <div class="self-center">
       <h3 class="text-xl mb-4 pb-2 border-b border-solid border-dark-600">Minhas tags</h3>
-      <ul class="flex flex-col border-b border-solid border-dark-600 max-h-96 overflow-auto pb-4">
+      <ul
+        class="flex flex-col gap-2 border-b border-solid border-dark-600 max-h-96 overflow-auto pb-4"
+      >
         <li
-          @click="selectedTag = null"
-          :class="{ 'bg-dark-800  rounded-xl ': !selectedTag }"
+          @click="selectedTags = []"
+          :class="{ 'bg-dark-800  rounded-xl ': !selectedTags.length }"
           class="flex items-center gap-4 p-2 cursor-pointer"
         >
           <img src="../assets/icons/hash.svg" />
@@ -46,10 +58,10 @@ const selectedTag = ref<Tag | null>(null)
         </li>
 
         <li
-          @click="selectedTag = tag"
+          @click="selectTag(tag.name)"
           v-for="tag in tags"
           :key="tag.id"
-          :class="{ 'bg-dark-800 rounded-xl ': selectedTag?.id === tag.id }"
+          :class="{ 'bg-dark-800 rounded-xl ': tagAlreadySelected(tag.name) }"
           class="flex items-center gap-4 p-2 cursor-pointer"
         >
           <img src="../assets/icons/hash.svg" />
