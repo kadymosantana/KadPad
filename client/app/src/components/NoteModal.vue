@@ -3,23 +3,30 @@ import type { Note } from '@/types'
 
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useToast } from 'vue-toastification'
 import { api } from '@/services/api'
-import store from '../store'
 
 import Tag from './Tag.vue'
 
 const router = useRouter()
 const route = useRoute()
-
-const note = ref<Note | null>(null)
+const toast = useToast()
 
 onMounted(() => {
   fetchNoteDetails()
 })
 
+const note = ref<Note | null>(null)
 const fetchNoteDetails = async () => {
   const noteDetails = await api.get(`/notes/${route.params.id}`)
   note.value = noteDetails.data
+}
+
+const activeDeleteButton = ref('delete')
+const deleteNote = async () => {
+  await api.delete(`/notes/${route.params.id}`)
+  toast.success('Nota excluída com sucesso!')
+  router.back()
 }
 </script>
 
@@ -29,7 +36,7 @@ const fetchNoteDetails = async () => {
       <div class="modal-container">
         <header class="flex justify-between pb-4">
           <h1 class="text-4xl font-bold">{{ note?.title }}</h1>
-          <button @click="router.back()" class="bg-[#ff00001a] p-2 rounded-xl self-start">
+          <button @click="router.back()" class="bg-[#ff00001a] min-w-max p-2 rounded-xl self-start">
             <img src="../assets/icons/close.svg" alt="Fechar" />
           </button>
         </header>
@@ -39,7 +46,7 @@ const fetchNoteDetails = async () => {
             <img src="../assets/icons/description.svg" />
             Descrição
           </h3>
-          <p>{{ note?.description }}</p>
+          <p class="max-h-48 overflow-auto">{{ note?.description }}</p>
         </div>
 
         <div>
@@ -69,6 +76,16 @@ const fetchNoteDetails = async () => {
           </ul>
           <p v-else class="text-gray-600">Nenhum link adicionado.</p>
         </div>
+        <button
+          v-if="activeDeleteButton === 'delete'"
+          @click="activeDeleteButton = 'confirm'"
+          class="bg-[#ff00001a] text-red-700 rounded-xl p-3"
+        >
+          Excluir nota
+        </button>
+        <button @click="deleteNote" v-else class="bg-[#fff7001a] text-yellow-600 rounded-xl p-3">
+          Confirmar exclusão
+        </button>
       </div>
     </div>
   </Transition>
