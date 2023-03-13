@@ -45,7 +45,7 @@ const selectTag = (tagName: string) => {
     <div class="self-center">
       <h3 class="text-xl mb-4 pb-2 border-b border-solid border-dark-600">Minhas tags</h3>
       <ul
-        class="flex flex-col gap-2 border-b border-solid border-dark-600 max-h-96 overflow-auto pb-4"
+        class="flex flex-col gap-2 border-b border-solid border-dark-600 max-h-60 overflow-auto pb-4"
       >
         <li
           @click="store.selectedTags = []"
