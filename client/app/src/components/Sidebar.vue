@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-
+import store from '@/store'
 import { api } from '@/services/api'
 
 import type { Tag } from '@/types'
@@ -17,15 +17,14 @@ const fetchTags = async () => {
   tags.value = tagsData.data
 }
 
-const selectedTags = ref<string[]>([])
-const tagAlreadySelected = (tagName: string) => selectedTags.value.includes(tagName)
+const tagAlreadySelected = (tagName: string) => store.selectedTags.includes(tagName)
 
 const selectTag = (tagName: string) => {
   if (tagAlreadySelected(tagName)) {
-    const index = selectedTags.value.indexOf(tagName)
-    selectedTags.value.splice(index, 1)
+    const index = store.selectedTags.indexOf(tagName)
+    store.selectedTags.splice(index, 1)
   } else {
-    selectedTags.value.push(tagName)
+    store.selectedTags.push(tagName)
   }
 }
 </script>
@@ -49,8 +48,8 @@ const selectTag = (tagName: string) => {
         class="flex flex-col gap-2 border-b border-solid border-dark-600 max-h-96 overflow-auto pb-4"
       >
         <li
-          @click="selectedTags = []"
-          :class="{ 'bg-dark-800  rounded-xl ': !selectedTags.length }"
+          @click="store.selectedTags = []"
+          :class="{ 'bg-dark-800  rounded-xl ': !store.selectedTags.length }"
           class="flex items-center gap-4 p-2 cursor-pointer"
         >
           <img src="../assets/icons/hash.svg" />
