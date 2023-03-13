@@ -14,7 +14,7 @@ const router = createRouter({
     { name: 'Login', path: '/', component: Login },
     { name: 'Home', path: '/home', component: Home },
     { name: 'Profile', path: '/profile', component: Profile },
-    { name: 'Note', path: '/note', component: NoteModal, meta: { transition: 'modal' } },
+    { name: 'Note', path: '/note/:id', component: NoteModal, meta: { transition: 'modal' } },
     { name: 'New Note', path: '/new-note', component: AddNoteModal, meta: { transition: 'modal' } }
   ]
 })
