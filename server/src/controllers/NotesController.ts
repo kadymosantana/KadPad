@@ -6,6 +6,7 @@ export default class NotesController {
   // Cadastrando nota (POST)
   async create(req: Request, res: Response) {
     const { title, description, links, tags } = req.body;
+
     const user_id = req.user!.id;
 
     // Recuperando id da nota
@@ -15,15 +16,16 @@ export default class NotesController {
       description,
     });
 
-    // Criando um novo objeto para cada link e o inserindo na tabela "links"
     if (links.length) {
+      // Criando um novo objeto para cada link e o inserindo na tabela "links"
       const linksInsert: Link[] = links.map((link: string) => {
         return { note_id, url: link };
       });
       await knex("links").insert(linksInsert);
     }
-    // Criando um novo objeto para cada tag e o inserindo na tabela "tags"
+
     if (tags.length) {
+      // Criando um novo objeto para cada tag e o inserindo na tabela "tags"
       const tagsInsert: Tag[] = tags.map((name: string) => {
         return { note_id, user_id, name };
       });
@@ -58,8 +60,8 @@ export default class NotesController {
 
   // Listando notas
   async index(req: Request, res: Response) {
-    const { user_id, title, tags } = req.query;
-
+    const user_id = req.user!.id;
+    const { title, tags } = req.query;
     let notes: Note[];
 
     if (tags && typeof tags === "string") {
@@ -67,16 +69,23 @@ export default class NotesController {
       const filterTags = tags.split(",").map((tag) => tag); // ["node", "express"]
 
       notes = await knex<Tag>("tags")
-        .select(["notes.id", "notes.user_id", "notes.title"])
+        .select([
+          "notes.id",
+          "notes.user_id",
+          "notes.title",
+          "notes.description",
+          "notes.updated_at",
+        ])
         .where("notes.user_id", user_id)
-        .whereLike("notes.title", `%${title}%`)
-        .whereIn("name", filterTags)
-        .innerJoin("notes", "notes.id", "tags.note_id");
+        .whereLike("title", `%${title}%`)
+        .whereIn("tags.name", filterTags)
+        .innerJoin("notes", "notes.id", "tags.note_id")
+        .orderBy("updated_at", "desc");
     } else {
       notes = await knex<Note>("notes")
         .where("user_id", user_id)
         .whereLike("title", `%${title}%`)
-        .orderBy("updated_at");
+        .orderBy("updated_at", "desc");
     }
 
     const userTags = await knex<Tag>("tags").where("user_id", user_id);
