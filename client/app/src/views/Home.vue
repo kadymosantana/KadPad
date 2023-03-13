@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import Sidebar from '@/components/Sidebar.vue'
 import NotesContainer from '@/components/NotesContainer.vue'
-
-import store from '../store'
 </script>
 
 <template>

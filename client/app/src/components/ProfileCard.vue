@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import store from '@/store'
+
 import { api } from '@/services/api'
+import store from '@/store'
 
 const userData = store.authData!.user
 

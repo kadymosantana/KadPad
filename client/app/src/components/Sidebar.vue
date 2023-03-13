@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import store from '@/store'
-import { api } from '@/services/api'
-
 import type { Tag } from '@/types'
+
+import { ref, onMounted } from 'vue'
+
+import { api } from '@/services/api'
+import store from '@/store'
 
 import ProfileCard from './ProfileCard.vue'
 

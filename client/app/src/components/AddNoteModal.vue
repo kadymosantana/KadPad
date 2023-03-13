@@ -3,7 +3,6 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 
-import store from '../store'
 import { api } from '@/services/api'
 
 import NoteItem from './NoteItem.vue'

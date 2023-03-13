@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Tag from './Tag.vue'
-
 import type { Note } from '@/types'
+
+import Tag from './Tag.vue'
 
 const props = defineProps<{
   note: Note

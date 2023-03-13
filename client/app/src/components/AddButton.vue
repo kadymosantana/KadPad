@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const props = defineProps({
-  modelValue: { type: String },
+  modelValue: { type: String, required: true },
   icon: { type: String, required: true },
   placeholder: { type: String, required: true }
 })
@@ -13,7 +13,7 @@ const emits = defineEmits(['add', 'update:modelValue'])
   >
     <input
       :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
+      @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
       class="bg-transparent"
       :placeholder="placeholder"
     />

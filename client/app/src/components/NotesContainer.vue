@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+
 import store from '@/store'
 
 import NotesList from './NotesList.vue'

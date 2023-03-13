@@ -31,10 +31,6 @@ const updateUserAvatar = async (e) => {
   if (!e.target.files) return
   try {
     const file = e.target.files[0]
-
-    const avatarPreview = URL.createObjectURL(file)
-    avatar.value = avatarPreview
-
     const fileUploadForm = new FormData()
     fileUploadForm.append('avatar', file)
 
@@ -42,6 +38,8 @@ const updateUserAvatar = async (e) => {
 
     store.authData!.user = updatedUser.data
     localStorage.setItem('@KadPad:user', JSON.stringify(updatedUser.data))
+
+    toast.success('Avatar atualizado com sucesso!')
   } catch (error: any) {
     if (error.response) return toast.error(error.response.data.message)
     else return toast.error('Não foi possível atualizar o avatar.')
@@ -71,10 +69,9 @@ const updateUserData = async () => {
 }
 
 const signOut = () => {
+  store.authData = null
   localStorage.removeItem('@KadPad:user')
   localStorage.removeItem('@KadPad:token')
-
-  store.authData = null
 
   router.push('/')
 }

@@ -1,12 +1,11 @@
+import type { Store } from '@/types'
+
 import { reactive } from 'vue'
 
-const store = reactive({
+const store = reactive<Store>({
   authData: null,
   searchedNote: '',
-  selectedTags: [],
-
-  noteModalState: false,
-  addNoteModalState: false
+  selectedTags: []
 })
 
 export default store

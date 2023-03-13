@@ -10,10 +10,9 @@ import InputContainer from '@/components/InputContainer.vue'
 import LoginTypeButton from '@/components/LoginTypeButton.vue'
 
 const router = useRouter()
+const toast = useToast()
 
 const activeLoginType = ref('signIn')
-
-const toast = useToast()
 
 const name = ref('')
 const email = ref('')
@@ -45,11 +44,11 @@ const signIn = async () => {
     })
     const { user, token } = data.data
 
-    api.defaults.headers.common['Authorization'] = `Bearer ${token}`
     store.authData = { user, token }
-
     localStorage.setItem('@KadPad:user', JSON.stringify(user))
     localStorage.setItem('@KadPad:token', token)
+
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
     router.push('/home')
   } catch (error: any) {

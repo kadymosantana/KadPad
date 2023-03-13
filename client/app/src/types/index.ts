@@ -32,3 +32,12 @@ export interface Tag {
   user_id: number
   name: string
 }
+
+export interface Store {
+  authData: {
+    user: User
+    token: string
+  } | null
+  searchedNote: string
+  selectedTags: string[]
+}

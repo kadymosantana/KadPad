@@ -4,6 +4,7 @@ import type { Note } from '@/types'
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useToast } from 'vue-toastification'
+
 import { api } from '@/services/api'
 
 import Tag from './Tag.vue'

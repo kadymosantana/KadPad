@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { ref, watchEffect, onMounted } from 'vue'
+import type { Note } from '@/types'
+
+import { ref, watchEffect } from 'vue'
+
 import { api } from '@/services/api'
 import store from '@/store'
 
 import NoteCard from './NoteCard.vue'
-import type { Note } from '@/types'
 
 const notes = ref<Note[]>([])
 
@@ -31,7 +33,9 @@ watchEffect(async () => {
     </header>
 
     <TransitionGroup tag="ul" name="list" class="pt-8 columns-3">
-      <NoteCard v-for="note in notes" :key="note.id" :note="note"></NoteCard>
+      <li v-for="note in notes" :key="note.id">
+        <NoteCard :note="note"></NoteCard>
+      </li>
     </TransitionGroup>
 
     <Teleport to="body">
@@ -61,5 +65,9 @@ watchEffect(async () => {
    animations can be calculated correctly. */
 .list-leave-active {
   position: absolute;
+}
+
+ul li:first-child a {
+  margin-top: 0;
 }
 </style>
