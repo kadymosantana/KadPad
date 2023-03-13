@@ -1,11 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, watchEffect, onMounted } from 'vue'
+import { api } from '@/services/api'
+import store from '@/store'
 
-import AddNoteModal from './AddNoteModal.vue'
 import NoteCard from './NoteCard.vue'
+import type { User } from '@/types'
 
-const router = useRouter()
+const notes = ref<User[]>([])
+
+watchEffect(async () => {
+  const fetchedNotes = await api.get(
+    `/notes?title=${store.searchedNote}&tags=${store.selectedTags}`
+  )
+  notes.value = fetchedNotes.data
+})
 </script>
 
 <template>
@@ -21,9 +29,10 @@ const router = useRouter()
         <span class="text-dark-800 text-lg">Nova nota</span>
       </RouterLink>
     </header>
-    <ul class="pt-8 columns-3">
-      <NoteCard> Uma linha. </NoteCard>
-    </ul>
+
+    <TransitionGroup tag="ul" name="list" class="pt-8 columns-3">
+      <NoteCard v-for="note in notes" :key="note.id" :note="note"></NoteCard>
+    </TransitionGroup>
 
     <Teleport to="body">
       <RouterView v-slot="{ Component }">
@@ -34,3 +43,23 @@ const router = useRouter()
     </Teleport>
   </section>
 </template>
+
+<style scoped>
+.list-move, /* apply transition to moving elements */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.4s ease-in-out;
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+/* ensure leaving items are taken out of layout flow so that moving
+   animations can be calculated correctly. */
+.list-leave-active {
+  position: absolute;
+}
+</style>
