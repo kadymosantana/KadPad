@@ -18,4 +18,14 @@
   -webkit-transform: scale(0);
   transform: scale(0);
 }
+
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 3px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #06b6d4;
+  border-radius: 50px;
+}
 </style>
