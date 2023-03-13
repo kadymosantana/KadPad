@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-
-import store from '../store'
-
-import NoteModal from './NoteModal.vue'
 import Tag from './Tag.vue'
 
-const router = useRouter()
+import type { Note } from '@/types'
+
+const props = defineProps<{
+  note: Note
+}>()
 </script>
 
 <template>
@@ -15,14 +14,10 @@ const router = useRouter()
     tag="li"
     class="flex flex-col gap-3 bg-dark-700 rounded-3xl p-5 my-4 w-72 max-h-content shadow-md break-inside-avoid-column cursor-pointer duration-300 hover:-translate-y-3"
   >
-    <h1 class="text-2xl font-semibold">Fundamentos do Vue.js</h1>
-    <p class="text-ellipsis">
-      <slot></slot>
-    </p>
-    <ul class="flex gap-2">
-      <Tag />
-      <Tag />
-      <Tag />
+    <h1 class="text-2xl font-semibold">{{ note.title }}</h1>
+    <p class="text-ellipsis">{{ note.description }}</p>
+    <ul v-if="note.tags.length" class="flex flex-wrap gap-2">
+      <Tag v-for="tag in note.tags" :key="tag.id" :name="tag.name" />
     </ul>
 
     <Teleport to="body">
