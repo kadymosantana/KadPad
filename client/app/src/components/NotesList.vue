@@ -4,9 +4,9 @@ import { api } from '@/services/api'
 import store from '@/store'
 
 import NoteCard from './NoteCard.vue'
-import type { User } from '@/types'
+import type { Note } from '@/types'
 
-const notes = ref<User[]>([])
+const notes = ref<Note[]>([])
 
 watchEffect(async () => {
   const fetchedNotes = await api.get(
