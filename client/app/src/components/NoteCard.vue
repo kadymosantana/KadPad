@@ -10,7 +10,7 @@ const props = defineProps<{
 
 <template>
   <RouterLink
-    :to="{ name: 'Note' }"
+    :to="{ name: 'Note', params: { id: note.id } }"
     tag="li"
     class="flex flex-col gap-3 bg-dark-700 rounded-3xl p-5 my-4 w-72 max-h-content shadow-md break-inside-avoid-column cursor-pointer duration-300 hover:-translate-y-3"
   >
