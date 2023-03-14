@@ -2,7 +2,6 @@ import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 
 import NoteCard from '../NoteCard.vue'
-import NoteModal from '../NoteModal.vue'
 
 describe('NoteCard', () => {
   const wrapper = mount(NoteCard, {
@@ -16,12 +15,12 @@ describe('NoteCard', () => {
     }
   })
 
-  it('O card exibe as informações da nota passada como prop', async () => {
+  it('The card displays the note information passed as a prop', async () => {
     expect(wrapper.html()).toContain('Fundamentos do Vue.js')
     expect(wrapper.html()).toContain('Entendendo o framework progressivo de JavaScript')
   })
 
-  it('O card não exibe a lista de tags caso ela não tenha nenhum elemento', async () => {
+  it('Card does not display tag list if it has no elements', async () => {
     await wrapper.setProps({
       note: {
         id: 1,
