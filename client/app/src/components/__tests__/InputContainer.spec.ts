@@ -34,7 +34,7 @@ describe('InputContainer', () => {
     })
 
     it("The component renders the placeholder text in the input according to the passed 'placeholder' prop", () => {
-      expect(input.attributes('placeholder')).toMatch(wrapper.props('placeholder'))
+      expect(input.attributes('placeholder')).toEqual(wrapper.props('placeholder'))
     })
 
     it("The component adds the 'px-6 py-4' styling classes if the value of the 'size' prop passed is 'large'", async () => {

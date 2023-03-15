@@ -8,6 +8,6 @@ describe('Tag', () => {
 
   it('A tag exibe corretamente o nome passado como prop', async () => {
     await wrapper.setProps({ name: 'vuejs' })
-    expect(wrapper.html()).toContain('vuejs')
+    expect(wrapper.text()).toEqual('vuejs')
   })
 })
