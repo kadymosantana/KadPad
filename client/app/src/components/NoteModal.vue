@@ -80,11 +80,15 @@ const deleteNote = async () => {
         <button
           v-if="activeDeleteButton === 'delete'"
           @click="activeDeleteButton = 'confirm'"
-          class="bg-[#ff00001a] text-red-700 rounded-xl p-3"
+          class="delete bg-[#ff00001a] text-red-700 rounded-xl p-3"
         >
           Excluir nota
         </button>
-        <button @click="deleteNote" v-else class="bg-[#fff7001a] text-yellow-600 rounded-xl p-3">
+        <button
+          @click="deleteNote"
+          v-else
+          class="confirm bg-[#fff7001a] text-yellow-600 rounded-xl p-3"
+        >
           Confirmar exclusão
         </button>
       </div>
