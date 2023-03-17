@@ -40,8 +40,8 @@ describe('Sidebar', async () => {
     })
 
     it('Tags are displayed in the interface', () => {
-      expect(wrapper.text().includes('vuejs')).toBe(true)
-      expect(wrapper.text().includes('javascript')).toBe(true)
+      expect(wrapper.text()).toContain('vuejs')
+      expect(wrapper.text()).toContain('javascript')
     })
   })
 
