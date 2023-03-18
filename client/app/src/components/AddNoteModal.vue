@@ -101,7 +101,7 @@ const createNote = async () => {
             Links
           </h3>
 
-          <ul v-if="links.length" class="flex flex-col gap-2 max-h-20 overflow-auto mb-3">
+          <ul v-if="links.length" class="links flex flex-col gap-2 max-h-20 overflow-auto mb-3">
             <NoteItem v-for="link in links" :value="link" type="link" @remove="removeLink" />
           </ul>
 
@@ -114,7 +114,7 @@ const createNote = async () => {
             Tags
           </h3>
 
-          <ul v-if="tags.length" class="flex gap-2 overflow-auto mb-2">
+          <ul v-if="tags.length" class="tags flex gap-2 overflow-auto mb-2">
             <NoteItem v-for="tag in tags" :value="tag" type="tag" @remove="removeTag" />
           </ul>
 
