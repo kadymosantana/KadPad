@@ -48,10 +48,12 @@ describe('Sidebar', async () => {
   describe('Status of selected tags', () => {
     const vuejsTag = wrapper.findAll('li')[1]
 
-    it('When clicked, the tag is added to the list of selected tags', async () => {
+    it('When clicked, the tag is added or removed to the list of selected tags', async () => {
       await vuejsTag.trigger('click')
       expect(store.selectedTags.includes('vuejs')).toBe(true)
-      wrapper.unmount()
+
+      await vuejsTag.trigger('click')
+      expect(store.selectedTags.includes('vuejs')).toBe(false)
     })
 
     it('When clicked, the tag receives styling classes', async () => {
