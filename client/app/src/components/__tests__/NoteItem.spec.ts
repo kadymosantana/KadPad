@@ -47,7 +47,7 @@ describe('NoteItem', () => {
     })
 
     it("The 'remove' event is emitted passing the 'value' prop as an argument", () => {
-      expect(wrapper.emitted('remove')![0]).toEqual(['https://vuejs.org'])
+      expect(wrapper.emitted('remove')![0]).toEqual([wrapper.props('value')])
     })
   })
 })
