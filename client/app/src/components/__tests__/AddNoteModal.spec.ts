@@ -3,13 +3,13 @@ import { shallowMount } from '@vue/test-utils'
 
 import AddNoteModal from '@/components/AddNoteModal.vue'
 import NoteItem from '@/components/NoteItem.vue'
-import AddButton from '@/components/AddButton.vue'
+import ItemInput from '@/components/ItemInput.vue'
 
 const wrapper = shallowMount(AddNoteModal)
 
 describe('AddNoteModal', () => {
   describe('Links list', () => {
-    const addLinkButton = wrapper.findAllComponents(AddButton)[0]
+    const addLinkButton = wrapper.findAllComponents(ItemInput)[0]
 
     it('Link list is not rendered if there are no links', () => {
       wrapper.vm.links = []
@@ -31,7 +31,7 @@ describe('AddNoteModal', () => {
   })
 
   describe('Tags list', () => {
-    const addTagButton = wrapper.findAllComponents(AddButton)[1]
+    const addTagButton = wrapper.findAllComponents(ItemInput)[1]
 
     it('Tag list is not rendered if there are no tags', () => {
       wrapper.vm.tags = []

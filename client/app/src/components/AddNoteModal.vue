@@ -6,7 +6,7 @@ import { useToast } from 'vue-toastification'
 import { api } from '@/services/api'
 
 import NoteItem from './NoteItem.vue'
-import AddButton from './AddButton.vue'
+import ItemInput from './ItemInput.vue'
 
 const router = useRouter()
 const toast = useToast()
@@ -105,7 +105,7 @@ const createNote = async () => {
             <NoteItem v-for="link in links" :value="link" type="link" @remove="removeLink" />
           </ul>
 
-          <AddButton @add="addLink" v-model="newLink" icon="add-link" placeholder="Novo link" />
+          <ItemInput @add="addLink" v-model="newLink" icon="add-link" placeholder="Novo link" />
         </div>
 
         <div>
@@ -118,7 +118,7 @@ const createNote = async () => {
             <NoteItem v-for="tag in tags" :value="tag" type="tag" @remove="removeTag" />
           </ul>
 
-          <AddButton @add="addTag" v-model="newTag" icon="add-tag" placeholder="Nova tag" />
+          <ItemInput @add="addTag" v-model="newTag" icon="add-tag" placeholder="Nova tag" />
         </div>
 
         <button @click="createNote" class="primary-button">Criar nota</button>
