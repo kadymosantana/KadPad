@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 
 import NoteItem from '@/components/NoteItem.vue'
 
-const wrapper = mount(NoteItem, {
+const wrapper = shallowMount(NoteItem, {
   props: {
     type: 'link',
     value: 'https://vuejs.org'

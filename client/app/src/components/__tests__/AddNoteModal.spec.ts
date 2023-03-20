@@ -1,17 +1,16 @@
 import { describe, it, expect, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 
 import AddNoteModal from '@/components/AddNoteModal.vue'
 import NoteItem from '@/components/NoteItem.vue'
 import AddButton from '@/components/AddButton.vue'
 
-const wrapper = mount(AddNoteModal)
+const wrapper = shallowMount(AddNoteModal)
 
 describe('AddNoteModal', () => {
-  const addLinkButton = wrapper.findAllComponents(AddButton)[0]
-  const addTagButton = wrapper.findAllComponents(AddButton)[1]
-
   describe('Links list', () => {
+    const addLinkButton = wrapper.findAllComponents(AddButton)[0]
+
     it('Link list is not rendered if there are no links', () => {
       wrapper.vm.links = []
       expect(wrapper.find('.links').exists()).toBe(false)
@@ -32,6 +31,8 @@ describe('AddNoteModal', () => {
   })
 
   describe('Tags list', () => {
+    const addTagButton = wrapper.findAllComponents(AddButton)[1]
+
     it('Tag list is not rendered if there are no tags', () => {
       wrapper.vm.tags = []
       expect(wrapper.find('.tags').exists()).toBe(false)
