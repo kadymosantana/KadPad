@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 
-import AddButton from '@/components/AddButton.vue'
+import ItemInput from '@/components/ItemInput.vue'
 
-const wrapper = shallowMount(AddButton, {
+const wrapper = shallowMount(ItemInput, {
   props: {
     modelValue: 'initial text',
     'onUpdate:modelValue': (e: Event) => wrapper.setProps({ modelValue: e }),
@@ -12,7 +12,7 @@ const wrapper = shallowMount(AddButton, {
   }
 })
 
-describe('AddButton', () => {
+describe('ItemInput', () => {
   const input = wrapper.find('input')
 
   describe('v-model', () => {
@@ -39,10 +39,10 @@ describe('AddButton', () => {
   })
 
   describe('Add button', () => {
-    const addButton = wrapper.find('button')
+    const ItemInput = wrapper.find('button')
 
     it("The component emits the 'add' event when the add item button is clicked", async () => {
-      await addButton.trigger('click')
+      await ItemInput.trigger('click')
       expect(wrapper.emitted()).toHaveProperty('add')
     })
   })
