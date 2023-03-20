@@ -1,7 +1,6 @@
 import type { Note } from '@/types/index'
 
-import { useRouter } from 'vue-router'
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import MockAdapter from 'axios-mock-adapter'
 
@@ -10,8 +9,6 @@ import store from '@/store'
 
 import NoteModal from '@/components/NoteModal.vue'
 import Tag from '@/components/Tag.vue'
-
-const router = useRouter()
 
 const wrapper = mount(NoteModal)
 
@@ -64,13 +61,13 @@ describe('NoteModal', async () => {
     })
 
     it('Title, description, tags and links information are displayed on the interface', () => {
-      expect(wrapper.text().includes(mockData.title)).toBe(true)
-      expect(wrapper.text().includes(mockData.description)).toBe(true)
+      expect(wrapper.text()).toContain(mockData.title)
+      expect(wrapper.text()).toContain(mockData.description)
 
-      expect(wrapper.text().includes(mockData.tags[0].name)).toBe(true)
-      expect(wrapper.text().includes(mockData.tags[1].name)).toBe(true)
+      expect(wrapper.text()).toContain(mockData.tags[0].name)
+      expect(wrapper.text()).toContain(mockData.tags[1].name)
 
-      expect(wrapper.text().includes(mockData.links[0].url)).toBe(true)
+      expect(wrapper.text()).toContain(mockData.links[0].url)
     })
 
     it("Checking the 'name' prop value passed to the Tag component", () => {
