@@ -2,9 +2,9 @@
 const props = defineProps({
   activeLoginType: { type: String, required: true },
   type: { type: String, required: true }
-})
+});
 
-const emits = defineEmits(['change-login-type'])
+const emits = defineEmits(["change-login-type"]);
 </script>
 
 <template>
@@ -19,7 +19,7 @@ const emits = defineEmits(['change-login-type'])
 
 <style scoped>
 .active::after {
-  content: '';
+  content: "";
   width: 100%;
   height: 5px;
   background-color: #06b6d4;

@@ -1,22 +1,22 @@
-@import './global.css';
+@import "./global.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer components {
   .subtitle {
-    @apply flex gap-3 items-center text-xl pb-3 border-b border-dark-600 border-solid mb-3;
+    @apply mb-3 flex items-center gap-3 border-b border-solid border-dark-600 pb-3 text-xl;
   }
 
   .modal-wrapper {
-    @apply fixed w-screen h-screen flex top-0 left-0 justify-center items-center z-10 backdrop-blur-sm bg-[#00000090] duration-300;
+    @apply fixed top-0 left-0 z-10 flex h-screen w-screen items-center justify-center bg-[#00000090] backdrop-blur-sm duration-300;
   }
 
   .modal-container {
-    @apply flex flex-col gap-6 tracking-tight bg-dark-800 w-[480px] max-h-max p-6 rounded-3xl shadow-lg duration-300 ease-in-out;
+    @apply flex max-h-max w-[480px] flex-col gap-6 rounded-3xl bg-dark-800 p-6 tracking-tight shadow-lg duration-300 ease-in-out;
   }
 
   .primary-button {
-    @apply w-full bg-cyan-500 hover:bg-cyan-600 rounded-xl text-dark-800 p-3 duration-500;
+    @apply w-full rounded-xl bg-cyan-500 p-3 text-dark-800 duration-500 hover:bg-cyan-600;
   }
 }

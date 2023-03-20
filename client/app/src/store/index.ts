@@ -1,11 +1,11 @@
-import type { Store } from '@/types'
+import type { Store } from "@/types";
 
-import { reactive } from 'vue'
+import { reactive } from "vue";
 
 const store = reactive<Store>({
   authData: null,
-  searchedNote: '',
+  searchedNote: "",
   selectedTags: []
-})
+});
 
-export default store
+export default store;

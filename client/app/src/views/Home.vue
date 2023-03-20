@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import Sidebar from '@/components/Sidebar.vue'
-import NotesContainer from '@/components/NotesContainer.vue'
+import Sidebar from "@/components/Sidebar.vue";
+import NotesContainer from "@/components/NotesContainer.vue";
 </script>
 
 <template>
-  <div class="tracking-tight grid grid-cols-[auto_1fr] w-screen min-h-screen">
+  <div class="grid min-h-screen w-screen grid-cols-[auto_1fr] tracking-tight">
     <Sidebar />
     <NotesContainer />
   </div>

@@ -1,80 +1,82 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useToast } from 'vue-toastification'
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
 
-import { api } from '@/services/api'
+import { api } from "@/services/api";
 
-import NoteItem from './NoteItem.vue'
-import ItemInput from './ItemInput.vue'
+import NoteItem from "./NoteItem.vue";
+import ItemInput from "./ItemInput.vue";
 
-const router = useRouter()
-const toast = useToast()
+const router = useRouter();
+const toast = useToast();
 
-const title = ref('')
-const description = ref('')
+const title = ref("");
+const description = ref("");
 
-const newLink = ref('')
-const links = ref<string[]>([])
+const newLink = ref("");
+const links = ref<string[]>([]);
 
-const newTag = ref('')
-const tags = ref<string[]>([])
+const newTag = ref("");
+const tags = ref<string[]>([]);
 
 const addLink = () => {
-  links.value.push(newLink.value)
-  newLink.value = ''
-}
+  links.value.push(newLink.value);
+  newLink.value = "";
+};
 
 const removeLink = (link: string) => {
-  const index = links.value.indexOf(link)
-  links.value.splice(index, 1)
-}
+  const index = links.value.indexOf(link);
+  links.value.splice(index, 1);
+};
 
 const addTag = () => {
-  tags.value.push(newTag.value)
-  newTag.value = ''
-}
+  tags.value.push(newTag.value);
+  newTag.value = "";
+};
 
 const removeTag = (tag: string) => {
-  const index = tags.value.indexOf(tag)
-  tags.value.splice(index, 1)
-}
+  const index = tags.value.indexOf(tag);
+  tags.value.splice(index, 1);
+};
 
 const createNote = async () => {
-  if (!title.value) return toast.error('O campo de título é obrigatório.')
+  if (!title.value) return toast.error("O campo de título é obrigatório.");
   if (newLink.value)
     return toast.warning(
-      'Você deixou uma tag para adicionar. Clique no botão de adicionar ou deixe o campo vazio.'
-    )
+      "Você deixou um link para adicionar. Clique no botão de adicionar ou deixe o campo vazio."
+    );
+
   if (newTag.value)
     return toast.warning(
-      'Você deixou uma tag para adicionar. Clique no botão de adicionar ou deixe o campo vazio.'
-    )
-  await api.post('/notes', {
+      "Você deixou uma tag para adicionar. Clique no botão de adicionar ou deixe o campo vazio."
+    );
+
+  await api.post("/notes", {
     title: title.value,
     description: description.value,
     links: links.value,
     tags: tags.value
-  })
+  });
 
-  title.value = ''
-  description.value = ''
-  links.value = []
-  tags.value = []
+  title.value = "";
+  description.value = "";
+  links.value = [];
+  tags.value = [];
 
-  toast.success('Nota criada com sucesso!')
-}
+  toast.success("Nota criada com sucesso!");
+};
 </script>
 
 <template>
   <Transition name="modal">
     <div class="modal-wrapper">
-      <div class="modal-container overflow-auto max-w-screen">
+      <div class="modal-container max-w-screen overflow-auto">
         <header
           class="flex items-center justify-between border-b border-solid border-dark-600 pb-4"
         >
           <h1 class="text-3xl font-light">Nova nota</h1>
-          <button @click="router.back()" class="bg-[#ff00001a] p-2 rounded-xl">
+          <button @click="router.back()" class="rounded-xl bg-[#ff00001a] p-2">
             <img src="../assets/icons/close.svg" alt="Fechar" />
           </button>
         </header>
@@ -83,13 +85,13 @@ const createNote = async () => {
           <input
             v-model="title"
             type="text"
-            class="w-full border-2 border-transparent focus:border-solid focus:border-cyan-500 rounded-2xl mb-3 p-3 bg-dark-700 placeholder:text-dark-500 duration-500"
+            class="mb-3 w-full rounded-2xl border-2 border-transparent bg-dark-700 p-3 duration-500 placeholder:text-dark-500 focus:border-solid focus:border-cyan-500"
             placeholder="Título da nota"
           />
 
           <textarea
             v-model="description"
-            class="w-full border-2 border-transparent focus:border-solid focus:border-cyan-500 rounded-2xl p-3 bg-dark-700 resize-none placeholder:text-dark-500 duration-500"
+            class="w-full resize-none rounded-2xl border-2 border-transparent bg-dark-700 p-3 duration-500 placeholder:text-dark-500 focus:border-solid focus:border-cyan-500"
             rows="3"
             placeholder="Descrição"
           ></textarea>
@@ -101,7 +103,7 @@ const createNote = async () => {
             Links
           </h3>
 
-          <ul v-if="links.length" class="links flex flex-col gap-2 max-h-20 overflow-auto mb-3">
+          <ul v-if="links.length" class="links mb-3 flex max-h-20 flex-col gap-2 overflow-auto">
             <NoteItem v-for="link in links" :value="link" type="link" @remove="removeLink" />
           </ul>
 
@@ -114,7 +116,7 @@ const createNote = async () => {
             Tags
           </h3>
 
-          <ul v-if="tags.length" class="tags flex gap-2 overflow-auto mb-2">
+          <ul v-if="tags.length" class="tags mb-2 flex gap-2 overflow-auto">
             <NoteItem v-for="tag in tags" :value="tag" type="tag" @remove="removeTag" />
           </ul>
 

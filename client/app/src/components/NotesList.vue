@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import type { Note } from '@/types'
+import type { Note } from "@/types";
 
-import { ref, watchEffect } from 'vue'
+import { ref, watchEffect } from "vue";
 
-import { api } from '@/services/api'
-import store from '@/store'
+import { api } from "@/services/api";
+import store from "@/store";
 
-import NoteCard from './NoteCard.vue'
+import NoteCard from "./NoteCard.vue";
 
-const notes = ref<Note[]>([])
+const notes = ref<Note[]>([]);
 
 watchEffect(async () => {
   const fetchedNotes = await api.get(
     `/notes?title=${store.searchedNote}&tags=${store.selectedTags}`
-  )
-  notes.value = fetchedNotes.data
-})
+  );
+  notes.value = fetchedNotes.data;
+});
 </script>
 
 <template>
@@ -25,25 +25,21 @@ watchEffect(async () => {
       <RouterLink
         :to="{ name: 'New Note' }"
         tag="button"
-        class="flex gap-3 items-center bg-cyan-500 hover:bg-cyan-600 p-2 rounded-xl duration-500"
+        class="flex items-center gap-3 rounded-xl bg-cyan-500 p-2 duration-500 hover:bg-cyan-600"
       >
         <img src="../assets/icons/add.svg" />
-        <span class="text-dark-800 text-lg">Nova nota</span>
+        <span class="text-lg text-dark-800">Nova nota</span>
       </RouterLink>
     </header>
 
-    <TransitionGroup tag="ul" name="list" class="pt-8 columns-3">
-      <li v-for="note in notes" :key="note.id">
+    <TransitionGroup tag="ul" name="list" class="notes columns-3 pt-8">
+      <li class="note" v-for="note in notes" :key="note.id">
         <NoteCard :note="note"></NoteCard>
       </li>
     </TransitionGroup>
 
     <Teleport to="body">
-      <RouterView v-slot="{ Component }">
-        <transition name="modal">
-          <component :is="Component" />
-        </transition>
-      </RouterView>
+      <RouterView />
     </Teleport>
   </section>
 </template>

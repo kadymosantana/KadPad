@@ -1,101 +1,101 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { useToast } from 'vue-toastification'
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
 
-import store from '@/store'
-import { api } from '@/services/api'
+import store from "@/store";
+import { api } from "@/services/api";
 
-import InputContainer from '@/components/InputContainer.vue'
+import InputContainer from "@/components/InputContainer.vue";
 
-const router = useRouter()
-const toast = useToast()
+const router = useRouter();
+const toast = useToast();
 
-const userData = computed(() => store.authData!.user)
+const userData = computed(() => store.authData!.user);
 const avatarURL = computed(() => {
   if (userData.value.avatar) {
-    return `${api.defaults.baseURL}/files/${userData.value.avatar}`
+    return `${api.defaults.baseURL}/files/${userData.value.avatar}`;
   } else {
-    return 'src/assets/icons/user.svg'
+    return "src/assets/icons/user.svg";
   }
-})
+});
 
-const avatar = computed(() => userData!.value.avatar)
+const avatar = computed(() => userData!.value.avatar);
 
-const name = ref(userData.value.name)
-const email = ref(userData.value.email)
-const oldPassword = ref('')
-const newPassword = ref('')
+const name = ref(userData.value.name);
+const email = ref(userData.value.email);
+const oldPassword = ref("");
+const newPassword = ref("");
 
 const updateUserAvatar = async (e) => {
-  if (!e.target.files) return
+  if (!e.target.files) return;
   try {
-    const file = e.target.files[0]
-    const fileUploadForm = new FormData()
-    fileUploadForm.append('avatar', file)
+    const file = e.target.files[0];
+    const fileUploadForm = new FormData();
+    fileUploadForm.append("avatar", file);
 
-    const updatedUser = await api.patch('/users/avatar', fileUploadForm)
+    const updatedUser = await api.patch("/users/avatar", fileUploadForm);
 
-    store.authData!.user = updatedUser.data
-    localStorage.setItem('@KadPad:user', JSON.stringify(updatedUser.data))
+    store.authData!.user = updatedUser.data;
+    localStorage.setItem("@KadPad:user", JSON.stringify(updatedUser.data));
 
-    toast.success('Avatar atualizado com sucesso!')
+    toast.success("Avatar atualizado com sucesso!");
   } catch (error: any) {
-    if (error.response) return toast.error(error.response.data.message)
-    else return toast.error('Não foi possível atualizar o avatar.')
+    if (error.response) return toast.error(error.response.data.message);
+    else return toast.error("Não foi possível atualizar o avatar.");
   }
-}
+};
 
 const updateUserData = async () => {
   try {
-    const updatedUser = await api.put('/users', {
+    const updatedUser = await api.put("/users", {
       name: name.value,
       email: email.value,
       password: newPassword.value,
       old_password: oldPassword.value
-    })
+    });
 
-    store.authData!.user = updatedUser.data
-    localStorage.setItem('@KadPad:user', JSON.stringify(updatedUser.data))
+    store.authData!.user = updatedUser.data;
+    localStorage.setItem("@KadPad:user", JSON.stringify(updatedUser.data));
 
-    toast.success('Perfil atualizado com sucesso!')
+    toast.success("Perfil atualizado com sucesso!");
 
-    oldPassword.value = ''
-    newPassword.value = ''
+    oldPassword.value = "";
+    newPassword.value = "";
   } catch (error: any) {
-    if (error.response) return toast.error(error.response.data.message)
-    else return toast.error('Não foi possível fazer o login.')
+    if (error.response) return toast.error(error.response.data.message);
+    else return toast.error("Não foi possível fazer o login.");
   }
-}
+};
 
 const signOut = () => {
-  store.authData = null
-  localStorage.removeItem('@KadPad:user')
-  localStorage.removeItem('@KadPad:token')
+  store.authData = null;
+  localStorage.removeItem("@KadPad:user");
+  localStorage.removeItem("@KadPad:token");
 
-  router.push('/')
-}
+  router.push("/");
+};
 </script>
 
 <template>
-  <div class="content w-screen h-screen flex flex-col gap-10 items-center justify-center">
+  <div class="content flex h-screen w-screen flex-col items-center justify-center gap-10">
     <div class="relative">
       <img
         :class="{ 'bg-dark-900 p-8': !avatar }"
-        class="rounded-full drop-shadow-xl w-44 h-44 object-cover"
+        class="h-44 w-44 rounded-full object-cover drop-shadow-xl"
         width="176"
         height="176"
         :src="avatarURL"
         alt="Foto de perfil"
       />
       <span
-        class="grid grid-cols-[1fr] grid-rows-[1fr] absolute bg-cyan-500 hover:bg-cyan-600 p-3 rounded-full bottom-0 right-0 cursor-pointer duration-500"
+        class="absolute bottom-0 right-0 grid cursor-pointer grid-cols-[1fr] grid-rows-[1fr] rounded-full bg-cyan-500 p-3 duration-500 hover:bg-cyan-600"
         ><img class="col-[1] row-[1]" src="../assets/icons/add-photo.svg" alt="Adicionar foto" />
 
         <input
           @input="updateUserAvatar"
           type="file"
-          class="col-[1] row-[1] w-[30px] opacity-0 cursor-pointer"
+          class="col-[1] row-[1] w-[30px] cursor-pointer opacity-0"
       /></span>
     </div>
     <form @submit.prevent="updateUserData" class="flex flex-col gap-3">
@@ -115,7 +115,7 @@ const signOut = () => {
       />
       <button class="primary-button mt-3">Salvar</button>
     </form>
-    <button @click="signOut" class="flex items-center gap-2 bg-[#ff00001a] p-3 rounded-xl">
+    <button @click="signOut" class="flex items-center gap-2 rounded-xl bg-[#ff00001a] p-3">
       <img src="../assets/icons/logout.svg" />
       <span class="text-red-700">Sair</span>
     </button>

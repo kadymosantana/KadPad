@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import type { Note } from '@/types'
+import type { Note } from "@/types";
 
-import { ref, onMounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { useToast } from 'vue-toastification'
+import { ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { useToast } from "vue-toastification";
 
-import { api } from '@/services/api'
+import { api } from "@/services/api";
 
-import Tag from './Tag.vue'
+import Tag from "./Tag.vue";
 
-const router = useRouter()
-const route = useRoute()
-const toast = useToast()
+const router = useRouter();
+const route = useRoute();
+const toast = useToast();
 
 onMounted(() => {
-  fetchNoteDetails()
-})
+  fetchNoteDetails();
+});
 
-const note = ref<Note | null>(null)
+const note = ref<Note | null>(null);
 const fetchNoteDetails = async () => {
-  const noteDetails = await api.get(`/notes/${route.params.id}`)
-  note.value = noteDetails.data
-}
+  const noteDetails = await api.get(`/notes/${route.params.id}`);
+  note.value = noteDetails.data;
+};
 
-const activeDeleteButton = ref('delete')
+const activeDeleteButton = ref("delete");
 const deleteNote = async () => {
-  await api.delete(`/notes/${route.params.id}`)
-  toast.success('Nota excluída com sucesso!')
-  router.back()
-}
+  await api.delete(`/notes/${route.params.id}`);
+  toast.success("Nota excluída com sucesso!");
+  router.back();
+};
 </script>
 
 <template>
@@ -37,7 +37,7 @@ const deleteNote = async () => {
       <div class="modal-container">
         <header class="flex justify-between pb-4">
           <h1 class="text-4xl font-bold">{{ note?.title }}</h1>
-          <button @click="router.back()" class="bg-[#ff00001a] min-w-max p-2 rounded-xl self-start">
+          <button @click="router.back()" class="min-w-max self-start rounded-xl bg-[#ff00001a] p-2">
             <img src="../assets/icons/close.svg" alt="Fechar" />
           </button>
         </header>
@@ -55,11 +55,11 @@ const deleteNote = async () => {
             <img src="../assets/icons/link.svg" alt="" />
             Links
           </h3>
-          <ul v-if="note?.links.length" class="flex flex-col gap-2 max-h-20 overflow-auto mb-3">
+          <ul v-if="note?.links.length" class="mb-3 flex max-h-20 flex-col gap-2 overflow-auto">
             <li
               v-for="link in note?.links"
               :key="link.id"
-              class="bg-[#06b6d424] p-2 underline text-cyan-500 rounded-xl"
+              class="rounded-xl bg-[#06b6d424] p-2 text-cyan-500 underline"
             >
               <a :href="link.url">{{ link.url }}</a>
             </li>
@@ -72,7 +72,7 @@ const deleteNote = async () => {
             <img src="../assets/icons/tag.svg" />
             Tags
           </h3>
-          <ul v-if="note?.tags.length" class="flex flex-wrap gap-2 mb-3">
+          <ul v-if="note?.tags.length" class="mb-3 flex flex-wrap gap-2">
             <Tag v-for="tag in note?.tags" :key="tag.id" :name="tag.name" />
           </ul>
           <p v-else class="text-gray-600">Nenhum link adicionado.</p>
@@ -80,14 +80,14 @@ const deleteNote = async () => {
         <button
           v-if="activeDeleteButton === 'delete'"
           @click="activeDeleteButton = 'confirm'"
-          class="delete bg-[#ff00001a] text-red-700 rounded-xl p-3"
+          class="delete rounded-xl bg-[#ff00001a] p-3 text-red-700"
         >
           Excluir nota
         </button>
         <button
           @click="deleteNote"
           v-else
-          class="confirm bg-[#fff7001a] text-yellow-600 rounded-xl p-3"
+          class="confirm rounded-xl bg-[#fff7001a] p-3 text-yellow-600"
         >
           Confirmar exclusão
         </button>

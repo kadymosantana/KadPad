@@ -1,79 +1,79 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { useToast } from 'vue-toastification'
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
 
-import { api } from '@/services/api'
-import store from '@/store'
+import { api } from "@/services/api";
+import store from "@/store";
 
-import InputContainer from '@/components/InputContainer.vue'
-import LoginTypeButton from '@/components/LoginTypeButton.vue'
+import InputContainer from "@/components/InputContainer.vue";
+import LoginTypeButton from "@/components/LoginTypeButton.vue";
 
-const router = useRouter()
-const toast = useToast()
+const router = useRouter();
+const toast = useToast();
 
-const activeLoginType = ref('signIn')
+const activeLoginType = ref("signIn");
 
-const name = ref('')
-const email = ref('')
-const password = ref('')
+const name = ref("");
+const email = ref("");
+const password = ref("");
 
 onMounted(() => {
-  const user = localStorage['@KadPad:user']
-  const token = localStorage['@KadPad:token']
+  const user = localStorage["@KadPad:user"];
+  const token = localStorage["@KadPad:token"];
 
   if (user && token) {
-    api.defaults.headers.common['Authorization'] = `Bearer ${token}`
-    store.authData = { user: JSON.parse(user), token }
-    router.push('/home')
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    store.authData = { user: JSON.parse(user), token };
+    router.push("/home");
   }
-})
+});
 
 const handleSubmit = () => {
-  if (activeLoginType.value === 'signIn') signIn()
-  else if (activeLoginType.value === 'signUp') signUp()
-}
+  if (activeLoginType.value === "signIn") signIn();
+  else if (activeLoginType.value === "signUp") signUp();
+};
 
 const signIn = async () => {
-  if (!email.value || !password.value) return toast.error('Preencha todos os campos.')
+  if (!email.value || !password.value) return toast.error("Preencha todos os campos.");
 
   try {
-    const data = await api.post('/sessions', {
+    const data = await api.post("/sessions", {
       email: email.value,
       password: password.value
-    })
-    const { user, token } = data.data
+    });
+    const { user, token } = data.data;
 
-    store.authData = { user, token }
-    localStorage.setItem('@KadPad:user', JSON.stringify(user))
-    localStorage.setItem('@KadPad:token', token)
+    store.authData = { user, token };
+    localStorage.setItem("@KadPad:user", JSON.stringify(user));
+    localStorage.setItem("@KadPad:token", token);
 
-    api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    router.push('/home')
+    router.push("/home");
   } catch (error: any) {
-    if (error.response) return toast.error(error.response.data.message)
-    else return toast.error('Não foi possível fazer o login.')
+    if (error.response) return toast.error(error.response.data.message);
+    else return toast.error("Não foi possível fazer o login.");
   }
-}
+};
 
 const signUp = async () => {
   if (!name.value || !email.value || !password.value)
-    return toast.error('Preencha todos os campos.')
+    return toast.error("Preencha todos os campos.");
 
   try {
-    await api.post('/users', { name: name.value, email: email.value, password: password.value })
-    toast.success('Cadastro feito com sucesso.')
-    activeLoginType.value = 'signIn'
+    await api.post("/users", { name: name.value, email: email.value, password: password.value });
+    toast.success("Cadastro feito com sucesso.");
+    activeLoginType.value = "signIn";
   } catch (error: any) {
-    if (error.response) return toast.error(error.response.data.message)
-    else return toast.error('Não foi possível fazer o cadastro.')
+    if (error.response) return toast.error(error.response.data.message);
+    else return toast.error("Não foi possível fazer o cadastro.");
   }
-}
+};
 </script>
 
 <template>
-  <div class="w-screen h-screen flex justify-around items-center">
+  <div class="flex h-screen w-screen items-center justify-around">
     <img
       width="400"
       src="https://user-images.githubusercontent.com/98963793/222261379-74753371-f40c-4eb9-8ff1-30af3ed8a7de.png"
@@ -87,10 +87,10 @@ const signUp = async () => {
           src="https://user-images.githubusercontent.com/98963793/221386784-f28b7347-a757-47bc-951a-8622354c3e07.png"
           alt="KadPad Logo"
         />
-        <span class="text-cyan-500 text-4xl font-light mt-1">KadPad</span>
+        <span class="mt-1 text-4xl font-light text-cyan-500">KadPad</span>
       </div>
 
-      <div class="w-full grid grid-cols-2 border-dark-600 mb-[-1rem] border-b">
+      <div class="mb-[-1rem] grid w-full grid-cols-2 border-b border-dark-600">
         <LoginTypeButton
           :activeLoginType="activeLoginType"
           type="signIn"
@@ -124,7 +124,7 @@ const signUp = async () => {
         <InputContainer v-model="password" type="password" icon="password" placeholder="Senha" />
 
         <button type="submit" class="primary-button mt-3">
-          {{ activeLoginType === 'signIn' ? 'Entrar' : 'Cadastrar' }}
+          {{ activeLoginType === "signIn" ? "Entrar" : "Cadastrar" }}
         </button>
       </TransitionGroup>
     </div>
