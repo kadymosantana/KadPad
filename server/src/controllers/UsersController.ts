@@ -1,20 +1,19 @@
-import { Request, Response } from "express";
-const { hash, compare } = require("bcrypt");
-import sqliteConnection from "../database/sqlite";
+import type { User } from "../types";
+import type { Request, Response } from "express";
+
+import knex from "../database/knex";
 import AppError from "../../utils/AppError";
-import { User } from "../types";
+
+const { hash, compare } = require("bcrypt");
 
 export default class UsersController {
   // Criar um registo (POST)
   async create(req: Request, res: Response) {
     const { name, email, password } = req.body;
 
-    const database = await sqliteConnection();
-
-    const checkUserExists = await database.get<User>(
-      "SELECT * FROM users WHERE email = (?)",
-      [email]
-    );
+    const checkUserExists = await knex<User>("users")
+      .where("email", email)
+      .first();
 
     if (checkUserExists) {
       throw new AppError("Este e-mail já está em uso.");
@@ -22,10 +21,8 @@ export default class UsersController {
 
     const hashedPassword = await hash(password, 8);
 
-    await database.run(
-      "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
-      [name, email, hashedPassword]
-    );
+    await knex("users").insert({ name, email, password: hashedPassword });
+
     return res.status(201).json();
   }
 
@@ -34,24 +31,20 @@ export default class UsersController {
     const { name, email, password, old_password } = req.body;
     const user_id = req.user!.id;
 
-    const database = await sqliteConnection();
-    const user = await database.get<User>(
-      "SELECT * FROM users WHERE id = (?)",
-      [user_id]
-    );
+    const user = await knex<User>("users").where("id", user_id).first();
 
     // Verificando se o usuário a ser atualizado existe e se o e-mail passado já está em uso
-
     if (!user) throw new AppError("Usuário não encontrado.");
 
     // Lidando com a atualização de nome e e-mail
-    const userWithUpdatedEmail = await database.get<User>(
-      "SELECT * FROM users WHERE email = (?)",
-      [email]
-    );
+    if (email) {
+      const userWithUpdatedEmail = await knex<User>("users")
+        .where("email", email)
+        .first();
 
-    if (userWithUpdatedEmail && userWithUpdatedEmail.id !== user.id)
-      throw new AppError("Este e-mail já está em uso.");
+      if (userWithUpdatedEmail && userWithUpdatedEmail.id !== user.id)
+        throw new AppError("Este e-mail já está em uso.");
+    }
 
     user.name = name ?? user.name;
     user.email = email ?? user.email;
@@ -66,30 +59,22 @@ export default class UsersController {
 
       user.password = password;
       const hashedNewPassword = await hash(password, 8);
-      database.run(
-        `
-        UPDATE users 
-        SET password = (?) 
-        WHERE id = (?)`,
-        [hashedNewPassword, user_id]
-      );
+
+      await knex("users")
+        .where("id", user_id)
+        .update("password", hashedNewPassword);
     } else if (password && !old_password)
       throw new AppError("Você precisa informar a sua senha antiga.");
 
     // Atualizando usuário no banco de dados
-    await database.run(
-      `
-      UPDATE users SET
-      name = ?,
-      email = ?,
-      updated_at = DATETIME('now') 
-      WHERE id = ?`,
-      [user.name, user.email, user_id]
-    );
+    await knex("users")
+      .where("id", user_id)
+      .update({
+        name: user.name,
+        email: user.email,
+        updated_at: knex.raw("CURRENT_TIMESTAMP"),
+      });
 
     return res.json(user);
   }
-
-  // Excluir um usuário (DELETE)
-  delete() {}
 }
