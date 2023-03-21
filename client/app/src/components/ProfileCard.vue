@@ -13,13 +13,13 @@ const avatarURL = computed(() => {
 </script>
 
 <template>
-  <div class="flex items-center gap-4 rounded-2xl bg-dark-800 p-4 shadow">
+  <div class="hidden items-center gap-4 rounded-2xl bg-dark-800 p-4 shadow sm:flex">
     <img
+      :src="avatarURL"
       :class="{ 'bg-dark-900 p-4': !userData.avatar }"
       class="h-16 w-16 self-start rounded-full object-cover shadow-md"
       width="64"
       height="64"
-      :src="avatarURL"
       alt="Avatar"
     />
     <div class="flex flex-col gap-2 truncate">

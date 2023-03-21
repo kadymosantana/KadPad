@@ -2,6 +2,7 @@
 import type { Tag } from "@/types";
 
 import { ref, onMounted } from "vue";
+import { vOnClickOutside } from "@vueuse/components";
 
 import { api } from "@/services/api";
 import store from "@/store";
@@ -11,6 +12,9 @@ import ProfileCard from "./ProfileCard.vue";
 onMounted(() => {
   fetchTags();
 });
+
+const modal = ref(false);
+// onClickOutside(modal, (event) => {});
 
 const tags = ref<Tag[]>([]);
 const fetchTags = async () => {
@@ -31,10 +35,17 @@ const selectTag = (tagName: string) => {
 </script>
 
 <template>
+  <button @click="modal = true" class="min-w-max rounded-xl bg-dark-800 p-3 sm:hidden">
+    <img src="../assets/icons/menu.svg" alt="Menu" />
+  </button>
+
   <aside
-    class="fixed grid h-screen w-80 grid-rows-[auto_1fr_auto] rounded-tr-3xl rounded-br-3xl bg-dark-700 p-4 shadow-lg"
+    v-if="modal"
+    v-on-click-outside="(modal = false)"
+    :class="{ flex: modal }"
+    class="fixed h-screen w-80 grid-rows-[auto_1fr_auto] rounded-tr-3xl rounded-br-3xl bg-dark-700 p-4 shadow-lg sm:grid"
   >
-    <div class="mt-3 flex items-center justify-center gap-4">
+    <div class="mt-3 hidden items-center justify-center gap-4 sm:flex">
       <img
         width="34"
         src="https://user-images.githubusercontent.com/98963793/221386784-f28b7347-a757-47bc-951a-8622354c3e07.png"
@@ -43,7 +54,7 @@ const selectTag = (tagName: string) => {
       <span class="mt-1 text-2xl font-light text-cyan-500">KadPad</span>
     </div>
 
-    <div class="self-center">
+    <div class="hidden self-center sm:block">
       <h3 class="mb-4 border-b border-solid border-dark-600 pb-2 text-xl">Minhas tags</h3>
       <ul
         class="flex max-h-60 flex-col gap-2 overflow-auto border-b border-solid border-dark-600 pb-4"
