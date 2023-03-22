@@ -80,7 +80,8 @@ export default class NotesController {
         .whereLike("title", `%${title}%`)
         .whereIn("tags.name", filterTags)
         .innerJoin("notes", "notes.id", "tags.note_id")
-        .orderBy("updated_at", "desc");
+        .orderBy("updated_at", "desc")
+        .groupBy("title");
     } else {
       notes = await knex<Note>("notes")
         .where("user_id", user_id)
