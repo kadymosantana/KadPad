@@ -13,7 +13,7 @@ watch(title, (value) => {
 </script>
 
 <template>
-  <main class="ml-[320px] flex flex-col gap-12 bg-dark-800 p-12">
+  <main class="flex max-w-full flex-col gap-12 bg-dark-800 py-8 pr-4 pl-12 sm:ml-[320px]">
     <InputContainer v-model="title" size="large" icon="search" placeholder="Pesquisar nota" />
     <NotesList />
   </main>

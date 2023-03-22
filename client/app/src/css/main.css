@@ -9,7 +9,7 @@
   }
 
   .modal-wrapper {
-    @apply fixed top-0 left-0 z-10 flex h-screen w-screen items-center justify-center bg-[#00000090] backdrop-blur-sm duration-300;
+    @apply fixed top-0 left-0 z-10 flex h-screen w-screen items-center justify-center bg-[#00000090] p-4 backdrop-blur-sm duration-300;
   }
 
   .modal-container {

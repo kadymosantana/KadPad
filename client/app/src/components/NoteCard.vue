@@ -12,7 +12,7 @@ const props = defineProps<{
   <RouterLink
     :to="{ name: 'Note', params: { id: note.id } }"
     tag="li"
-    class="max-h-content my-4 flex w-72 cursor-pointer break-inside-avoid-column flex-col gap-3 rounded-3xl bg-dark-700 p-5 shadow-md duration-300 hover:-translate-y-3"
+    class="max-h-content my-4 flex w-full cursor-pointer break-inside-avoid-column flex-col gap-3 rounded-3xl bg-dark-700 p-5 shadow-md duration-300 hover:-translate-y-3 sm:w-72"
   >
     <h1 class="text-2xl font-semibold">{{ note.title }}</h1>
     <p class="text-ellipsis">{{ note.description }}</p>

@@ -20,19 +20,25 @@ watchEffect(async () => {
 
 <template>
   <section>
-    <header class="flex items-center justify-between border-b border-solid border-dark-600 pb-4">
-      <h2 class="text-3xl font-light">Minhas notas</h2>
+    <header
+      class="flex flex-col items-center justify-between gap-4 sm:flex-row sm:border-b sm:border-solid sm:border-dark-600 sm:pb-4"
+    >
+      <h2
+        class="w-full self-start border-b border-solid border-dark-600 pb-4 text-3xl font-light sm:w-auto sm:self-auto sm:border-b-0 sm:pb-0"
+      >
+        Minhas notas
+      </h2>
       <RouterLink
         :to="{ name: 'New Note' }"
         tag="button"
-        class="flex items-center gap-3 rounded-xl bg-cyan-500 p-2 duration-500 hover:bg-cyan-600"
+        class="flex w-full items-center gap-3 rounded-xl bg-cyan-500 p-2 duration-500 hover:bg-cyan-600 sm:w-auto"
       >
         <img src="../assets/icons/add.svg" />
         <span class="text-lg text-dark-800">Nova nota</span>
       </RouterLink>
     </header>
 
-    <TransitionGroup tag="ul" name="list" class="notes columns-3 pt-8">
+    <TransitionGroup tag="ul" name="list" class="notes pt-8 sm:columns-3">
       <li class="note" v-for="note in notes" :key="note.id">
         <NoteCard :note="note"></NoteCard>
       </li>

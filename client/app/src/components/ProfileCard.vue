@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, inject } from "vue";
 
 import { api } from "@/services/api";
 import store from "@/store";
@@ -10,16 +10,21 @@ const avatarURL = computed(() => {
   if (userData.avatar) return `${api.defaults.baseURL}/files/${userData.avatar}`;
   else return "src/assets/icons/user.svg";
 });
+
+const menu = inject<boolean>("menu");
 </script>
 
 <template>
-  <div class="flex items-center gap-4 rounded-2xl bg-dark-800 p-4 shadow">
+  <div
+    :class="{ flex: menu, hidden: !menu }"
+    class="items-center gap-4 rounded-2xl bg-dark-800 p-4 shadow sm:flex"
+  >
     <img
+      :src="avatarURL"
       :class="{ 'bg-dark-900 p-4': !userData.avatar }"
-      class="h-16 w-16 self-start rounded-full object-cover shadow-md"
+      class="items-center self-start rounded-full bg-dark-800 shadow-md"
       width="64"
       height="64"
-      :src="avatarURL"
       alt="Avatar"
     />
     <div class="flex flex-col gap-2 truncate">
