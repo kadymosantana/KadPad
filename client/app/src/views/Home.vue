@@ -4,9 +4,7 @@ import NotesContainer from "@/components/NotesContainer.vue";
 </script>
 
 <template>
-  <div
-    class="sm:max-w-screen grid min-h-screen grid-cols-[auto_1fr] overflow-hidden tracking-tight"
-  >
+  <div class="grid min-h-screen w-full overflow-hidden tracking-tight xl:w-screen">
     <Sidebar />
     <NotesContainer />
   </div>

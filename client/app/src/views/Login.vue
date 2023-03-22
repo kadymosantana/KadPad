@@ -73,9 +73,9 @@ const signUp = async () => {
 </script>
 
 <template>
-  <div class="flex h-screen w-screen flex-col items-center justify-around md:flex-row">
+  <div class="flex h-screen w-screen flex-row items-center justify-around">
     <img
-      class="hidden md:block md:w-96"
+      class="hidden w-80 md:block lg:w-96"
       src="https://user-images.githubusercontent.com/98963793/222261379-74753371-f40c-4eb9-8ff1-30af3ed8a7de.png"
       alt="Ilustração"
     />
