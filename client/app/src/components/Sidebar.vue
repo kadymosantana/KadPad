@@ -3,6 +3,7 @@ import type { Tag } from "@/types";
 
 import { ref, onMounted, provide } from "vue";
 import { vOnClickOutside } from "@vueuse/components";
+import { useToast } from "vue-toastification";
 
 import { api } from "@/services/api";
 import store from "@/store";
@@ -13,12 +14,21 @@ onMounted(() => {
   fetchTags();
 });
 
+const toast = useToast();
+
 const menu = ref(false);
 
 const tags = ref<Tag[]>([]);
 const fetchTags = async () => {
-  const tagsData = await api.get("/tags");
-  tags.value = tagsData.data;
+  try {
+    const tagsData = await api.get("/tags");
+    tags.value = tagsData.data;
+  } catch (error: any) {
+    if (error.response.data.message === "Token inválido") {
+      store.authData = null;
+      toast.error("Sessão expirada. Faça login novamente");
+    }
+  }
 };
 
 const tagAlreadySelected = (tagName: string) => store.selectedTags.includes(tagName);

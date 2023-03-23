@@ -20,8 +20,11 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (!store.authData && to.name !== "Login") next({ name: "Login" });
-  else next();
+  if (!store.authData && to.name !== "Login") {
+    localStorage.removeItem("@KadPad:user");
+    localStorage.removeItem("@KadPad:token");
+    next({ name: "Login" });
+  } else next();
 });
 
 export default router;

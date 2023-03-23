@@ -2,19 +2,29 @@
 import type { Note } from "@/types";
 
 import { ref, watchEffect } from "vue";
+import { useToast } from "vue-toastification";
 
 import { api } from "@/services/api";
 import store from "@/store";
 
 import NoteCard from "./NoteCard.vue";
 
+const toast = useToast();
+
 const notes = ref<Note[]>([]);
 
 watchEffect(async () => {
-  const fetchedNotes = await api.get(
-    `/notes?title=${store.searchedNote}&tags=${store.selectedTags}`
-  );
-  notes.value = fetchedNotes.data;
+  try {
+    const fetchedNotes = await api.get(
+      `/notes?title=${store.searchedNote}&tags=${store.selectedTags}`
+    );
+    notes.value = fetchedNotes.data;
+  } catch (error: any) {
+    if (error.response.data.message === "Token inválido") {
+      store.authData = null;
+      toast.error("Sessão expirada. Faça login novamente");
+    }
+  }
 });
 </script>
 
@@ -67,8 +77,6 @@ watchEffect(async () => {
   transform: translateX(30px);
 }
 
-/* ensure leaving items are taken out of layout flow so that moving
-   animations can be calculated correctly. */
 .list-leave-active {
   position: absolute;
 }
