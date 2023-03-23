@@ -64,7 +64,7 @@ const updateUserData = async () => {
     newPassword.value = "";
   } catch (error: any) {
     if (error.response) return toast.error(error.response.data.message);
-    else return toast.error("Não foi possível fazer o login.");
+    else return toast.error("Não foi possível atualizar os dados.");
   }
 };
 
