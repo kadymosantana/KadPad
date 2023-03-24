@@ -26,7 +26,7 @@ const formatDate = (dateString: string) => {
     </ul>
 
     <span class="absolute bottom-0 right-0 rounded-tl-3xl bg-dark-800 px-3 py-2 text-[14px]">{{
-      formatDate(note.created_at)
+      formatDate(note.updated_at)
     }}</span>
 
     <Teleport to="body">
