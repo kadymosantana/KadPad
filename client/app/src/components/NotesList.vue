@@ -19,6 +19,7 @@ watchEffect(async () => {
       `/notes?title=${store.searchedNote}&tags=${store.selectedTags}`
     );
     notes.value = fetchedNotes.data;
+    // notes.value = [];
   } catch (error: any) {
     if (error.response.data.message === "Token inválido") {
       store.authData = null;
@@ -29,19 +30,19 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <section>
+  <section :class="{ 'gap-20': !notes.length }" class="flex flex-col items-center">
     <header
-      class="flex flex-col items-center justify-between gap-4 sm:flex-row sm:border-b sm:border-solid sm:border-dark-600 sm:pb-4"
+      class="flex w-full flex-col items-center justify-between gap-4 md:flex-row md:border-b md:border-solid md:border-dark-600 md:pb-4"
     >
       <h2
-        class="w-full self-start border-b border-solid border-dark-600 pb-4 text-3xl font-light sm:w-auto sm:self-auto sm:border-b-0 sm:pb-0"
+        class="w-full self-start border-b border-solid border-dark-600 pb-4 text-3xl font-light md:w-auto md:self-auto md:border-b-0 md:pb-0"
       >
         Minhas notas
       </h2>
       <RouterLink
         :to="{ name: 'New Note' }"
         tag="button"
-        class="flex w-full items-center gap-3 rounded-xl bg-cyan-500 p-2 duration-500 hover:bg-cyan-600 sm:w-auto"
+        class="flex w-full items-center gap-3 rounded-xl bg-cyan-500 p-2 duration-500 hover:bg-cyan-600 md:w-auto"
       >
         <img src="../assets/icons/add.svg" />
         <span class="text-lg text-dark-800">Nova nota</span>
@@ -49,6 +50,7 @@ watchEffect(async () => {
     </header>
 
     <TransitionGroup
+      v-if="notes.length"
       tag="ul"
       name="list"
       class="notes pt-8 lg:columns-2 xl:columns-3 2xl:columns-4"
@@ -57,6 +59,13 @@ watchEffect(async () => {
         <NoteCard :note="note"></NoteCard>
       </li>
     </TransitionGroup>
+
+    <img
+      v-else
+      class="w-72 opacity-5 saturate-0 sm:block md:w-80"
+      src="https://user-images.githubusercontent.com/98963793/221386784-f28b7347-a757-47bc-951a-8622354c3e07.png"
+      alt="KadPad Logo"
+    />
 
     <Teleport to="body">
       <RouterView />
