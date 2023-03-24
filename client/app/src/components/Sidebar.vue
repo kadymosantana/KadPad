@@ -26,6 +26,9 @@ const fetchTags = async () => {
   } catch (error: any) {
     if (error.response.data.message === "Token inválido") {
       store.authData = null;
+      localStorage.removeItem("@KadPad:user");
+      localStorage.removeItem("@KadPad:token");
+
       toast.error("Sessão expirada. Faça login novamente");
     }
   }
