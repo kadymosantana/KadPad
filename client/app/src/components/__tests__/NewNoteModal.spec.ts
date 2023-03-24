@@ -1,13 +1,13 @@
 import { describe, it, expect, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 
-import AddNoteModal from "@/components/AddNoteModal.vue";
+import NewNoteModal from "@/components/NewNoteModal.vue";
 import NoteItem from "@/components/NoteItem.vue";
 import ItemInput from "@/components/ItemInput.vue";
 
-const wrapper = shallowMount(AddNoteModal);
+const wrapper = shallowMount(NewNoteModal);
 
-describe("AddNoteModal", () => {
+describe("NewNoteModal", () => {
   describe("Links list", () => {
     const addLinkButton = wrapper.findAllComponents(ItemInput)[0];
 
