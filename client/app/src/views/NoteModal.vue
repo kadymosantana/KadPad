@@ -10,7 +10,7 @@ import BeatLoader from "vue-spinner/src/BeatLoader.vue";
 import { api } from "@/services/api";
 import store from "@/store";
 
-import Tag from "./Tag.vue";
+import Tag from "../components/Tag.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -30,6 +30,7 @@ const fetchNoteDetails = async () => {
       store.authData = null;
       localStorage.removeItem("@KadPad:user");
       localStorage.removeItem("@KadPad:token");
+
       toast.error("Sessão expirada. Faça login novamente.");
     }
   }
@@ -46,7 +47,7 @@ const deleteNote = async () => {
 <template>
   <div class="modal-wrapper p-5">
     <div
-      v-on-click-outside="() => router.back()"
+      v-on-click-outside="() => router.replace({ name: 'Home' })"
       :class="{ 'items-center justify-center bg-transparent': !note, 'bg-dark-800': note }"
       class="flex w-full flex-col overflow-hidden rounded-3xl sm:w-[700px] md:h-[550px] md:flex-row md:bg-dark-800"
     >
