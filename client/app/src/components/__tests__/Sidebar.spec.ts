@@ -8,7 +8,7 @@ import store from "@/store";
 
 import Sidebar from "@/components/Sidebar.vue";
 
-const wrapper = shallowMount(Sidebar);
+const wrapper = shallowMount<any>(Sidebar);
 
 const mockData = [
   { id: 1, note_id: 1, user_id: 1, name: "vuejs" },

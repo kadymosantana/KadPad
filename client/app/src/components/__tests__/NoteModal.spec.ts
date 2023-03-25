@@ -7,10 +7,10 @@ import MockAdapter from "axios-mock-adapter";
 import { api } from "@/services/api";
 import store from "@/store";
 
-import NoteModal from "@/components/NoteModal.vue";
+import NoteModal from "@/views/NoteModal.vue";
 import Tag from "@/components/Tag.vue";
 
-const wrapper = mount(NoteModal);
+const wrapper = mount<any>(NoteModal);
 
 const mockData: Note = {
   id: 1,

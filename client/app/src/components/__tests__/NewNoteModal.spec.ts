@@ -1,11 +1,11 @@
 import { describe, it, expect, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 
-import NewNoteModal from "@/components/NewNoteModal.vue";
+import NewNoteModal from "@/views/NewNoteModal.vue";
 import NoteItem from "@/components/NoteItem.vue";
 import ItemInput from "@/components/ItemInput.vue";
 
-const wrapper = shallowMount(NewNoteModal);
+const wrapper = shallowMount<any>(NewNoteModal);
 
 describe("NewNoteModal", () => {
   describe("Links list", () => {

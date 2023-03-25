@@ -9,7 +9,7 @@ import store from "@/store";
 
 import NotesList from "@/components/NotesList.vue";
 
-const wrapper = shallowMount(NotesList);
+const wrapper = shallowMount<any>(NotesList);
 
 const mockData: Note[] = [
   {
