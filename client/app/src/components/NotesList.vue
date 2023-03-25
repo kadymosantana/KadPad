@@ -47,7 +47,7 @@ watchEffect(async () => {
         tag="button"
         class="flex w-full items-center gap-3 rounded-xl bg-cyan-500 p-2 duration-500 hover:bg-cyan-600 md:w-auto"
       >
-        <img src="../assets/icons/add.svg" />
+        <img src="../assets/icons/add.svg" alt="Ícone" />
         <span class="text-lg text-dark-800">Nova nota</span>
       </RouterLink>
     </header>
@@ -70,9 +70,11 @@ watchEffect(async () => {
       alt="KadPad Logo"
     />
 
-    <Teleport to="body">
-      <RouterView />
-    </Teleport>
+    <RouterView v-slot="{ Component }">
+      <Transition name="modal">
+        <component :is="Component" />
+      </Transition>
+    </RouterView>
   </section>
 </template>
 

@@ -14,7 +14,7 @@ const emits = defineEmits(["update:modelValue"]);
     :class="{ 'px-6 py-4': size === 'large' }"
     class="input-container flex gap-5 rounded-2xl border-2 border-solid border-transparent bg-dark-700 p-3 shadow-md duration-500 focus-within:border-cyan-500"
   >
-    <img :src="'src/assets/icons/' + icon + '.svg'" />
+    <img :src="'src/assets/icons/' + icon + '.svg'" alt="Ícone" />
     <input
       :value="modelValue"
       @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"

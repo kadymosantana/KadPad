@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { vOnClickOutside } from "@vueuse/components";
 import { useToast } from "vue-toastification";
@@ -101,7 +101,7 @@ const createNote = async () => {
 
       <div>
         <h3 class="subtitle">
-          <img src="../assets/icons/link.svg" alt="" />
+          <img src="../assets/icons/link.svg" alt="Ícone" />
           Links
         </h3>
 
@@ -114,7 +114,7 @@ const createNote = async () => {
 
       <div>
         <h3 class="subtitle">
-          <img src="../assets/icons/tag.svg" />
+          <img src="../assets/icons/tag.svg" alt="Ícone" />
           Tags
         </h3>
 

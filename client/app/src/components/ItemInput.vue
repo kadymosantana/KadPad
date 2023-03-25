@@ -18,7 +18,7 @@ const emits = defineEmits(["add", "update:modelValue"]);
       :placeholder="placeholder"
     />
     <button @click="$emit('add')">
-      <img :src="'/src/assets/icons/' + icon + '.svg'" />
+      <img :src="'/src/assets/icons/' + icon + '.svg'" alt="Ícone" />
     </button>
   </span>
 </template>
