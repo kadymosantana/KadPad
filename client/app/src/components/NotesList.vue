@@ -33,7 +33,7 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <section :class="{ 'gap-20': !notes.length }" class="flex flex-col items-center">
+  <section :class="{ 'gap-20': !notes.length }" class="flex flex-col items-center md:items-start">
     <header
       class="flex w-full flex-col items-center justify-between gap-4 md:flex-row md:border-b md:border-solid md:border-dark-600 md:pb-4"
     >
