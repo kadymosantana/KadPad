@@ -27,10 +27,10 @@ const email = ref(userData.value.email);
 const oldPassword = ref("");
 const newPassword = ref("");
 
-const updateUserAvatar = async (e) => {
-  if (!e.target.files) return;
+const updateUserAvatar = async (e: Event) => {
+  if (!(e.target as HTMLInputElement).files) return;
   try {
-    const file = e.target.files[0];
+    const file = (e.target as HTMLInputElement).files![0];
     const fileUploadForm = new FormData();
     fileUploadForm.append("avatar", file);
 
