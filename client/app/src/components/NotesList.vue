@@ -1,15 +1,21 @@
 <script setup lang="ts">
 import type { Note } from "@/types";
 
-import { ref, watchEffect } from "vue";
+import { ref, watchEffect, provide } from "vue";
 import { useToast } from "vue-toastification";
 
 import { api } from "@/services/api";
 import store from "@/store";
 
 import NoteCard from "./NoteCard.vue";
+import NewNoteModal from "./NewNoteModal.vue";
 
 const toast = useToast();
+
+const modal = ref(false);
+const closeModal = () => {
+  modal.value = false;
+};
 
 const notes = ref<Note[]>([]);
 
@@ -30,6 +36,11 @@ watchEffect(async () => {
     }
   }
 });
+
+provide("modal", {
+  modal,
+  closeModal
+});
 </script>
 
 <template>
@@ -42,14 +53,13 @@ watchEffect(async () => {
       >
         Minhas notas
       </h2>
-      <RouterLink
-        :to="{ name: 'New Note' }"
-        tag="button"
+      <button
+        @click="modal = true"
         class="flex w-full items-center gap-3 rounded-xl bg-cyan-500 p-2 duration-500 hover:bg-cyan-600 md:w-auto"
       >
         <img src="../assets/icons/add.svg" alt="Ícone" />
         <span class="text-lg text-dark-800">Nova nota</span>
-      </RouterLink>
+      </button>
     </header>
 
     <TransitionGroup
@@ -59,7 +69,7 @@ watchEffect(async () => {
       class="notes pt-8 lg:columns-2 xl:columns-3 2xl:columns-4"
     >
       <li class="note" v-for="note in notes" :key="note.id">
-        <NoteCard :note="note"></NoteCard>
+        <NoteCard :note="note" />
       </li>
     </TransitionGroup>
 
@@ -70,11 +80,9 @@ watchEffect(async () => {
       alt="KadPad Logo"
     />
 
-    <RouterView v-slot="{ Component }">
-      <Transition name="modal">
-        <component :is="Component" />
-      </Transition>
-    </RouterView>
+    <Teleport to="body">
+      <NewNoteModal v-if="modal" />
+    </Teleport>
   </section>
 </template>
 

@@ -1,22 +1,34 @@
 <script setup lang="ts">
 import type { Note } from "@/types";
 
+import { provide, ref } from "vue";
+
+import NoteModal from "./NoteModal.vue";
 import Tag from "./Tag.vue";
 
 const props = defineProps<{
   note: Note;
 }>();
 
+const modal = ref(false);
+const closeModal = () => {
+  modal.value = false;
+};
+
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
   return date.toLocaleDateString("pt-BR");
 };
+
+provide("modal", {
+  modal,
+  closeModal
+});
 </script>
 
 <template>
-  <RouterLink
-    :to="{ name: 'Note', params: { id: note.id } }"
-    tag="li"
+  <li
+    @click="modal = true"
     class="max-h-content max-w-content relative my-4 flex w-full cursor-pointer break-inside-avoid-column flex-col gap-3 overflow-hidden rounded-3xl bg-dark-700 p-5 shadow-md duration-300 hover:-translate-y-3 xl:w-auto"
   >
     <h1 class="text-2xl font-semibold">{{ note.title }}</h1>
@@ -28,15 +40,11 @@ const formatDate = (dateString: string) => {
     <span class="absolute bottom-0 right-0 rounded-tl-3xl bg-dark-800 px-3 py-2 text-[14px]">{{
       formatDate(note.updated_at)
     }}</span>
+  </li>
 
-    <Teleport to="body">
-      <RouterView v-slot="{ Component }">
-        <transition name="modal">
-          <component :is="Component" />
-        </transition>
-      </RouterView>
-    </Teleport>
-  </RouterLink>
+  <Teleport to="body">
+    <NoteModal :note="note" v-if="modal" />
+  </Teleport>
 </template>
 
 <style scoped>
