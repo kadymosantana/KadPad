@@ -5,12 +5,12 @@ import { ref, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { vOnClickOutside } from "@vueuse/components";
 import { useToast } from "vue-toastification";
-import BeatLoader from "vue-spinner/src/BeatLoader.vue";
 
 import { api } from "@/services/api";
 import store from "@/store";
 
-import Tag from "../components/Tag.vue";
+import Tag from "@/components/Tag.vue";
+import Loader from "@/components/Loader.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -54,7 +54,7 @@ const deleteNote = async () => {
       <template v-if="note">
         <div class="w-full border-r border-solid border-dark-600 p-4 md:w-96 md:p-7">
           <h3 class="subtitle">
-            <img src="../assets/icons/description.svg" />
+            <img src="../assets/icons/description.svg" alt="Ícone" />
             Descrição
           </h3>
           <p class="h-36 overflow-auto md:h-[480px]">{{ note?.description }}</p>
@@ -63,7 +63,7 @@ const deleteNote = async () => {
         <div class="grid max-h-full w-full flex-col gap-6 p-4 md:w-96 md:p-7">
           <div>
             <h3 class="subtitle">
-              <img src="../assets/icons/link.svg" alt="" />
+              <img src="../assets/icons/link.svg" alt="Ícone" />
               Links
             </h3>
 
@@ -84,7 +84,7 @@ const deleteNote = async () => {
 
           <div>
             <h3 class="subtitle">
-              <img src="../assets/icons/tag.svg" />
+              <img src="../assets/icons/tag.svg" alt="Ícone" />
               Tags
             </h3>
 
@@ -114,7 +114,7 @@ const deleteNote = async () => {
       </template>
       <template v-else>
         <div>
-          <BeatLoader :loading="true" height="80px" color="#06b6d4" />
+          <Loader />
         </div>
       </template>
     </div>
