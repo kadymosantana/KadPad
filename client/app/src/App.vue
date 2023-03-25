@@ -1,22 +1,25 @@
 <template>
-  <div class="w-screen h-screen bg-dark-800">
+  <div class="h-screen w-screen bg-dark-800">
     <RouterView />
   </div>
 </template>
 
 <style>
-.modal-enter-from {
-  opacity: 0;
-}
-
+.modal-enter-from,
 .modal-leave-to {
   opacity: 0;
+  transition: all 0.3s;
 }
 
-.modal-enter-from .modal-container,
-.modal-leave-to .modal-container {
+.modal-enter-from,
+.modal-leave-to {
   -webkit-transform: scale(0);
   transform: scale(0);
+}
+
+.modal-enter-active,
+.modal-leave-active {
+  transition: all 0.3s;
 }
 
 *::-webkit-scrollbar {
