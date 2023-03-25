@@ -85,7 +85,7 @@ provide("menu", menu);
           :class="{ 'rounded-xl  bg-dark-800 ': !store.selectedTags.length }"
           class="flex cursor-pointer items-center gap-4 p-2"
         >
-          <img src="../assets/icons/hash.svg" />
+          <img src="../assets/icons/hash.svg" alt="Tag icon" />
           <span class="text-lg">Todas</span>
         </li>
 
@@ -96,7 +96,7 @@ provide("menu", menu);
           :class="{ 'rounded-xl bg-dark-800 ': tagAlreadySelected(tag.name) }"
           class="flex cursor-pointer items-center gap-4 p-2"
         >
-          <img src="../assets/icons/hash.svg" />
+          <img src="../assets/icons/hash.svg" alt="Ícone" />
           <span class="text-lg">{{ tag.name }}</span>
         </li>
       </ul>
