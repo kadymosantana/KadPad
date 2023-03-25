@@ -17,7 +17,7 @@ const wrapper = shallowMount(NoteCard, {
       ]
     }
   }
-});
+} as any);
 
 describe("NoteCard", () => {
   it("The card displays the note information passed as a prop", async () => {
