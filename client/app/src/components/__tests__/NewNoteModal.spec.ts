@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 
-import NewNoteModal from "@/views/NewNoteModal.vue";
+import NewNoteModal from "@/components/NewNoteModal.vue";
 import NoteItem from "@/components/NoteItem.vue";
 import ItemInput from "@/components/ItemInput.vue";
 
