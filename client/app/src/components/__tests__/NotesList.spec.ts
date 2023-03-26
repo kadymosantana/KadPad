@@ -93,6 +93,13 @@ describe("NotesList", async () => {
     });
   });
 
+  describe("Modal", () => {
+    it("O estado de 'modal' é true ao clicar no card", async () => {
+      await wrapper.find("button").trigger("click");
+      expect(wrapper.vm.modal).toBe(true);
+    });
+  });
+
   describe("Displaying notes in the interface", () => {
     const notesList = wrapper.find(".notes");
     const notes = wrapper.findAll(".note");
