@@ -2,9 +2,10 @@ import { describe, it, expect } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 
 import NoteCard from "@/components/NoteCard.vue";
+import NoteModal from "@/components/NoteModal.vue";
 import Tag from "@/components/Tag.vue";
 
-const wrapper = shallowMount(NoteCard, {
+const wrapper = shallowMount<any>(NoteCard, {
   props: {
     note: {
       id: 1,
@@ -17,9 +18,16 @@ const wrapper = shallowMount(NoteCard, {
       ]
     }
   }
-} as any);
+});
 
 describe("NoteCard", () => {
+  describe("Modal", () => {
+    it("O estado de 'modal' é true ao clicar no card", async () => {
+      await wrapper.find("li").trigger("click");
+      expect(wrapper.vm.modal).toBe(true);
+    });
+  });
+
   it("The card displays the note information passed as a prop", async () => {
     expect(wrapper.text()).toContain("Fundamentos do Vue.js");
     expect(wrapper.text()).toContain("Entendendo o framework progressivo de JavaScript");
