@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Note } from "@/types";
+import type { Note, ModalProvider } from "@/types";
 
 import { ref, onMounted, inject } from "vue";
 import { vOnClickOutside } from "@vueuse/components";
@@ -16,27 +16,7 @@ const props = defineProps<{
 
 const toast = useToast();
 
-const { modal, closeModal } = inject("modal");
-
-onMounted(() => {
-  // fetchNoteDetails();
-});
-
-// const note = ref<Note | null>(null);
-// const fetchNoteDetails = async () => {
-//   try {
-//     const noteDetails = await api.get(`/notes/${note.value?.id}`);
-//     note.value = noteDetails.data;
-//   } catch (error: any) {
-//     if (error.response.data.message === "Token inválido") {
-//       store.authData = null;
-//       localStorage.removeItem("@KadPad:user");
-//       localStorage.removeItem("@KadPad:token");
-
-//       toast.error("Sessão expirada. Faça login novamente.");
-//     }
-//   }
-// };
+const { modal, closeModal } = inject("modalProvider") as ModalProvider;
 
 const activeDeleteButton = ref("delete");
 const deleteNote = async () => {

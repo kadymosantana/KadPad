@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Note } from "@/types";
+import type { ModalProvider, Note } from "@/types";
 
 import { ref, watchEffect, provide } from "vue";
 import { useToast } from "vue-toastification";
@@ -37,8 +37,8 @@ watchEffect(async () => {
   }
 });
 
-provide("modal", {
-  modal,
+provide<ModalProvider>("modalProvider", {
+  modal: modal.value,
   closeModal
 });
 </script>

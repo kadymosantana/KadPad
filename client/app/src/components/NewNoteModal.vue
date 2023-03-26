@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { ModalProvider } from "@/types";
+
 import { ref, inject } from "vue";
 import { useRouter } from "vue-router";
 import { vOnClickOutside } from "@vueuse/components";
@@ -12,7 +14,7 @@ import ItemInput from "./ItemInput.vue";
 const router = useRouter();
 const toast = useToast();
 
-const { modal, closeModal } = inject("modal");
+const { modal, closeModal } = inject("modalProvider") as ModalProvider;
 
 const title = ref("");
 const description = ref("");

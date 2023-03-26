@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Note } from "@/types";
+import type { ModalProvider, Note } from "@/types";
 
 import { provide, ref } from "vue";
 
@@ -20,8 +20,8 @@ const formatDate = (dateString: string) => {
   return date.toLocaleDateString("pt-BR");
 };
 
-provide("modal", {
-  modal,
+provide<ModalProvider>("modalProvider", {
+  modal: modal.value,
   closeModal
 });
 </script>
