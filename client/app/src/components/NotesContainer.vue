@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 
-import store from "@/store";
+import { searchFiltersStore as searchFilters } from "@/stores/searchFilters";
 
 import NotesList from "./NotesList.vue";
 import InputContainer from "./InputContainer.vue";
 
 const title = ref("");
 watch(title, (value) => {
-  store.searchedNote = value;
+  searchFilters.setSearchedTitle(value);
 });
 </script>
 
