@@ -16,11 +16,11 @@ const emits = defineEmits(["update:modelValue"]);
   >
     <img :src="'src/assets/icons/' + icon + '.svg'" alt="Ícone" />
     <input
-      :value="modelValue"
       @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-      class="w-full bg-transparent placeholder:text-dark-500"
+      :value="modelValue"
       :type="type"
       :placeholder="placeholder"
+      class="w-full bg-transparent placeholder:text-dark-500"
     />
   </div>
 </template>
