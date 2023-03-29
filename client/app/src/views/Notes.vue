@@ -5,7 +5,10 @@ import NotesContainer from "@/components/NotesContainer.vue";
 
 <template>
   <div class="grid min-h-screen w-full overflow-hidden tracking-tight xl:w-screen">
-    <Sidebar />
     <NotesContainer />
+    <Sidebar />
+    <Teleport to="body">
+      <RouterView />
+    </Teleport>
   </div>
 </template>
