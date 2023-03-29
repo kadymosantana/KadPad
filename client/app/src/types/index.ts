@@ -1,8 +1,3 @@
-export interface ModalProvider {
-  modal: boolean;
-  closeModal: () => void;
-}
-
 export interface User {
   id: number;
   name: string;
@@ -36,13 +31,4 @@ export interface Tag {
   note_id: number;
   user_id: number;
   name: string;
-}
-
-export interface Store {
-  authData: {
-    user: User;
-    token: string;
-  } | null;
-  searchedNote: string;
-  selectedTags: string[];
 }
