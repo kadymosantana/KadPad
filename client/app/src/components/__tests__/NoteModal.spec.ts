@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { mount } from "@vue/test-utils";
 
-import NoteModal from "@/components/NoteModal.vue";
+import NoteModal from "@/views/NoteModal.vue";
 import Tag from "@/components/Tag.vue";
 
 const wrapper = mount<any>(NoteModal, {

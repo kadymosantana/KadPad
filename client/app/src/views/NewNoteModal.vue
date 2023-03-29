@@ -6,8 +6,8 @@ import { useToast } from "vue-toastification";
 
 import { api } from "@/services/api";
 
-import NoteItem from "./NoteItem.vue";
-import ItemInput from "./ItemInput.vue";
+import NoteItem from "@/components/NoteItem.vue";
+import ItemInput from "@/components/ItemInput.vue";
 
 const router = useRouter();
 const toast = useToast();
