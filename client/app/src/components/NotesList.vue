@@ -1,34 +1,33 @@
 <script setup lang="ts">
-import type { ModalProvider, Note } from "@/types";
+import type { Note } from "@/types";
 
-import { ref, watchEffect, provide } from "vue";
+import { ref, watchEffect } from "vue";
+import { useRoute } from "vue-router";
 import { useToast } from "vue-toastification";
 
 import { api } from "@/services/api";
-import store from "@/store";
+import { authDataStore as authData } from "@/stores/authData";
+import { searchFiltersStore as searchFilters } from "@/stores/searchFilters";
 
 import NoteCard from "./NoteCard.vue";
-import NewNoteModal from "./NewNoteModal.vue";
 
+const route = useRoute();
 const toast = useToast();
-
-const modal = ref(false);
-const closeModal = () => {
-  modal.value = false;
-};
 
 const notes = ref<Note[]>([]);
 
 watchEffect(async () => {
   try {
-    const fetchedNotes = await api.get(
-      `/notes?title=${store.searchedNote}&tags=${store.selectedTags}`
-    );
-    notes.value = fetchedNotes.data;
-    // notes.value = [];
+    if (route.name === "Notes") {
+      const fetchedNotes = await api.get(
+        `/notes?title=${searchFilters.searchedTitle}&tags=${searchFilters.selectedTags}`
+      );
+
+      notes.value = fetchedNotes.data;
+    }
   } catch (error: any) {
     if (error.response.data.message === "Token inválido") {
-      store.authData = null;
+      authData.$reset();
       localStorage.removeItem("@KadPad:user");
       localStorage.removeItem("@KadPad:token");
 
@@ -36,15 +35,10 @@ watchEffect(async () => {
     }
   }
 });
-
-provide<ModalProvider>("modalProvider", {
-  modal: modal.value,
-  closeModal
-});
 </script>
 
 <template>
-  <section :class="{ 'gap-20': !notes.length }" class="flex flex-col items-center md:items-start">
+  <section :class="{ 'gap-20': !notes.length }" class="flex flex-col md:items-start">
     <header
       class="flex w-full flex-col items-center justify-between gap-4 md:flex-row md:border-b md:border-solid md:border-dark-600 md:pb-4"
     >
@@ -53,20 +47,20 @@ provide<ModalProvider>("modalProvider", {
       >
         Minhas notas
       </h2>
-      <button
-        @click="modal = true"
+      <RouterLink
+        :to="{ name: 'New Note' }"
         class="flex w-full items-center gap-3 rounded-xl bg-cyan-500 p-2 duration-500 hover:bg-cyan-600 md:w-auto"
       >
         <img src="../assets/icons/add.svg" alt="Ícone" />
         <span class="text-lg text-dark-800">Nova nota</span>
-      </button>
+      </RouterLink>
     </header>
 
     <TransitionGroup
       v-if="notes.length"
       tag="ul"
       name="list"
-      class="notes pt-8 lg:columns-2 xl:columns-3 2xl:columns-4"
+      class="notes w-full pt-8 lg:columns-2 xl:columns-3 2xl:columns-4"
     >
       <li class="note" v-for="note in notes" :key="note.id">
         <NoteCard :note="note" />
@@ -79,15 +73,11 @@ provide<ModalProvider>("modalProvider", {
       src="https://user-images.githubusercontent.com/98963793/221386784-f28b7347-a757-47bc-951a-8622354c3e07.png"
       alt="KadPad Logo"
     />
-
-    <Teleport to="body">
-      <NewNoteModal v-if="modal" />
-    </Teleport>
   </section>
 </template>
 
 <style scoped>
-.list-move, /* apply transition to moving elements */
+.list-move,
 .list-enter-active,
 .list-leave-active {
   transition: all 0.4s ease-in-out;
