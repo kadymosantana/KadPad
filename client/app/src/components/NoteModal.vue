@@ -1,38 +1,57 @@
 <script setup lang="ts">
-import type { Note, ModalProvider } from "@/types";
+import type { Note } from "@/types";
 
-import { ref, onMounted, inject } from "vue";
+import { ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import { vOnClickOutside } from "@vueuse/components";
 import { useToast } from "vue-toastification";
 
 import { api } from "@/services/api";
+import { authDataStore as authData } from "@/stores/authData";
 
-import Tag from "@/components/Tag.vue";
 import Loader from "@/components/Loader.vue";
+import Tag from "@/components/Tag.vue";
 
-const props = defineProps<{
-  note: Note;
-}>();
-
+const router = useRouter();
+const route = useRoute();
 const toast = useToast();
 
-const { modal, closeModal } = inject("modalProvider") as ModalProvider;
+const note = ref<Note | null>(null);
+
+const fetchNoteDetails = async () => {
+  try {
+    const noteDetails = await api.get(`/notes/${route.params.id}`);
+    note.value = noteDetails.data;
+  } catch (error: any) {
+    if (error.response.data.message === "Token inválido") {
+      authData.$reset();
+      localStorage.removeItem("@KadPad:user");
+      localStorage.removeItem("@KadPad:token");
+      toast.error("Sessão expirada. Faça login novamente.");
+    }
+  }
+};
 
 const activeDeleteButton = ref("delete");
 const deleteNote = async () => {
-  await api.delete(`/notes/${props.note.id}`);
+  await api.delete(`/notes/${note.value?.id}`);
+
   toast.success("Nota excluída com sucesso!");
-  closeModal();
+  router.replace({ name: "Notes" });
 };
+
+onMounted(() => {
+  fetchNoteDetails();
+});
 </script>
 
 <template>
-  <div class="modal-wrapper p-5">
-    <Transition name="modal" appear>
+  <Transition name="modal" appear>
+    <div class="modal-wrapper p-5">
       <div
-        v-on-click-outside="() => closeModal()"
+        v-on-click-outside="() => router.replace({ name: 'Notes' })"
         :class="{ 'items-center justify-center bg-transparent': !note, 'bg-dark-800': note }"
-        class="flex w-full flex-col overflow-hidden rounded-3xl sm:w-[700px] md:h-[550px] md:flex-row md:bg-dark-800"
+        class="modal flex w-full flex-col overflow-hidden rounded-3xl duration-300 sm:w-[700px] md:h-[550px] md:flex-row md:bg-dark-800"
       >
         <template v-if="note">
           <div class="w-full border-r border-solid border-dark-600 p-4 md:w-96 md:p-7">
@@ -86,8 +105,8 @@ const deleteNote = async () => {
                 Excluir nota
               </button>
               <button
-                @click="deleteNote"
                 v-else
+                @click="deleteNote"
                 class="confirm w-full bg-[#fff7001a] p-3 text-yellow-600"
               >
                 Confirmar exclusão
@@ -95,12 +114,8 @@ const deleteNote = async () => {
             </div>
           </div>
         </template>
-        <template v-else>
-          <div>
-            <Loader />
-          </div>
-        </template>
+        <Loader v-else />
       </div>
-    </Transition>
-  </div>
+    </div>
+  </Transition>
 </template>

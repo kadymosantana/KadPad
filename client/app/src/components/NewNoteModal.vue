@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import type { ModalProvider } from "@/types";
-
-import { ref, inject } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { vOnClickOutside } from "@vueuse/components";
 import { useToast } from "vue-toastification";
@@ -13,8 +11,6 @@ import ItemInput from "./ItemInput.vue";
 
 const router = useRouter();
 const toast = useToast();
-
-const { modal, closeModal } = inject("modalProvider") as ModalProvider;
 
 const title = ref("");
 const description = ref("");
@@ -58,12 +54,13 @@ const createNote = async () => {
       "Você deixou uma tag para adicionar. Clique no botão de adicionar ou deixe o campo vazio."
     );
 
-  await api.post("/notes", {
+  const newNote = {
     title: title.value,
     description: description.value,
     links: links.value,
     tags: tags.value
-  });
+  };
+  await api.post("/notes", newNote);
 
   title.value = "";
   description.value = "";
@@ -71,22 +68,22 @@ const createNote = async () => {
   tags.value = [];
 
   toast.success("Nota criada com sucesso!");
-  closeModal();
+  router.replace({ name: "Notes" });
 };
 </script>
 
 <template>
-  <div class="modal-wrapper">
-    <Transition name="modal" appear>
+  <Transition name="modal" appear>
+    <div class="modal-wrapper">
       <div
-        v-on-click-outside="() => closeModal()"
-        class="modal-container max-w-screen overflow-auto"
+        v-on-click-outside="() => router.replace({ name: 'Notes' })"
+        class="modal max-w-screen gap-6 overflow-auto p-6"
       >
         <header
           class="flex items-center justify-between border-b border-solid border-dark-600 pb-4"
         >
           <h1 class="text-3xl font-light">Nova nota</h1>
-          <button @click="closeModal" class="rounded-xl bg-[#ff00001a] p-2">
+          <button @click="router.replace({ name: 'Notes' })" class="rounded-xl bg-[#ff00001a] p-2">
             <img src="../assets/icons/close.svg" alt="Fechar" />
           </button>
         </header>
@@ -104,7 +101,8 @@ const createNote = async () => {
             class="w-full resize-none rounded-2xl border-2 border-transparent bg-dark-700 p-3 duration-500 placeholder:text-dark-500 focus:border-solid focus:border-cyan-500"
             rows="3"
             placeholder="Descrição"
-          ></textarea>
+          >
+          </textarea>
         </div>
 
         <div>
@@ -114,7 +112,7 @@ const createNote = async () => {
           </h3>
 
           <ul v-if="links.length" class="links mb-3 flex max-h-20 flex-col gap-2 overflow-auto">
-            <NoteItem v-for="link in links" :value="link" type="link" @remove="removeLink" />
+            <NoteItem v-for="link in links" @remove="removeLink" :value="link" type="link" />
           </ul>
 
           <ItemInput @add="addLink" v-model="newLink" icon="add-link" placeholder="Novo link" />
@@ -135,6 +133,6 @@ const createNote = async () => {
 
         <button @click="createNote" class="primary-button">Criar nota</button>
       </div>
-    </Transition>
-  </div>
+    </div>
+  </Transition>
 </template>
