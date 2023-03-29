@@ -12,8 +12,8 @@
     @apply fixed top-0 left-0 z-10 flex h-screen w-screen items-center justify-center bg-[#00000090] p-4 backdrop-blur-sm duration-300;
   }
 
-  .modal-container {
-    @apply flex max-h-max w-[480px] flex-col gap-6 rounded-3xl bg-dark-800 p-6 tracking-tight shadow-lg duration-300 ease-in-out;
+  .modal {
+    @apply flex max-h-max w-[480px] flex-col rounded-3xl bg-dark-800 tracking-tight shadow-lg duration-300 ease-in-out;
   }
 
   .primary-button {
