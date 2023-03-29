@@ -1,31 +1,31 @@
 <script setup lang="ts">
 import type { Tag } from "@/types";
 
-import { ref, onMounted, provide } from "vue";
+import { ref, provide, watch } from "vue";
+import { useRoute } from "vue-router";
 import { vOnClickOutside } from "@vueuse/components";
 import { useToast } from "vue-toastification";
 
 import { api } from "@/services/api";
-import store from "@/store";
+import { authDataStore as authData } from "@/stores/authData";
+import { searchFiltersStore as searchFilters } from "@/stores/searchFilters";
 
 import ProfileCard from "./ProfileCard.vue";
 
-onMounted(() => {
-  fetchTags();
-});
-
+const route = useRoute();
 const toast = useToast();
 
 const menu = ref(false);
 
 const tags = ref<Tag[]>([]);
+
 const fetchTags = async () => {
   try {
     const tagsData = await api.get("/tags");
     tags.value = tagsData.data;
   } catch (error: any) {
     if (error.response.data.message === "Token inválido") {
-      store.authData = null;
+      authData.$reset();
       localStorage.removeItem("@KadPad:user");
       localStorage.removeItem("@KadPad:token");
 
@@ -34,16 +34,21 @@ const fetchTags = async () => {
   }
 };
 
-const tagAlreadySelected = (tagName: string) => store.selectedTags.includes(tagName);
+watch(
+  () => route.name,
+  () => {
+    fetchTags();
+  },
+  { immediate: true }
+);
 
 const selectTag = (tagName: string) => {
   setTimeout(() => (menu.value = false), 200);
 
-  if (tagAlreadySelected(tagName)) {
-    const index = store.selectedTags.indexOf(tagName);
-    store.selectedTags.splice(index, 1);
+  if (searchFilters.tagIsAlreadySelected(tagName)) {
+    searchFilters.removeTag(tagName);
   } else {
-    store.selectedTags.push(tagName);
+    searchFilters.addTag(tagName);
   }
 };
 
@@ -81,8 +86,10 @@ provide("menu", menu);
         class="flex max-h-60 flex-col gap-2 overflow-auto border-b border-solid border-dark-600 pb-4"
       >
         <li
-          @click="store.selectedTags = []"
-          :class="{ 'rounded-xl  bg-dark-800 ': !store.selectedTags.length }"
+          @click="searchFilters.$reset()"
+          :class="{
+            'rounded-xl  bg-dark-800 ': !searchFilters.selectedTags.length
+          }"
           class="flex cursor-pointer items-center gap-4 p-2"
         >
           <img src="../assets/icons/hash.svg" alt="Tag icon" />
@@ -93,7 +100,9 @@ provide("menu", menu);
           @click="selectTag(tag.name)"
           v-for="tag in tags"
           :key="tag.id"
-          :class="{ 'rounded-xl bg-dark-800 ': tagAlreadySelected(tag.name) }"
+          :class="{
+            'rounded-xl bg-dark-800 ': searchFilters.tagIsAlreadySelected(tag.name)
+          }"
           class="flex cursor-pointer items-center gap-4 p-2"
         >
           <img src="../assets/icons/hash.svg" alt="Ícone" />
