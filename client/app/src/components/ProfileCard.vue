@@ -2,12 +2,10 @@
 import { computed, inject } from "vue";
 
 import { api } from "@/services/api";
-import store from "@/store";
-
-const userData = store.authData!.user;
+import { authDataStore as authData } from "@/stores/authData";
 
 const avatarURL = computed(() => {
-  if (userData.avatar) return `${api.defaults.baseURL}/files/${userData.avatar}`;
+  if (authData.user?.avatar) return `${api.defaults.baseURL}/files/${authData.user?.avatar}`;
   else return "src/assets/icons/user.svg";
 });
 
@@ -21,8 +19,8 @@ const menu = inject<boolean>("menu");
   >
     <img
       :src="avatarURL"
-      :class="{ 'bg-dark-900 p-4': !userData.avatar }"
-      class="items-center self-start rounded-full bg-dark-800 shadow-md"
+      :class="{ 'bg-dark-900 p-4': !authData.user?.avatar }"
+      class="h-16 w-16 items-center self-start rounded-full bg-dark-800 object-cover shadow-md"
       width="64"
       height="64"
       alt="Avatar"

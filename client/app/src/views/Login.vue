@@ -4,7 +4,7 @@ import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 
 import { api } from "@/services/api";
-import store from "@/store";
+import { authDataStore as authData } from "@/stores/authData";
 
 import InputContainer from "@/components/InputContainer.vue";
 import LoginTypeButton from "@/components/LoginTypeButton.vue";
@@ -24,8 +24,8 @@ onMounted(() => {
 
   if (user && token) {
     api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    store.authData = { user: JSON.parse(user), token };
-    router.push("/home");
+    authData.setData(JSON.parse(user), token);
+    router.push("/notes");
   }
 });
 
@@ -44,13 +44,13 @@ const signIn = async () => {
     });
     const { user, token } = data.data;
 
-    store.authData = { user, token };
+    authData.setData(user, token);
     localStorage.setItem("@KadPad:user", JSON.stringify(user));
     localStorage.setItem("@KadPad:token", token);
 
     api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    router.push("/home");
+    router.push("/notes");
   } catch (error: any) {
     if (error.response) return toast.error(error.response.data.message);
     else return toast.error("Não foi possível fazer o login.");
@@ -95,15 +95,15 @@ const signUp = async () => {
           :activeLoginType="activeLoginType"
           type="signIn"
           @change-login-type="activeLoginType = 'signIn'"
-          >Entrar</LoginTypeButton
-        >
+          >Entrar
+        </LoginTypeButton>
 
         <LoginTypeButton
           :activeLoginType="activeLoginType"
           type="signUp"
           @change-login-type="activeLoginType = 'signUp'"
-          >Cadastrar</LoginTypeButton
-        >
+          >Cadastrar
+        </LoginTypeButton>
       </div>
 
       <TransitionGroup
