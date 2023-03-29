@@ -3,27 +3,26 @@ import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 
-import store from "@/store";
 import { api } from "@/services/api";
+import { authDataStore as authData } from "@/stores/authData";
 
 import InputContainer from "@/components/InputContainer.vue";
 
 const router = useRouter();
 const toast = useToast();
 
-const userData = computed(() => store.authData!.user);
 const avatarURL = computed(() => {
-  if (userData.value.avatar) {
-    return `${api.defaults.baseURL}/files/${userData.value.avatar}`;
+  if (authData.user?.avatar) {
+    return `${api.defaults.baseURL}/files/${authData.user?.avatar}`;
   } else {
     return "src/assets/icons/user.svg";
   }
 });
 
-const avatar = computed(() => userData!.value.avatar);
+const avatar = computed(() => authData.user?.avatar);
 
-const name = ref(userData.value.name);
-const email = ref(userData.value.email);
+const name = ref(authData.user?.name);
+const email = ref(authData.user?.email);
 const oldPassword = ref("");
 const newPassword = ref("");
 
@@ -36,7 +35,7 @@ const updateUserAvatar = async (e: Event) => {
 
     const updatedUser = await api.patch("/users/avatar", fileUploadForm);
 
-    store.authData!.user = updatedUser.data;
+    authData.setData(updatedUser.data);
     localStorage.setItem("@KadPad:user", JSON.stringify(updatedUser.data));
 
     toast.success("Avatar atualizado com sucesso!");
@@ -55,7 +54,7 @@ const updateUserData = async () => {
       old_password: oldPassword.value
     });
 
-    store.authData!.user = updatedUser.data;
+    authData.setData(updatedUser.data);
     localStorage.setItem("@KadPad:user", JSON.stringify(updatedUser.data));
 
     toast.success("Perfil atualizado com sucesso!");
@@ -69,7 +68,7 @@ const updateUserData = async () => {
 };
 
 const signOut = () => {
-  store.authData = null;
+  authData.reset();
   localStorage.removeItem("@KadPad:user");
   localStorage.removeItem("@KadPad:token");
 
