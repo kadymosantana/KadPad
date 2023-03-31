@@ -3,8 +3,8 @@ import { reactive } from "vue";
 interface searchFiltersStore {
   searchedTitle: string;
   selectedTags: string[];
-  setSearchedTitle: (title: string) => void;
   tagIsAlreadySelected: (tagName: string) => boolean;
+  setSearchedTitle: (title: string) => void;
   addTag: (tagName: string) => void;
   removeTag: (tagName: string) => void;
   $reset: () => void;
@@ -15,14 +15,16 @@ export const searchFiltersStore = reactive<searchFiltersStore>({
   searchedTitle: "",
   selectedTags: [],
 
+  // Getters
+
+  tagIsAlreadySelected(tagName: string) {
+    return this.selectedTags.includes(tagName);
+  },
+
   // Actions
 
   setSearchedTitle(title: string) {
     this.searchedTitle = title;
-  },
-
-  tagIsAlreadySelected(tagName: string) {
-    return this.selectedTags.includes(tagName);
   },
 
   addTag(tagName: string) {
