@@ -29,7 +29,7 @@ const menu = inject<boolean>("menu");
       <span class="block truncate text-sm"
         >Seja bem vindo,
         <br />
-        <span class="text-ellipsis text-lg font-semibold">Kádymo Santana</span>
+        <span class="text-ellipsis text-lg font-semibold">{{ authData.user?.name }}</span>
       </span>
       <RouterLink
         to="/profile"
