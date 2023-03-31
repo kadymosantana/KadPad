@@ -4,7 +4,7 @@ import { flushPromises, shallowMount } from "@vue/test-utils";
 import MockAdapter from "axios-mock-adapter";
 
 import { api } from "@/services/api";
-import store from "@/store";
+import { searchFiltersStore as searchFilters } from "@/stores/searchFilters";
 
 import Sidebar from "@/components/Sidebar.vue";
 
@@ -18,11 +18,7 @@ const mockData = [
 describe("Sidebar", async () => {
   const mockAxios: MockAdapter = new MockAdapter(api);
 
-  mockAxios
-    .onGet("/tags", {
-      headers: { Authorization: `Bearer ${store.authData?.token}` }
-    })
-    .reply(200, mockData);
+  mockAxios.onGet("/tags").reply(200, mockData);
 
   const result = await api.get("/tags");
   wrapper.vm.tags = result.data;
@@ -40,8 +36,8 @@ describe("Sidebar", async () => {
     });
 
     it("Tags are displayed in the interface", () => {
-      expect(wrapper.text()).toContain("vuejs");
-      expect(wrapper.text()).toContain("javascript");
+      expect(wrapper.text()).toContain(mockData[0].name);
+      expect(wrapper.text()).toContain(mockData[1].name);
     });
   });
 
@@ -50,10 +46,10 @@ describe("Sidebar", async () => {
 
     it("When clicked, the tag is added or removed to the list of selected tags", async () => {
       await vuejsTag.trigger("click");
-      expect(store.selectedTags.includes("vuejs")).toBe(true);
+      expect(searchFilters.selectedTags.includes("vuejs")).toBe(true);
 
       await vuejsTag.trigger("click");
-      expect(store.selectedTags.includes("vuejs")).toBe(false);
+      expect(searchFilters.selectedTags.includes("vuejs")).toBe(false);
     });
 
     it("When clicked, the tag receives styling classes", async () => {
