@@ -50,9 +50,9 @@ const signIn = async () => {
 
     api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    router.push("/notes");
+    router.push({ name: "Notes" });
   } catch (error: any) {
-    if (error.response) return toast.error(error.response.data.message);
+    if (error.response) return toast.error(error.response.data?.message);
     else return toast.error("Não foi possível fazer o login.");
   }
 };
@@ -66,7 +66,7 @@ const signUp = async () => {
     toast.success("Cadastro feito com sucesso.");
     activeLoginType.value = "signIn";
   } catch (error: any) {
-    if (error.response) return toast.error(error.response.data.message);
+    if (error.response) return toast.error(error.response.data?.message);
     else return toast.error("Não foi possível fazer o cadastro.");
   }
 };
