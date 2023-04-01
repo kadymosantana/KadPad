@@ -37,7 +37,7 @@ describe("Login", () => {
 
     const wrapper = mount<any>(Login);
 
-    it("A função 'push' do roteador é chamada ao fazer login com uma requisição de sucesso", async () => {
+    it("Router 'push' function is called upon login with a success request", async () => {
       wrapper.vm.activeLoginType = "signIn";
 
       wrapper.vm.email = "E-mail teste";
@@ -49,12 +49,12 @@ describe("Login", () => {
       expect(useRouter().push).toHaveBeenCalledWith({ name: "Notes" });
     });
 
-    it("A função 'setData' da store de autenticação é chamada ao fazer login com uma requisição de sucesso", async () => {
+    it("AuthStore function 'setData' is called upon login with a success request", async () => {
       await wrapper.vm.signIn();
       expect(authDataSpyon).toHaveBeenCalled();
     });
 
-    it("A função 'setItem' do localStorage é chamada ao fazer login com uma requisição de sucesso", async () => {
+    it("LocalStorage's 'setItem' function is called upon login with a success request", async () => {
       await wrapper.vm.signIn();
       expect(setItemStorageSpyon).toHaveBeenCalledTimes(2);
     });
@@ -63,7 +63,7 @@ describe("Login", () => {
   describe("SignUp", () => {
     const wrapper = mount<any>(Login);
 
-    it("Ao tentar se cadastrar sem preencher todos os campos, o toast de erro é chamado", async () => {
+    it("When trying to register without filling all the fields, the error toast is called", async () => {
       wrapper.vm.activeLoginType = "signUp";
 
       wrapper.vm.name = "Nome teste";
@@ -77,7 +77,7 @@ describe("Login", () => {
       expect(useToast().error).toHaveBeenCalledWith("Preencha todos os campos.");
     });
 
-    it("Ao tentar se cadastrar com todos os campos preenchidos, o toast de sucesso é exibido", async () => {
+    it("When trying to register with all fields filled in, the success toast is called", async () => {
       wrapper.vm.name = "Nome teste";
       wrapper.vm.email = "E-mail teste";
       wrapper.vm.password = "Senha teste";
