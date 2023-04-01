@@ -68,7 +68,7 @@ const updateUserData = async () => {
 };
 
 const signOut = () => {
-  authData.reset();
+  authData.$reset();
   localStorage.removeItem("@KadPad:user");
   localStorage.removeItem("@KadPad:token");
 
