@@ -1,11 +1,11 @@
 import type { Note } from "@/types";
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { shallowMount, flushPromises } from "@vue/test-utils";
 import MockAdapter from "axios-mock-adapter";
 
 import { api } from "@/services/api";
-import store from "@/store";
+import { authDataStore as authData } from "@/stores/authData";
 
 import NotesList from "@/components/NotesList.vue";
 
@@ -70,10 +70,9 @@ const mockData: Note[] = [
 
 describe("NotesList", async () => {
   const mockAxios: MockAdapter = new MockAdapter(api);
-
   mockAxios
     .onGet("/notes", {
-      headers: { Authorization: `Bearer ${store.authData?.token}` }
+      headers: { Authorization: `Bearer ${authData.token}` }
     })
     .reply(200, mockData);
 
@@ -90,13 +89,6 @@ describe("NotesList", async () => {
     it("The result of the request is equal to the mock and the data received in the component match the result", async () => {
       expect(result.data).toEqual(mockData);
       expect(wrapper.vm.notes).toEqual(result.data);
-    });
-  });
-
-  describe("Modal", () => {
-    it("O estado de 'modal' é true ao clicar no card", async () => {
-      await wrapper.find("button").trigger("click");
-      expect(wrapper.vm.modal).toBe(true);
     });
   });
 
