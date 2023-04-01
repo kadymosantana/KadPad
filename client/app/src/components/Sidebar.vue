@@ -11,6 +11,7 @@ import { authDataStore as authData } from "@/stores/authData";
 import { searchFiltersStore as searchFilters } from "@/stores/searchFilters";
 
 import ProfileCard from "./ProfileCard.vue";
+import router from "@/router";
 
 const route = useRoute();
 const toast = useToast();
@@ -24,18 +25,19 @@ const fetchTags = async () => {
     const tagsData = await api.get("/tags");
     tags.value = tagsData.data;
   } catch (error: any) {
-    if (error.response.data.message === "Token inválido") {
+    if (error.response?.data?.message === "Token inválido") {
       authData.$reset();
       localStorage.removeItem("@KadPad:user");
       localStorage.removeItem("@KadPad:token");
 
       toast.error("Sessão expirada. Faça login novamente");
+      router.replace({ name: "Login" });
     }
   }
 };
 
 watch(
-  () => route.name,
+  () => route?.name,
   () => {
     fetchTags();
   },

@@ -23,11 +23,13 @@ const fetchNoteDetails = async () => {
     const noteDetails = await api.get(`/notes/${route.params.id}`);
     note.value = noteDetails.data;
   } catch (error: any) {
-    if (error.response.data.message === "Token inválido") {
+    if (error.response?.data?.message === "Token inválido") {
       authData.$reset();
       localStorage.removeItem("@KadPad:user");
       localStorage.removeItem("@KadPad:token");
+
       toast.error("Sessão expirada. Faça login novamente.");
+      router.replace({ name: "Login" });
     }
   }
 };
@@ -100,14 +102,16 @@ onMounted(() => {
               <button
                 v-if="activeDeleteButton === 'delete'"
                 @click="activeDeleteButton = 'confirm'"
-                class="delete w-full bg-[#ff00001a] p-3 text-red-700"
+                class="w-full bg-[#ff00001a] p-3 text-red-700"
+                data-test-id="delete-note-button"
               >
                 Excluir nota
               </button>
               <button
                 v-else
                 @click="deleteNote"
-                class="confirm w-full bg-[#fff7001a] p-3 text-yellow-600"
+                class="w-full bg-[#fff7001a] p-3 text-yellow-600"
+                data-test-id="confirm-button"
               >
                 Confirmar exclusão
               </button>

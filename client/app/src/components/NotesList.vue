@@ -2,7 +2,7 @@
 import type { Note } from "@/types";
 
 import { ref, watchEffect } from "vue";
-import { useRoute } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { useToast } from "vue-toastification";
 
 import { api } from "@/services/api";
@@ -11,6 +11,7 @@ import { searchFiltersStore as searchFilters } from "@/stores/searchFilters";
 
 import NoteCard from "./NoteCard.vue";
 
+const router = useRouter();
 const route = useRoute();
 const toast = useToast();
 
@@ -26,12 +27,13 @@ watchEffect(async () => {
       notes.value = fetchedNotes.data;
     }
   } catch (error: any) {
-    if (error.response.data.message === "Token inválido") {
+    if (error.response?.data?.message === "Token inválido") {
       authData.$reset();
       localStorage.removeItem("@KadPad:user");
       localStorage.removeItem("@KadPad:token");
 
       toast.error("Sessão expirada. Faça login novamente");
+      router.replace({ name: "Login" });
     }
   }
 });
@@ -50,6 +52,7 @@ watchEffect(async () => {
       <RouterLink
         :to="{ name: 'New Note' }"
         class="flex w-full items-center gap-3 rounded-xl bg-cyan-500 p-2 duration-500 hover:bg-cyan-600 md:w-auto"
+        data-test-id="new-note-link"
       >
         <img src="../assets/icons/add.svg" alt="Ícone" />
         <span class="text-lg text-dark-800">Nova nota</span>
