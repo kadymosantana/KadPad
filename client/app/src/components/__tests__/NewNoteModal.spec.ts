@@ -1,14 +1,81 @@
-import { describe, it, expect, vi } from "vitest";
-import { shallowMount } from "@vue/test-utils";
+import { beforeEach, describe, it, expect, vi } from "vitest";
+import { mount } from "@vue/test-utils";
+import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
+import MockAdapter from "axios-mock-adapter";
+
+import { api } from "@/services/api";
 
 import NewNoteModal from "@/views/NewNoteModal.vue";
 import NoteItem from "@/components/NoteItem.vue";
 import ItemInput from "@/components/ItemInput.vue";
 
-const wrapper = shallowMount<any>(NewNoteModal);
-
 describe("NewNoteModal", () => {
+  const mockAxios: MockAdapter = new MockAdapter(api);
+  mockAxios.onPost("/notes").reply(200);
+
+  describe("Vue Router", async () => {
+    vi.mock("vue-router");
+
+    useRouter.mockReturnValue({
+      replace: vi.fn()
+    });
+
+    const wrapper = mount<any>(NewNoteModal);
+
+    it("When clicking on the close button of the modal, the 'replace' method is called on the router", async () => {
+      await wrapper.find("header button").trigger("click");
+      expect(useRouter().replace).toHaveBeenCalled();
+      expect(useRouter().replace).toHaveBeenCalledWith({ name: "Notes" });
+    });
+  });
+
+  describe("Feedback messages of vue-toastification", () => {
+    vi.mock("vue-toastification");
+    useToast.mockReturnValue({
+      success: vi.fn(),
+      warning: vi.fn(),
+      error: vi.fn()
+    });
+
+    beforeEach(() => {
+      useToast().success.mockReset();
+      useToast().warning.mockReset();
+      useToast().error.mockReset();
+    });
+
+    const wrapper = mount<any>(NewNoteModal);
+    it("When pressing the create note button with the title and description fields filled in, a success toast is issued", async () => {
+      wrapper.vm.title = "Título teste";
+      wrapper.vm.description = "Descrição teste";
+
+      await wrapper.find("[data-test-id='create-note-button']").trigger("click");
+      expect(useToast().success).toHaveBeenCalledTimes(1);
+      expect(useToast().success).toHaveBeenCalledWith("Nota criada com sucesso!");
+    });
+
+    it("When pressing the create note button with the title or description fields empty, an error toast is issued", async () => {
+      const button = wrapper.find("[data-test-id='create-note-button']");
+
+      wrapper.vm.title = "Título teste";
+      wrapper.vm.description = "";
+
+      await button.trigger("click");
+      expect(useToast().error).toHaveBeenCalledTimes(1);
+      expect(useToast().error).toHaveBeenCalledWith("O campo de descrição é obrigatório.");
+
+      wrapper.vm.title = "";
+      wrapper.vm.description = "Descrição teste";
+
+      await button.trigger("click");
+      expect(useToast().error).toHaveBeenCalledTimes(2);
+      expect(useToast().error).toHaveBeenCalledWith("O campo de título é obrigatório.");
+    });
+  });
+
   describe("Links list", () => {
+    const wrapper = mount<any>(NewNoteModal);
+
     const addLinkButton = wrapper.findAllComponents(ItemInput)[0];
 
     it("Link list is not rendered if there are no links", () => {
@@ -31,6 +98,8 @@ describe("NewNoteModal", () => {
   });
 
   describe("Tags list", () => {
+    const wrapper = mount<any>(NewNoteModal);
+
     const addTagButton = wrapper.findAllComponents(ItemInput)[1];
 
     it("Tag list is not rendered if there are no tags", () => {
