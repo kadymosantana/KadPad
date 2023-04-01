@@ -131,7 +131,9 @@ const createNote = async () => {
           <ItemInput @add="addTag" v-model="newTag" icon="add-tag" placeholder="Nova tag" />
         </div>
 
-        <button @click="createNote" class="primary-button">Criar nota</button>
+        <button @click="createNote" class="primary-button" data-test-id="create-note-button">
+          Criar nota
+        </button>
       </div>
     </div>
   </Transition>
