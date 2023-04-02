@@ -1,6 +1,6 @@
 import type { Note } from "@/types/index";
 
-import { describe, it, expect, vi } from "vitest";
+import { type Mock, describe, it, expect, vi } from "vitest";
 import { flushPromises, mount } from "@vue/test-utils";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
@@ -83,15 +83,15 @@ describe("NoteModal", async () => {
 
   describe("Note deletion", () => {
     vi.mock("vue-router");
-    vi.mock("vue-toastification");
-
-    useRouter.mockReturnValue({
+    (useRouter as Mock).mockReturnValue({
       replace: vi.fn()
     });
 
-    useToast.mockReturnValue({
-      success: vi.fn()
-    });
+    vi.mock("vue-toastification", () => ({
+      useToast: vi.fn(() => ({
+        success: vi.fn()
+      }))
+    }));
 
     const wrapper = mount<any>(NoteModal);
     wrapper.vm.note = mockData;

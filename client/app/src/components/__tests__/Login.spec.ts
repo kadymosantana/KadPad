@@ -1,4 +1,4 @@
-import { afterEach, describe, it, expect, vi } from "vitest";
+import { type Mock, afterEach, describe, it, expect, vi } from "vitest";
 import { mount } from "@vue/test-utils";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
@@ -15,17 +15,15 @@ describe("Login", () => {
   mockAxios.onPost("/users").reply(201);
 
   vi.mock("vue-router");
-  vi.mock("vue-toastification");
-  vi.mock("@/stores/authData");
-
-  useRouter.mockReturnValue({
+  (useRouter as Mock).mockReturnValue({
     push: vi.fn()
   });
 
-  useToast.mockReturnValue({
-    success: vi.fn(),
-    error: vi.fn()
-  });
+  vi.mock("vue-toastification", () => ({
+    useToast: vi.fn(() => ({
+      success: vi.fn()
+    }))
+  }));
 
   describe("SignIn", () => {
     const authDataSpyon = vi.spyOn(authData, "setData");

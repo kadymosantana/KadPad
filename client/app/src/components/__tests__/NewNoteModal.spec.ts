@@ -1,4 +1,4 @@
-import { beforeEach, describe, it, expect, vi } from "vitest";
+import { beforeEach, describe, it, expect, vi, type Mock } from "vitest";
 import { mount } from "@vue/test-utils";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
@@ -17,7 +17,7 @@ describe("NewNoteModal", () => {
   describe("Vue Router", async () => {
     vi.mock("vue-router");
 
-    useRouter.mockReturnValue({
+    (useRouter as Mock).mockReturnValue({
       replace: vi.fn()
     });
 
@@ -31,18 +31,13 @@ describe("NewNoteModal", () => {
   });
 
   describe("Feedback messages of vue-toastification", () => {
-    vi.mock("vue-toastification");
-    useToast.mockReturnValue({
-      success: vi.fn(),
-      warning: vi.fn(),
-      error: vi.fn()
-    });
-
-    beforeEach(() => {
-      useToast().success.mockReset();
-      useToast().warning.mockReset();
-      useToast().error.mockReset();
-    });
+    vi.mock("vue-toastification", () => ({
+      useToast: vi.fn(() => ({
+        success: vi.fn(),
+        warning: vi.fn(),
+        error: vi.fn()
+      }))
+    }));
 
     const wrapper = mount<any>(NewNoteModal);
     it("When pressing the create note button with the title and description fields filled in, a success toast is issued", async () => {
