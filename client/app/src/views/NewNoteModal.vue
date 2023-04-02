@@ -22,8 +22,10 @@ const newTag = ref("");
 const tags = ref<string[]>([]);
 
 const addLink = () => {
-  links.value.push(newLink.value);
-  newLink.value = "";
+  if (newLink.value) {
+    links.value.push(newLink.value);
+    newLink.value = "";
+  }
 };
 
 const removeLink = (link: string) => {
@@ -32,8 +34,10 @@ const removeLink = (link: string) => {
 };
 
 const addTag = () => {
-  tags.value.push(newTag.value);
-  newTag.value = "";
+  if (newTag.value) {
+    tags.value.push(newTag.value);
+    newTag.value = "";
+  }
 };
 
 const removeTag = (tag: string) => {
