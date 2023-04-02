@@ -26,14 +26,4 @@
 .modal-leave-active .modal {
   transition: transform 0.3s cubic-bezier(0.5, 0, 0.5, 1), opacity 0.3s linear;
 }
-
-*::-webkit-scrollbar {
-  width: 5px;
-  height: 3px;
-}
-
-*::-webkit-scrollbar-thumb {
-  background-color: #06b6d4;
-  border-radius: 50px;
-}
 </style>
