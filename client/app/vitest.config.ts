@@ -8,7 +8,6 @@ export default mergeConfig(
   defineConfig({
     test: {
       globals: true,
-      mockReset: true,
       clearMocks: true,
       environment: "jsdom",
       exclude: [...configDefaults.exclude, "e2e/*"],
