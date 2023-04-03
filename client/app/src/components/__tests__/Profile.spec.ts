@@ -35,14 +35,14 @@ describe("Profile", () => {
 
     const wrapper = mount(Profile);
 
-    it("Ao atualizar o avatar escolhendo um arquivo, a função da store de atualizar os dados de autenticação é chamada com os dados atualizados do usuário", async () => {
+    it("When updating the avatar by choosing a file, the store's function of updating the authentication data is called with the updated user data", async () => {
       await wrapper.find("input[type='file']").trigger("input");
 
       expect(setAuthDataSpyon).toHaveBeenCalledTimes(1);
       expect(setAuthDataSpyon).toHaveBeenCalledWith(mockUpdatedUser);
     });
 
-    it("Ao atualizar o avatar escolhendo um arquivo, a função de setar item do localStorage é chamada com os dados atualizados do usuário", async () => {
+    it("When updating the avatar by choosing a file, the localStorage set item function is called with the updated user data", async () => {
       await wrapper.find("input[type='file']").trigger("input");
 
       expect(setItemStorageSpyon).toHaveBeenCalledTimes(1);
@@ -52,7 +52,7 @@ describe("Profile", () => {
       );
     });
 
-    it("Ao atualizar o avatar escolhendo um arquivo, o toast de sucesso é exibido", async () => {
+    it("When updating the avatar by choosing a file, the success toast is displayed", async () => {
       await wrapper.find("input[type='file']").trigger("input");
 
       expect(useToast().success).toHaveBeenCalledTimes(1);
@@ -65,14 +65,14 @@ describe("Profile", () => {
 
     const wrapper = mount(Profile);
 
-    it("Ao atualizar os dados dando submit no form, a função da store de atualizar os dados de autenticação é chamada com os dados atualizados do usuário", async () => {
+    it("When updating the data by submitting the form, the function of the store to update the authentication data is called with the updated user data", async () => {
       await wrapper.find("form").trigger("submit");
 
       expect(setAuthDataSpyon).toHaveBeenCalledTimes(1);
       expect(setAuthDataSpyon).toHaveBeenCalledWith(mockUpdatedUser);
     });
 
-    it("Ao atualizar os dados dando submit no form, a função de setar item do localStorage é chamada com os dados atualizados do usuário", async () => {
+    it("When updating the data by submitting the form, the localStorage set item function is called with the updated user data", async () => {
       await wrapper.find("form").trigger("submit");
 
       expect(setItemStorageSpyon).toHaveBeenCalledTimes(1);
@@ -82,7 +82,7 @@ describe("Profile", () => {
       );
     });
 
-    it("Ao atualizar os dados dando submit no form, o toast de sucesso é exibido", async () => {
+    it("When updating the data by submitting the form, the success toast is displayed", async () => {
       await wrapper.find("form").trigger("submit");
 
       expect(useToast().success).toHaveBeenCalledTimes(1);
@@ -101,13 +101,13 @@ describe("Profile", () => {
 
     const wrapper = mount(Profile);
 
-    it("Ao clicar no botão de sair, a função de resetar os dados de autenticação na store é chamada", async () => {
+    it("When clicking on the exit button, the function to reset the authentication data in the store is called", async () => {
       await wrapper.find("[data-test-id='logout-button']").trigger("click");
 
       expect(resetAuthDataSpyon).toHaveBeenCalled();
     });
 
-    it("Ao clicar no botão de sair, a função de remover item do localStorage é chamada duas vezes", async () => {
+    it("When clicking the exit button, the remove item from localStorage function is called twice", async () => {
       await wrapper.find("[data-test-id='logout-button']").trigger("click");
 
       expect(removeItemStorageSpyon).toHaveBeenCalledTimes(2);
@@ -115,7 +115,7 @@ describe("Profile", () => {
       expect(removeItemStorageSpyon).toHaveBeenCalledWith("@KadPad:token");
     });
 
-    it("Ao clicar no botão de sair, a função 'replace' do roteador é chamada", async () => {
+    it("When clicking on the exit button, the 'replace' function of the router is called", async () => {
       await wrapper.find("[data-test-id='logout-button']").trigger("click");
 
       expect(useRouter().replace).toHaveBeenCalled();
