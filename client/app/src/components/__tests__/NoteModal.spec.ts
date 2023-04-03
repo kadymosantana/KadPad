@@ -87,11 +87,10 @@ describe("NoteModal", async () => {
       replace: vi.fn()
     });
 
-    vi.mock("vue-toastification", () => ({
-      useToast: vi.fn(() => ({
-        success: vi.fn()
-      }))
-    }));
+    vi.mock("vue-toastification");
+    (useToast as Mock).mockReturnValue({
+      success: vi.fn()
+    });
 
     const wrapper = mount<any>(NoteModal);
     wrapper.vm.note = mockData;

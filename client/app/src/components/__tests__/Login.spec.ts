@@ -1,4 +1,4 @@
-import { type Mock, describe, it, expect, vi } from "vitest";
+import { type Mock, beforeEach, describe, it, expect, vi, afterEach } from "vitest";
 import { mount } from "@vue/test-utils";
 import MockAdapter from "axios-mock-adapter";
 
@@ -20,11 +20,11 @@ describe("Login", () => {
     push: vi.fn()
   });
 
-  vi.mock("vue-toastification", () => ({
-    useToast: vi.fn(() => ({
-      success: vi.fn()
-    }))
-  }));
+  vi.mock("vue-toastification");
+  (useToast as Mock).mockReturnValue({
+    success: vi.fn(),
+    error: vi.fn()
+  });
 
   describe("SignIn", () => {
     const authDataSpyon = vi.spyOn(authData, "setData");

@@ -1,7 +1,8 @@
-import { describe, it, expect, vi } from "vitest";
-import { shallowMount } from "@vue/test-utils";
+import { type Mock, beforeEach, afterEach, describe, it, expect, vi } from "vitest";
+import { mount } from "@vue/test-utils";
 import MockAdapter from "axios-mock-adapter";
 
+import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 
 import { api } from "@/services/api";
@@ -10,6 +11,11 @@ import { authDataStore as authData } from "@/stores/authData";
 import Profile from "@/views/Profile.vue";
 
 describe("Profile", () => {
+  vi.mock("vue-toastification");
+  (useToast as Mock).mockReturnValue({
+    success: vi.fn()
+  });
+
   const setAuthDataSpyon = vi.spyOn(authData, "setData");
   const setItemStorageSpyon = vi.spyOn(Storage.prototype, "setItem");
 
@@ -27,7 +33,7 @@ describe("Profile", () => {
   describe("Update user avatar", () => {
     mockAxios.onPatch("/users/avatar").reply(200, mockUpdatedUser);
 
-    const wrapper = shallowMount(Profile);
+    const wrapper = mount(Profile);
 
     it("Ao atualizar o avatar escolhendo um arquivo, a função da store de atualizar os dados de autenticação é chamada com os dados atualizados do usuário", async () => {
       await wrapper.find("input[type='file']").trigger("input");
@@ -47,12 +53,6 @@ describe("Profile", () => {
     });
 
     it("Ao atualizar o avatar escolhendo um arquivo, o toast de sucesso é exibido", async () => {
-      vi.mock("vue-toastification", () => ({
-        useToast: vi.fn(() => ({
-          success: vi.fn()
-        }))
-      }));
-
       await wrapper.find("input[type='file']").trigger("input");
 
       expect(useToast().success).toHaveBeenCalledTimes(1);
@@ -63,7 +63,7 @@ describe("Profile", () => {
   describe("Update user data", () => {
     mockAxios.onPut("/users").reply(200, mockUpdatedUser);
 
-    const wrapper = shallowMount(Profile);
+    const wrapper = mount(Profile);
 
     it("Ao atualizar os dados dando submit no form, a função da store de atualizar os dados de autenticação é chamada com os dados atualizados do usuário", async () => {
       await wrapper.find("form").trigger("submit");
@@ -83,12 +83,6 @@ describe("Profile", () => {
     });
 
     it("Ao atualizar os dados dando submit no form, o toast de sucesso é exibido", async () => {
-      vi.mock("vue-toastification", () => ({
-        useToast: vi.fn(() => ({
-          success: vi.fn()
-        }))
-      }));
-
       await wrapper.find("form").trigger("submit");
 
       expect(useToast().success).toHaveBeenCalledTimes(1);
@@ -97,10 +91,15 @@ describe("Profile", () => {
   });
 
   describe("SignOut", () => {
+    vi.mock("vue-router");
+    (useRouter as Mock).mockReturnValue({
+      replace: vi.fn()
+    });
+
     const resetAuthDataSpyon = vi.spyOn(authData, "$reset");
     const removeItemStorageSpyon = vi.spyOn(Storage.prototype, "removeItem");
 
-    const wrapper = shallowMount(Profile);
+    const wrapper = mount(Profile);
 
     it("Ao clicar no botão de sair, a função de resetar os dados de autenticação na store é chamada", async () => {
       await wrapper.find("[data-test-id='logout-button']").trigger("click");
@@ -114,6 +113,13 @@ describe("Profile", () => {
       expect(removeItemStorageSpyon).toHaveBeenCalledTimes(2);
       expect(removeItemStorageSpyon).toHaveBeenCalledWith("@KadPad:user");
       expect(removeItemStorageSpyon).toHaveBeenCalledWith("@KadPad:token");
+    });
+
+    it("Ao clicar no botão de sair, a função 'replace' do roteador é chamada", async () => {
+      await wrapper.find("[data-test-id='logout-button']").trigger("click");
+
+      expect(useRouter().replace).toHaveBeenCalled();
+      expect(useRouter().replace).toHaveBeenCalledWith({ name: "Login" });
     });
   });
 });
