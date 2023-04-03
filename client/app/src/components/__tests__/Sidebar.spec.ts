@@ -1,6 +1,5 @@
-import { describe, it, expect, vi, beforeAll, afterEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import { flushPromises, shallowMount } from "@vue/test-utils";
-
 import MockAdapter from "axios-mock-adapter";
 
 import { api } from "@/services/api";

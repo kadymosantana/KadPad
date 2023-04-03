@@ -2,7 +2,6 @@ import { describe, it, expect } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 
 import NoteCard from "@/components/NoteCard.vue";
-import NoteModal from "@/views/NoteModal.vue";
 import Tag from "@/components/Tag.vue";
 
 const wrapper = shallowMount<any>(NoteCard, {

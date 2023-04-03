@@ -1,10 +1,11 @@
 import type { Note } from "@/types/index";
 
 import { type Mock, describe, it, expect, vi } from "vitest";
-import { flushPromises, mount } from "@vue/test-utils";
+import { mount } from "@vue/test-utils";
+import MockAdapter from "axios-mock-adapter";
+
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
-import MockAdapter from "axios-mock-adapter";
 
 import { api } from "@/services/api";
 import { authDataStore as authData } from "@/stores/authData";
@@ -44,8 +45,6 @@ describe("NoteModal", async () => {
       headers: { Authorization: `Bearer ${authData.token}` }
     })
     .reply(200, mockData);
-
-  await flushPromises();
 
   describe("Request verification", async () => {
     const wrapper = mount<any>(NoteModal);

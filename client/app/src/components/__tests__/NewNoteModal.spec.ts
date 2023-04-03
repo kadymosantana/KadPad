@@ -1,8 +1,9 @@
 import { describe, it, expect, vi, type Mock } from "vitest";
 import { mount } from "@vue/test-utils";
+import MockAdapter from "axios-mock-adapter";
+
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
-import MockAdapter from "axios-mock-adapter";
 
 import { api } from "@/services/api";
 

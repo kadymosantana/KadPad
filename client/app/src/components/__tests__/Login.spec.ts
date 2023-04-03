@@ -1,4 +1,4 @@
-import { type Mock, beforeEach, describe, it, expect, vi, afterEach } from "vitest";
+import { type Mock, describe, it, expect, vi, afterEach } from "vitest";
 import { mount } from "@vue/test-utils";
 import MockAdapter from "axios-mock-adapter";
 
