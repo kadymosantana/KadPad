@@ -1,4 +1,4 @@
-import { beforeEach, describe, it, expect, vi, type Mock } from "vitest";
+import { describe, it, expect, vi, type Mock } from "vitest";
 import { mount } from "@vue/test-utils";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
@@ -16,7 +16,6 @@ describe("NewNoteModal", () => {
 
   describe("Vue Router", async () => {
     vi.mock("vue-router");
-
     (useRouter as Mock).mockReturnValue({
       replace: vi.fn()
     });
@@ -31,18 +30,48 @@ describe("NewNoteModal", () => {
   });
 
   describe("Feedback messages of vue-toastification", () => {
-    vi.mock("vue-toastification", () => ({
-      useToast: vi.fn(() => ({
-        success: vi.fn(),
-        warning: vi.fn(),
-        error: vi.fn()
-      }))
-    }));
+    vi.mock("vue-toastification");
+    (useToast as Mock).mockReturnValue({
+      success: vi.fn(),
+      warning: vi.fn(),
+      error: vi.fn()
+    });
 
     const wrapper = mount<any>(NewNoteModal);
+
+    it("When pressing on the create note button with the link field filled in, the warning toast is called", async () => {
+      wrapper.vm.title = "Título teste";
+      wrapper.vm.description = "Descrição teste";
+      wrapper.vm.newLink = "Link teste";
+      wrapper.vm.newTag = "";
+
+      await wrapper.find("[data-test-id='create-note-button']").trigger("click");
+
+      expect(useToast().warning).toHaveBeenCalledTimes(1);
+      expect(useToast().warning).toHaveBeenCalledWith(
+        "Você deixou um link para adicionar. Clique no botão de adicionar ou deixe o campo vazio."
+      );
+    });
+
+    it("When pressing on the create note button with the tag field filled in, the warning toast is called", async () => {
+      wrapper.vm.title = "Título teste";
+      wrapper.vm.description = "Descrição teste";
+      wrapper.vm.newLink = "";
+      wrapper.vm.newTag = "Link teste";
+
+      await wrapper.find("[data-test-id='create-note-button']").trigger("click");
+
+      expect(useToast().warning).toHaveBeenCalledTimes(1);
+      expect(useToast().warning).toHaveBeenCalledWith(
+        "Você deixou uma tag para adicionar. Clique no botão de adicionar ou deixe o campo vazio."
+      );
+    });
+
     it("When pressing the create note button with the title and description fields filled in, a success toast is issued", async () => {
       wrapper.vm.title = "Título teste";
       wrapper.vm.description = "Descrição teste";
+      wrapper.vm.newLink = "";
+      wrapper.vm.newTag = "";
 
       await wrapper.find("[data-test-id='create-note-button']").trigger("click");
       expect(useToast().success).toHaveBeenCalledTimes(1);
@@ -54,6 +83,8 @@ describe("NewNoteModal", () => {
 
       wrapper.vm.title = "Título teste";
       wrapper.vm.description = "";
+      wrapper.vm.newLink = "";
+      wrapper.vm.newTag = "";
 
       await button.trigger("click");
       expect(useToast().error).toHaveBeenCalledTimes(1);
