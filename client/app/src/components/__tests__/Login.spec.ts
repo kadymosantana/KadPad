@@ -1,8 +1,9 @@
-import { type Mock, afterEach, describe, it, expect, vi } from "vitest";
+import { type Mock, describe, it, expect, vi } from "vitest";
 import { mount } from "@vue/test-utils";
+import MockAdapter from "axios-mock-adapter";
+
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
-import MockAdapter from "axios-mock-adapter";
 
 import { api } from "@/services/api";
 import { authDataStore as authData } from "@/stores/authData";
@@ -28,10 +29,6 @@ describe("Login", () => {
   describe("SignIn", () => {
     const authDataSpyon = vi.spyOn(authData, "setData");
     const setItemStorageSpyon = vi.spyOn(Storage.prototype, "setItem");
-
-    afterEach(() => {
-      setItemStorageSpyon.mockClear();
-    });
 
     const wrapper = mount<any>(Login);
 
