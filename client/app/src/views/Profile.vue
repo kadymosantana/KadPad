@@ -72,7 +72,7 @@ const signOut = () => {
   localStorage.removeItem("@KadPad:user");
   localStorage.removeItem("@KadPad:token");
 
-  router.push("/");
+  router.replace({ name: "Login" });
 };
 </script>
 
