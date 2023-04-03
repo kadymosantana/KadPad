@@ -112,9 +112,13 @@ const signOut = () => {
         icon="password"
         placeholder="Nova senha"
       />
-      <button class="primary-button mt-3">Salvar</button>
+      <button class="primary-button mt-3" data-test-id="submit-button">Salvar</button>
     </form>
-    <button @click="signOut" class="flex items-center gap-2 rounded-xl bg-[#ff00001a] p-3">
+    <button
+      @click="signOut"
+      class="flex items-center gap-2 rounded-xl bg-[#ff00001a] p-3"
+      data-test-id="logout-button"
+    >
       <img src="../assets/icons/logout.svg" />
       <span class="text-red-700">Sair</span>
     </button>
