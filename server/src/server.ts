@@ -3,10 +3,9 @@ import cors from "cors";
 import "express-async-errors";
 import { Request, Response, NextFunction } from "express";
 import uploadConfig from "./config/upload";
+import AppError from "../utils/AppError";
 
 const Routes = require("./routes");
-
-import AppError from "../utils/AppError";
 
 const app = express();
 app.use(express.json());
