@@ -1,5 +1,10 @@
 import knex from "knex";
-import config from "../../../knexfile";
+import knexfile from "../../../knexfile";
 
-const connection = knex(config.development);
+require("dotenv").config();
+
+const env = process.env.NODE_ENV || "development";
+const configOptions = (knexfile as any)[env];
+
+const connection = knex(configOptions);
 export default connection;
