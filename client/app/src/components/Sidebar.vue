@@ -75,11 +75,10 @@ provide("menu", menu);
       class="mt-3 items-center justify-center gap-4 sm:flex"
     >
       <img
-        width="34"
-        src="https://user-images.githubusercontent.com/98963793/221386784-f28b7347-a757-47bc-951a-8622354c3e07.png"
+        width="140"
+        src="https://user-images.githubusercontent.com/98963793/229954020-f8e0095c-2fbf-4fad-82ce-a32dd8708669.png"
         alt="KadPad Logo"
       />
-      <span class="mt-1 text-2xl font-light text-cyan-500">KadPad</span>
     </div>
 
     <div :class="{ hidden: !menu }" class="self-center sm:block">
