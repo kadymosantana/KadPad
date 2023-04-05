@@ -1,17 +1,14 @@
 import path from "path";
 import { Knex } from "knex";
 
+require("dotenv").config();
+
 export default {
   development: {
-    client: "sqlite3",
-    connection: {
-      filename: path.resolve(__dirname, "src", "database", "database.db"),
-    },
-    pool: {
-      afterCreate: (connection: any, callback: any) =>
-        connection.run("PRAGMA foreign_keys = ON", callback),
-    },
+    client: "pg",
+    connection: process.env.DATABASE_URL,
     migrations: {
+      tableName: "knex_migrations",
       directory: path.resolve(
         __dirname,
         "src",
@@ -20,5 +17,20 @@ export default {
         "migrations"
       ),
     },
-  } as Knex.Config,
-};
+  },
+
+  production: {
+    client: "pg",
+    connection: process.env.DATABASE_URL,
+    migrations: {
+      tableName: "knex_migrations",
+      directory: path.resolve(
+        __dirname,
+        "src",
+        "database",
+        "knex",
+        "migrations"
+      ),
+    },
+  },
+} as Knex.Config;
