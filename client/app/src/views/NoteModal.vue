@@ -118,7 +118,7 @@ onMounted(() => {
             </div>
           </div>
         </template>
-        <Loader v-else />
+        <Loader v-else type="note" />
       </div>
     </div>
   </Transition>
