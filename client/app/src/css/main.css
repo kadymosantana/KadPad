@@ -17,6 +17,6 @@
   }
 
   .primary-button {
-    @apply w-full rounded-xl bg-cyan-500 p-3 text-dark-800 duration-500 hover:bg-cyan-600;
+    @apply flex w-full items-center justify-center rounded-xl bg-cyan-500 p-3 text-dark-800 duration-500;
   }
 }
