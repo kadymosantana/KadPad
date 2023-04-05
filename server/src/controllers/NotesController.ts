@@ -10,7 +10,7 @@ export default class NotesController {
     const user_id = req.user!.id;
 
     // Recuperando id da nota
-    const note_id = await knex("notes").insert({
+    const note_id: any = await knex("notes").returning("id").insert({
       user_id,
       title,
       description,
@@ -19,7 +19,7 @@ export default class NotesController {
     if (links.length) {
       // Criando um novo objeto para cada link e o inserindo na tabela "links"
       const linksInsert: Link[] = links.map((link: string) => {
-        return { note_id, url: link };
+        return { note_id: note_id[0].id, url: link };
       });
       await knex("links").insert(linksInsert);
     }
@@ -27,7 +27,7 @@ export default class NotesController {
     if (tags.length) {
       // Criando um novo objeto para cada tag e o inserindo na tabela "tags"
       const tagsInsert: Tag[] = tags.map((name: string) => {
-        return { note_id, user_id, name };
+        return { note_id: note_id[0].id, user_id, name };
       });
       await knex("tags").insert(tagsInsert);
     }
@@ -77,15 +77,14 @@ export default class NotesController {
           "notes.updated_at",
         ])
         .where("notes.user_id", user_id)
-        .whereLike("title", `%${title}%`)
+        .whereILike("title", `%${title}%`)
         .whereIn("tags.name", filterTags)
         .innerJoin("notes", "notes.id", "tags.note_id")
-        .orderBy("updated_at", "desc")
-        .groupBy("title");
+        .orderBy("updated_at", "desc");
     } else {
       notes = await knex<Note>("notes")
         .where("user_id", user_id)
-        .whereLike("title", `%${title}%`)
+        .whereILike("title", `%${title}%`)
         .orderBy("updated_at", "desc");
     }
 
