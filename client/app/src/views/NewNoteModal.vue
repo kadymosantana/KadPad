@@ -8,9 +8,12 @@ import { api } from "@/services/api";
 
 import NoteItem from "@/components/NoteItem.vue";
 import ItemInput from "@/components/ItemInput.vue";
+import Loader from "@/components/Loader.vue";
 
 const router = useRouter();
 const toast = useToast();
+
+const isLoading = ref(false);
 
 const title = ref("");
 const description = ref("");
@@ -64,6 +67,8 @@ const createNote = async () => {
     links: links.value,
     tags: tags.value
   };
+
+  isLoading.value = true;
   await api.post("/notes", newNote);
 
   title.value = "";
@@ -136,7 +141,8 @@ const createNote = async () => {
         </div>
 
         <button @click="createNote" class="primary-button" data-test-id="create-note-button">
-          Criar nota
+          <span v-if="!isLoading">Criar nota</span>
+          <Loader v-else type="button" />
         </button>
       </div>
     </div>

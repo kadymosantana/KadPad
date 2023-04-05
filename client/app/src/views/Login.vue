@@ -8,11 +8,14 @@ import { authDataStore as authData } from "@/stores/authData";
 
 import InputContainer from "@/components/InputContainer.vue";
 import LoginTypeButton from "@/components/LoginTypeButton.vue";
+import Loader from "@/components/Loader.vue";
 
 const router = useRouter();
 const toast = useToast();
 
 const activeLoginType = ref("signIn");
+
+const isLoading = ref(false);
 
 const name = ref("");
 const email = ref("");
@@ -38,6 +41,7 @@ const signIn = async () => {
   if (!email.value || !password.value) return toast.error("Preencha todos os campos.");
 
   try {
+    isLoading.value = true;
     const data = await api.post("/sessions", {
       email: email.value,
       password: password.value
@@ -50,8 +54,10 @@ const signIn = async () => {
 
     api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
+    isLoading.value = false;
     router.push({ name: "Notes" });
   } catch (error: any) {
+    isLoading.value = false;
     if (error.response) return toast.error(error.response.data?.message);
     else return toast.error("Não foi possível fazer o login.");
   }
@@ -62,7 +68,12 @@ const signUp = async () => {
     return toast.error("Preencha todos os campos.");
 
   try {
+    isLoading.value = true;
+
     await api.post("/users", { name: name.value, email: email.value, password: password.value });
+
+    isLoading.value = false;
+
     toast.success("Cadastro feito com sucesso.");
     activeLoginType.value = "signIn";
   } catch (error: any) {
@@ -124,7 +135,8 @@ const signUp = async () => {
         <InputContainer v-model="password" type="password" icon="password" placeholder="Senha" />
 
         <button type="submit" class="primary-button mt-3">
-          {{ activeLoginType === "signIn" ? "Entrar" : "Cadastrar" }}
+          <span v-if="!isLoading">{{ activeLoginType === "signIn" ? "Entrar" : "Cadastrar" }}</span>
+          <Loader v-else type="button" />
         </button>
       </TransitionGroup>
     </div>
