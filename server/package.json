@@ -2,7 +2,7 @@
   "name": "kadpad",
   "scripts": {
     "dev": "npx nodemon --exec npx ts-node ./src/server.ts",
-    "build": "rm -rf ./dist && tsc",
+    "build": "tsc",
     "start": "node ./dist/src/server.js",
     "migrate": "knex migrate:latest",
     "vercel-build": "knex migrate:latest --env production"
