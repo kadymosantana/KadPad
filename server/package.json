@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "npx nodemon --exec npx ts-node ./src/server.ts",
     "build": "npm install && tsc",
-    "start": "node ./dist/src/server.js",
+    "start": "pm2-runtime start ecosystem.config.js --env production",
     "migrate": "knex migrate:latest",
     "vercel-build": "knex migrate:latest --env production"
   },
