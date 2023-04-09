@@ -3,7 +3,6 @@ import knex from "../database/knex";
 import { Link, Note, Tag } from "../types";
 
 export default class NotesController {
-  // Cadastrando nota (POST)
   async create(req: Request, res: Response) {
     const { title, description, links, tags } = req.body;
 
@@ -17,7 +16,6 @@ export default class NotesController {
     });
 
     if (links.length) {
-      // Criando um novo objeto para cada link e o inserindo na tabela "links"
       const linksInsert: Link[] = links.map((link: string) => {
         return { note_id: note_id[0].id, url: link };
       });
@@ -25,14 +23,13 @@ export default class NotesController {
     }
 
     if (tags.length) {
-      // Criando um novo objeto para cada tag e o inserindo na tabela "tags"
       const tagsInsert: Tag[] = tags.map((name: string) => {
         return { note_id: note_id[0].id, user_id, name };
       });
       await knex("tags").insert(tagsInsert);
     }
 
-    res.json();
+    return res.json();
   }
 
   // Exibindo nota (GET)
@@ -51,21 +48,18 @@ export default class NotesController {
     });
   }
 
-  // Deletando nota (DELETE)
   async delete(req: Request, res: Response) {
     const { id } = req.params;
     await knex<Note>("notes").where("id", id).delete();
     res.json();
   }
 
-  // Listando notas
   async index(req: Request, res: Response) {
     const user_id = req.user!.id;
     const { title, tags } = req.query;
     let notes: Note[];
 
     if (tags && typeof tags === "string") {
-      // query tags -> "node express"
       const filterTags = tags.split(",").map((tag) => tag); // ["node", "express"]
 
       notes = await knex<Tag>("tags")
@@ -98,6 +92,6 @@ export default class NotesController {
       };
     });
 
-    res.json(notesWithTags);
+    return res.json(notesWithTags);
   }
 }

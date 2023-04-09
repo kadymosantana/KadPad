@@ -9,6 +9,6 @@ export default class TagsController {
       .where("user_id", user_id)
       .groupBy("name");
 
-    res.json(userTags);
+    return res.json(userTags);
   }
 }

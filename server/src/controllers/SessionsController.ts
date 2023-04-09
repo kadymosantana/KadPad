@@ -20,6 +20,6 @@ export default class SessionsController {
     const { secret, expiresIn } = authConfig.jwt;
     const token = jwt.sign({}, secret, { subject: String(user.id), expiresIn });
 
-    res.json({ user, token });
+    return res.json({ user, token });
   }
 }
