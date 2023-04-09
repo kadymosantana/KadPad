@@ -1,18 +1,16 @@
+import type { Request, Response, NextFunction } from "express";
+
 import express from "express";
-import cors from "cors";
 import "express-async-errors";
-import { Request, Response, NextFunction } from "express";
-import uploadConfig from "./config/upload";
+import Routes from "./routes";
 import AppError from "../utils/AppError";
 
-const Routes = require("./routes");
+const cors = require("cors");
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: "https://kadpad-api.onrender.com" }));
 app.use(Routes);
-
-app.use("/files", express.static(uploadConfig.UPLOADS_FOLDER));
 
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
   if (error instanceof AppError) {
