@@ -5,8 +5,7 @@ import { api } from "@/services/api";
 import { authDataStore as authData } from "@/stores/authData";
 
 const avatarURL = computed(() => {
-  if (authData.user?.avatar) return `${api.defaults.baseURL}/files/${authData.user?.avatar}`;
-  else return "src/assets/icons/user.svg";
+  return authData.user?.avatar ?? "src/assets/icons/user.svg";
 });
 
 const menu = inject<boolean>("menu");

@@ -12,11 +12,7 @@ const router = useRouter();
 const toast = useToast();
 
 const avatarURL = computed(() => {
-  if (authData.user?.avatar) {
-    return `${api.defaults.baseURL}/files/${authData.user?.avatar}`;
-  } else {
-    return "src/assets/icons/user.svg";
-  }
+  return authData.user?.avatar ?? "src/assets/icons/user.svg";
 });
 
 const avatar = computed(() => authData.user?.avatar);
@@ -95,6 +91,7 @@ const signOut = () => {
           @input="updateUserAvatar"
           type="file"
           class="col-[1] row-[1] w-[30px] cursor-pointer opacity-0"
+          name="avatar"
       /></span>
     </div>
     <form @submit.prevent="updateUserData" class="flex flex-col gap-3">
