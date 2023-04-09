@@ -1,8 +1,8 @@
 import { Router } from "express";
-const usersRouter = require("./users.routes");
-const sessionsRouter = require("./sessions.routes");
-const notesRouter = require("./notes.routes");
-const tagsRouter = require("./tags.routes");
+import usersRouter from "./users.routes";
+import sessionsRouter from "./sessions.routes";
+import notesRouter from "./notes.routes";
+import tagsRouter from "./tags.routes";
 
 const routes = Router();
 routes.use("/users", usersRouter);
@@ -10,4 +10,4 @@ routes.use("/sessions", sessionsRouter);
 routes.use("/notes", notesRouter);
 routes.use("/tags", tagsRouter);
 
-module.exports = routes;
+export default routes;

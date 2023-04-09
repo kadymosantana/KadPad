@@ -12,4 +12,4 @@ notesRouter.post("/", notesController.create);
 notesRouter.get("/:id", notesController.show);
 notesRouter.delete("/:id", notesController.delete);
 
-module.exports = notesRouter;
+export default notesRouter;

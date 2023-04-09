@@ -6,4 +6,4 @@ const sessionsController = new SessionsController();
 
 sessionsRouter.post("/", sessionsController.create);
 
-module.exports = sessionsRouter;
+export default sessionsRouter;
