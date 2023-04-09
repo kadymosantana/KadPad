@@ -61,7 +61,7 @@ onMounted(() => {
               <img src="../assets/icons/description.svg" alt="Ícone" />
               Descrição
             </h3>
-            <p class="h-36 overflow-auto md:h-[480px]">{{ note?.description }}</p>
+            <p class="h-36 overflow-auto md:h-[450px]">{{ note?.description }}</p>
           </div>
 
           <div class="grid max-h-full w-full flex-col gap-6 p-4 md:w-96 md:p-7">
