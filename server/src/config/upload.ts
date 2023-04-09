@@ -1,25 +1,29 @@
-import path from "path";
 import crypto from "crypto";
 import multer from "multer";
-import { Request } from "express";
+import { v2 as cloudinary } from "cloudinary";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
 
-const TMP_FOLDER = path.resolve(__dirname, "..", "..", "tmp");
-const UPLOADS_FOLDER = path.resolve(TMP_FOLDER, "uploads");
+require("dotenv").config();
 
-const MULTER = {
-  storage: multer.diskStorage({
-    destination: TMP_FOLDER,
-    filename(req: Request, file: Express.Multer.File, callback) {
-      const fileHash = crypto.randomBytes(10).toString("hex");
-      const fileName = `${fileHash}-${file.originalname}`;
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-      return callback(null, fileName);
-    },
-  }),
-};
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => {
+    const fileHash = crypto.randomBytes(10).toString("hex");
+    const fileName = `${fileHash}-${file.originalname.split(".")[0]}`;
 
-export default {
-  TMP_FOLDER,
-  UPLOADS_FOLDER,
-  MULTER,
-};
+    return {
+      folder: "avatar",
+      public_id: fileName,
+    };
+  },
+});
+
+const upload = multer({ storage: storage });
+
+export default upload;
