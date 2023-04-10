@@ -9,7 +9,7 @@ const NewNoteModal = import("@/views/NewNoteModal.vue");
 const NoteModal = import("@/views/NoteModal.vue");
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes: [
     { name: "Login", path: "/", component: Login },
     {
