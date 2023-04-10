@@ -9,7 +9,7 @@ const cors = require("cors");
 
 const app = express();
 app.use(express.json());
-app.use(cors({ origin: "https://kadpad-api.onrender.com" }));
+app.use(cors({ origin: "https://kadpad.vercel.app" }));
 app.use(Routes);
 
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
