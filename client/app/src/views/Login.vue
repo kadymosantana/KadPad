@@ -139,6 +139,10 @@ const signUp = async () => {
           <Loader v-else type="button" />
         </button>
       </TransitionGroup>
+
+      <span class="block max-w-[30ch] text-gray-600"
+        >A primeira solicitação pode demorar alguns segundos.</span
+      >
     </div>
   </div>
 </template>
