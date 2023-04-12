@@ -5,6 +5,10 @@ const props = defineProps({
   placeholder: { type: String, required: true }
 });
 const emits = defineEmits(["add", "update:modelValue"]);
+
+const getIconURL = (iconName: string) => {
+  return new URL(`../assets/icons/${iconName}.svg`, import.meta.url).href;
+};
 </script>
 
 <template>
@@ -18,7 +22,7 @@ const emits = defineEmits(["add", "update:modelValue"]);
       class="w-full bg-transparent"
     />
     <button @click="$emit('add')">
-      <img :src="'/src/assets/icons/' + icon + '.svg'" alt="Ícone" />
+      <img :src="getIconURL(icon)" alt="Ícone" />
     </button>
   </span>
 </template>

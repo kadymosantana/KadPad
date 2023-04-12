@@ -4,6 +4,10 @@ const props = defineProps({
   value: { type: String, required: true }
 });
 const emits = defineEmits(["remove"]);
+
+const getIconURL = (iconName: string) => {
+  return new URL(`../assets/icons/${iconName}.svg`, import.meta.url).href;
+};
 </script>
 
 <template>
@@ -15,7 +19,7 @@ const emits = defineEmits(["remove"]);
     <span v-else class="bg-transparent">{{ value }}</span>
 
     <button @click="$emit('remove', value)" class="cursor-pointer">
-      <img src="@/assets/icons/close.svg" alt="" />
+      <img :src="getIconURL('close')" alt="" />
     </button>
   </li>
 </template>

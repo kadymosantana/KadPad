@@ -54,6 +54,10 @@ const selectTag = (tagName: string) => {
   }
 };
 
+const getIconURL = (iconName: string) => {
+  return new URL(`../assets/icons/${iconName}.svg`, import.meta.url).href;
+};
+
 provide("menu", menu);
 </script>
 
@@ -61,13 +65,13 @@ provide("menu", menu);
   <aside
     v-on-click-outside="() => (menu = false)"
     :class="{ 'z-10 grid w-80 grid-rows-[auto_1fr_auto]': menu, 'w-8': !menu }"
-    class="fixed h-screen rounded-tr-3xl rounded-br-3xl bg-dark-700 p-4 shadow-lg duration-500 sm:grid sm:w-80 sm:grid-rows-[auto_1fr_auto]"
+    class="fixed h-screen rounded-br-3xl rounded-tr-3xl bg-dark-700 p-4 shadow-lg duration-500 sm:grid sm:w-80 sm:grid-rows-[auto_1fr_auto]"
   >
     <button
       @click="menu = !menu"
-      class="absolute top-[50%] bottom-[50%] right-[-1.5rem] z-10 flex max-h-max min-w-max items-center rounded-full bg-dark-600 p-2 shadow-xl sm:hidden"
+      class="absolute bottom-[50%] right-[-1.5rem] top-[50%] z-10 flex max-h-max min-w-max items-center rounded-full bg-dark-600 p-2 shadow-xl sm:hidden"
     >
-      <img :src="`src/assets/icons/${menu ? 'arrow-left' : 'arrow-right'}.svg`" alt="Menu" />
+      <img :src="getIconURL(menu ? 'arrow-left' : 'arrow-right')" alt="Menu" />
     </button>
 
     <div
@@ -93,7 +97,7 @@ provide("menu", menu);
           }"
           class="flex cursor-pointer items-center gap-4 p-2"
         >
-          <img src="../assets/icons/hash.svg" alt="Tag icon" />
+          <img :src="getIconURL('hash')" alt="Tag icon" />
           <span class="text-lg">Todas</span>
         </li>
 
@@ -106,7 +110,7 @@ provide("menu", menu);
           }"
           class="flex cursor-pointer items-center gap-4 p-2"
         >
-          <img src="../assets/icons/hash.svg" alt="Ícone" />
+          <img :src="getIconURL('hash')" alt="Ícone" />
           <span class="text-lg">{{ tag.name }}</span>
         </li>
       </ul>

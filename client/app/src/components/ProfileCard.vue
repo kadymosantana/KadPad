@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { computed, inject } from "vue";
 
-import { api } from "@/services/api";
 import { authDataStore as authData } from "@/stores/authData";
 
+const getIconURL = (iconName: string) => {
+  return new URL(`../assets/icons/${iconName}.svg`, import.meta.url).href;
+};
+
 const avatarURL = computed(() => {
-  return authData.user?.avatar ?? "src/assets/icons/user.svg";
+  return authData.user?.avatar ?? getIconURL("user");
 });
 
 const menu = inject<boolean>("menu");
@@ -35,7 +38,7 @@ const menu = inject<boolean>("menu");
         tag="button"
         class="flex gap-2 rounded-xl bg-dark-700 p-2 hover:bg-dark-700"
       >
-        <img src="../assets/icons/edit.svg" />
+        <img :src="getIconURL('edit')" />
         <span>Editar conta</span>
       </RouterLink>
     </div>
