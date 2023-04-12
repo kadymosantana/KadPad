@@ -3,7 +3,7 @@
 </div>
 <div>‎</div>
 
-![KadChat](https://user-images.githubusercontent.com/98963793/230805069-ba5a4713-9fed-4ec4-95ce-15db1df7db3c.png)
+![KadPad](https://user-images.githubusercontent.com/98963793/231336805-bfab225b-7c6a-4b7f-bd4a-83bfb5c558b0.png)
 
 ## 📖 Sobre o projeto
 KadPad é um aplicativo de bloco de notas que tem o objetivo de ajudar os usuários a organizarem suas anotações com suas tags e links úteis.
@@ -13,7 +13,7 @@ Este é o meu primeiro projeto full stack (back-end, front-end e banco de dados)
 ## 🛠️ Ferramentas utilizadas
 Utilizei as seguintes ferramentas ao longo do desenvolvimento:
 
-#### Front-end:
+#### Front-end
 <ul>
 <li> HTML 5 e CSS 3; </li>
 <li> Tailwind CSS; </li>
@@ -29,7 +29,7 @@ Utilizei as seguintes ferramentas ao longo do desenvolvimento:
 </li>
 </ul>
 
-#### Servidor e banco de dados:
+#### Servidor e banco de dados
 <ul>
 <li>API:
 <ul>
