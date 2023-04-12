@@ -140,7 +140,7 @@ const signUp = async () => {
         </button>
       </TransitionGroup>
 
-      <span class="block max-w-[30ch] text-gray-600"
+      <span class="block max-w-[30ch] text-center text-gray-600"
         >A primeira solicitação pode demorar alguns segundos.</span
       >
     </div>
