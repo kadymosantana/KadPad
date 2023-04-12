@@ -11,11 +11,13 @@ import InputContainer from "@/components/InputContainer.vue";
 const router = useRouter();
 const toast = useToast();
 
-const avatarURL = computed(() => {
-  return authData.user?.avatar ?? "src/assets/icons/user.svg";
-});
+const getIconURL = (iconName: string) => {
+  return new URL(`../assets/icons/${iconName}.svg`, import.meta.url).href;
+};
 
-const avatar = computed(() => authData.user?.avatar);
+const avatarURL = computed(() => {
+  return authData.user?.avatar ?? getIconURL("user");
+});
 
 const name = ref(authData.user?.name);
 const email = ref(authData.user?.email);
@@ -76,11 +78,11 @@ const signOut = () => {
   <div class="content flex h-screen w-screen flex-col items-center justify-center gap-10">
     <div class="relative">
       <img
-        :class="{ 'bg-dark-900 p-8': !avatar }"
+        :src="avatarURL"
+        :class="{ 'bg-dark-900 p-8': !authData.user?.avatar }"
         class="h-44 w-44 rounded-full object-cover drop-shadow-xl"
         width="176"
         height="176"
-        :src="avatarURL"
         alt="Foto de perfil"
       />
       <span
