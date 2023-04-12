@@ -37,6 +37,10 @@ watchEffect(async () => {
     }
   }
 });
+
+const getIconURL = (iconName: string) => {
+  return new URL(`../assets/icons/${iconName}.svg`, import.meta.url).href;
+};
 </script>
 
 <template>
