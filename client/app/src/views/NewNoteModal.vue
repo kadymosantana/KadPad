@@ -86,7 +86,7 @@ const createNote = async () => {
     <div class="modal-wrapper">
       <div
         v-on-click-outside="() => router.replace({ name: 'Notes' })"
-        class="modal max-w-screen gap-6 overflow-auto p-6"
+        class="modal flex flex-col sm:h-max sm:w-[480px]"
       >
         <header
           class="flex items-center justify-between border-b border-solid border-dark-600 pb-4"
@@ -120,7 +120,7 @@ const createNote = async () => {
             Links
           </h3>
 
-          <ul v-if="links.length" class="links mb-3 flex max-h-20 flex-col gap-2 overflow-auto">
+          <ul v-if="links.length" class="links mb-3 flex flex-col gap-2 overflow-auto sm:max-h-20">
             <NoteItem v-for="link in links" @remove="removeLink" :value="link" type="link" />
           </ul>
 

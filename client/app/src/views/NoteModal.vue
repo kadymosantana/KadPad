@@ -49,22 +49,34 @@ onMounted(() => {
 
 <template>
   <Transition name="modal" appear>
-    <div class="modal-wrapper p-5">
+    <div class="modal-wrapper">
       <div
         v-on-click-outside="() => router.replace({ name: 'Notes' })"
-        :class="{ 'items-center justify-center bg-transparent': !note, 'bg-dark-800': note }"
-        class="modal flex w-full flex-col overflow-hidden rounded-3xl duration-300 sm:w-[700px] md:h-[550px] md:flex-row md:bg-dark-800"
+        :class="{ 'items-center justify-center': !note }"
+        class="modal flex flex-col duration-300 sm:w-[700px] sm:p-0 md:h-[550px] md:flex-row md:gap-0"
       >
         <template v-if="note">
-          <div class="w-full border-r border-solid border-dark-600 p-4 md:w-96 md:p-7">
+          <header
+            class="flex items-center justify-between border-b border-solid border-dark-600 pb-4 sm:hidden"
+          >
+            <h1 class="flex-1 text-3xl font-bold">{{ note.title }}</h1>
+            <button
+              @click="router.replace({ name: 'Notes' })"
+              class="rounded-xl bg-[#ff00001a] p-2"
+            >
+              <img src="../assets/icons/close.svg" alt="Fechar" />
+            </button>
+          </header>
+
+          <div class="w-full border-solid border-dark-600 sm:border-r md:w-96 md:p-7">
             <h3 class="subtitle">
               <img src="../assets/icons/description.svg" alt="Ícone" />
               Descrição
             </h3>
-            <p class="h-36 overflow-auto md:h-[450px]">{{ note?.description }}</p>
+            <p class="overflow-auto md:h-[450px]">{{ note?.description }}</p>
           </div>
 
-          <div class="grid max-h-full w-full flex-col gap-6 p-4 md:w-96 md:p-7">
+          <div class="grid max-h-full w-full flex-col gap-6 md:w-96 md:p-7">
             <div>
               <h3 class="subtitle">
                 <img src="../assets/icons/link.svg" alt="Ícone" />
