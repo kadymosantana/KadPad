@@ -90,7 +90,7 @@ const signUp = async () => {
       src="https://user-images.githubusercontent.com/98963793/222261379-74753371-f40c-4eb9-8ff1-30af3ed8a7de.png"
       alt="Ilustração"
     />
-    <div class="flex flex-col gap-12">
+    <div class="flex flex-col gap-12 items-center">
       <div class="flex flex-col items-center gap-5">
         <img
           class="drop-shadow-2xl"
@@ -134,7 +134,7 @@ const signUp = async () => {
 
         <InputContainer v-model="password" type="password" icon="password" placeholder="Senha" />
 
-        <button type="submit" class="primary-button mt-3">
+        <button type="submit" class="primary-button mt-3" :disabled="isLoading">
           <span v-if="!isLoading">{{ activeLoginType === "signIn" ? "Entrar" : "Cadastrar" }}</span>
           <Loader v-else type="button" />
         </button>
