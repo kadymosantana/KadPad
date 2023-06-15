@@ -5,6 +5,10 @@
 </template>
 
 <style>
+.Vue-Toastification__toast.toast {
+  font-family: "Inter", sans-serif;
+}
+
 .modal-enter-active,
 .modal-leave-active {
   transition: 0.3s linear;

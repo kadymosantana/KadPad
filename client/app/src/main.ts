@@ -8,5 +8,7 @@ import "vue-toastification/dist/index.css";
 const app = createApp(App);
 
 app.use(router);
-app.use(Toast);
+app.use(Toast, {
+  toastClassName: "toast"
+});
 app.mount("#app");
