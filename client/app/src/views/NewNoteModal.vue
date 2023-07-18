@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, onBeforeUnmount, ref } from "vue";
 import { useRouter } from "vue-router";
 import { vOnClickOutside } from "@vueuse/components";
 import { useToast } from "vue-toastification";
@@ -79,6 +79,18 @@ const createNote = async () => {
   toast.success("Nota criada com sucesso!");
   router.replace({ name: "Notes" });
 };
+
+const closeModal = (e: KeyboardEvent) => {
+  if (e.key === "Escape") router.replace({ name: "Notes" });
+};
+
+onMounted(() => {
+  addEventListener("keyup", closeModal);
+});
+
+onBeforeUnmount(() => {
+  removeEventListener("keyup", closeModal);
+});
 </script>
 
 <template>

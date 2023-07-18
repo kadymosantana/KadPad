@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Note } from "@/types";
 
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { vOnClickOutside } from "@vueuse/components";
 import { useToast } from "vue-toastification";
@@ -42,8 +42,17 @@ const deleteNote = async () => {
   router.replace({ name: "Notes" });
 };
 
+const closeModal = (e: KeyboardEvent) => {
+  if (e.key === "Escape") router.replace({ name: "Notes" });
+};
+
 onMounted(() => {
   fetchNoteDetails();
+  addEventListener("keyup", closeModal);
+});
+
+onBeforeUnmount(() => {
+  removeEventListener("keyup", closeModal);
 });
 </script>
 
