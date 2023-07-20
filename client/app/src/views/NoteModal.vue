@@ -63,6 +63,7 @@ onBeforeUnmount(() => {
         v-on-click-outside="() => router.replace({ name: 'Notes' })"
         :class="{ 'items-center justify-center': !note }"
         class="modal flex flex-col duration-300 sm:w-[700px] sm:p-0 md:h-[550px] md:flex-row md:gap-0"
+        role="dialog"
       >
         <template v-if="note">
           <header

@@ -89,12 +89,16 @@ provide("menu", menu);
       <h3 class="mb-4 border-b border-solid border-dark-600 pb-2 text-xl">Minhas tags</h3>
       <ul
         class="flex max-h-60 flex-col gap-2 overflow-auto border-b border-solid border-dark-600 pb-4"
+        role="listbox"
+        aria-multiselectable="true"
       >
         <li
           @click="searchFilters.$reset()"
           :class="{
             'rounded-xl  bg-dark-800 ': !searchFilters.selectedTags.length
           }"
+          :aria-selected="!searchFilters.selectedTags.length"
+          role="option"
           class="flex cursor-pointer items-center gap-4 p-2"
         >
           <img :src="getIconURL('hash')" alt="Tag icon" />
@@ -108,6 +112,8 @@ provide("menu", menu);
           :class="{
             'rounded-xl bg-dark-800 ': searchFilters.tagIsAlreadySelected(tag.name)
           }"
+          :aria-selected="searchFilters.tagIsAlreadySelected(tag.name)"
+          role="option"
           class="flex cursor-pointer items-center gap-4 p-2"
         >
           <img :src="getIconURL('hash')" alt="Ícone" />

@@ -99,6 +99,7 @@ onBeforeUnmount(() => {
       <div
         v-on-click-outside="() => router.replace({ name: 'Notes' })"
         class="modal flex flex-col sm:h-max sm:w-[480px]"
+        role="dialog"
       >
         <header
           class="flex items-center justify-between border-b border-solid border-dark-600 pb-4"
