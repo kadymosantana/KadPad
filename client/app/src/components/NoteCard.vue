@@ -17,6 +17,8 @@ const formatDate = (dateString: string) => {
   <RouterLink
     :to="{ name: 'Note', params: { id: note.id } }"
     class="max-h-content relative my-4 flex w-full cursor-pointer break-inside-avoid-column flex-col gap-3 overflow-hidden rounded-3xl bg-dark-700 p-5 shadow-md duration-300 hover:-translate-y-3 xl:w-auto"
+    aria-haspopup="dialog"
+    aria-controls="note-modal"
   >
     <h1 class="text-2xl font-semibold">{{ note.title }}</h1>
     <p class="text-ellipsis">{{ note.description }}</p>

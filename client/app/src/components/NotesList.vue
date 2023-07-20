@@ -57,6 +57,8 @@ const getIconURL = (iconName: string) => {
         :to="{ name: 'New Note' }"
         class="flex w-full items-center gap-3 rounded-xl bg-cyan-500 p-2 duration-500 hover:bg-cyan-600 md:w-auto"
         role="button"
+        aria-haspopup="dialog"
+        aria-controls="new-note-modal"
         data-test-id="new-note-link"
       >
         <img :src="getIconURL('add')" alt="Ícone" />

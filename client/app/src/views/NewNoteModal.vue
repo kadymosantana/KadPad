@@ -98,6 +98,7 @@ onBeforeUnmount(() => {
     <div class="modal-wrapper">
       <div
         v-on-click-outside="() => router.replace({ name: 'Notes' })"
+        id="new-note-modal"
         class="modal flex flex-col sm:h-max sm:w-[480px]"
         role="dialog"
       >
