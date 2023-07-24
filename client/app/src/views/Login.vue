@@ -77,6 +77,7 @@ const signUp = async () => {
     toast.success("Cadastro feito com sucesso.");
     activeLoginType.value = "signIn";
   } catch (error: any) {
+    isLoading.value = false;
     if (error.response) return toast.error(error.response.data?.message);
     else return toast.error("Não foi possível fazer o cadastro.");
   }
@@ -90,7 +91,7 @@ const signUp = async () => {
       src="https://user-images.githubusercontent.com/98963793/222261379-74753371-f40c-4eb9-8ff1-30af3ed8a7de.png"
       alt="Ilustração"
     />
-    <div class="flex flex-col gap-12 items-center">
+    <div class="flex flex-col items-center gap-12">
       <div class="flex flex-col items-center gap-5">
         <img
           class="drop-shadow-2xl"
